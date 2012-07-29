@@ -1,0 +1,81 @@
+#!/bin/sh
+
+if [ $# -lt 1 ]
+then
+    echo "supply build number as the first argument"
+    exit 1
+fi
+
+build(){
+
+    POM=pom.xml
+    BKP_POM=pom.xml_bkp
+    VERSION=$1
+
+    # replace version in pom
+    cp ./$POM ./$BKP_POM
+    sed -i -e "s/\${VERSION}/$VERSION/g" ./$POM
+
+    # create target dir (binaries)
+    mvn clean install cobertura:cobertura
+
+    # revert pom back
+    mv $BKP_POM $POM
+}
+
+BUILD_NUMBER=$1
+TOPDIR=debian
+DEB_DIR=DEBIAN
+
+if [ ! -f ./$DEB_DIR/control ]
+then
+    echo "control file $DEB_DIR/control not found"
+    exit 1
+fi
+
+mkdir -p ./$TOPDIR/$DEB_DIR
+
+# create control file from template - replace build number
+sed -e "s/\${BUILD_NUMBER}/$BUILD_NUMBER/g" ./$DEB_DIR/control > ./$TOPDIR/$DEB_DIR/control
+
+# get Package, Version and Architecture from control file
+PACKAGE=$(awk /^Package:/'{print $2}' ./$TOPDIR/$DEB_DIR/control)
+VERSION=$(awk /^Version:/'{print $2}' ./$TOPDIR/$DEB_DIR/control)
+ARCHITECTURE=$(awk /^Architecture:/'{print $2}' ./$TOPDIR/$DEB_DIR/control)
+
+for f in ./$DEB_DIR/*
+do
+    # control fle has been already copied (from where we got package etc.)
+    if [ "$(basename $f)" != "control" ]
+    then
+        sed -e "s/\${PACKAGE}/$PACKAGE/g" \
+            -e "s/\${VERSION}/$VERSION/g" \
+            -e "s/\${ARCHITECTURE}/$ARCHITECTURE/g" ./$f > ./$TOPDIR/$f
+        chmod 775 ./$TOPDIR/$f
+    fi
+done
+
+# build
+build $VERSION
+
+# create deb tree
+CATALINA_BASE_DIR=./$TOPDIR/var/app/$PACKAGE
+mkdir -p $CATALINA_BASE_DIR
+mkdir $CATALINA_BASE_DIR/conf $CATALINA_BASE_DIR/webapps $CATALINA_BASE_DIR/work
+
+# set dir mode
+find ./$TOPDIR -type d | xargs chmod 755
+
+cp ./src/main/tomcat/conf/server.xml $CATALINA_BASE_DIR/conf
+cp -r ./target/${PACKAGE}-${VERSION}/* $CATALINA_BASE_DIR/webapps
+
+# remove existing deb packages if any
+rm -f ./*.deb
+
+# build package
+fakeroot dpkg-deb --build ./debian > /dev/null
+
+# clean up build root (topdir)
+rm -rf ./$TOPDIR
+
+mv debian.deb ${PACKAGE}_${VERSION}_${ARCHITECTURE}.deb

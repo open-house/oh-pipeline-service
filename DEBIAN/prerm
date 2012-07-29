@@ -1,0 +1,4 @@
+#!/bin/sh
+
+rm -f /etc/init.d/${PACKAGE}
+rm -f /var/app/${PACKAGE}/web.xml

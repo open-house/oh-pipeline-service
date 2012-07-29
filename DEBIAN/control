@@ -1,0 +1,9 @@
+Package: oh-pipeline-service
+Version: 0.1-${BUILD_NUMBER}
+Section: httpd
+Priority: optional
+Architecture: all
+Depends: oh-tomcat-app
+Maintainer: pete reisinger <p.reisinger@gmail.com>
+Description: pipeline restful service
+ application for tracking builds, their phases and states
