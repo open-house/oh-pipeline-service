@@ -79,3 +79,4 @@ fakeroot dpkg-deb --build ./debian > /dev/null
 rm -rf ./$TOPDIR
 
 mv debian.deb ${PACKAGE}_${VERSION}_${ARCHITECTURE}.deb
+
