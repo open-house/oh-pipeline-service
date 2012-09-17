@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
+
+    <!-- DAOs -->
+    <bean id="projectReadDao" class="sk.openhouse.pipelineservice.dao.impl.ProjectReadDaoImpl">
+        <constructor-arg name="dataSource" ref="dataSource" />
+    </bean>
+
+    <bean id="projectWriteDao" class="sk.openhouse.pipelineservice.dao.impl.ProjectWriteDaoImpl">
+        <constructor-arg name="dataSource" ref="dataSource" />
+    </bean>
+
+    <bean id="versionReadDao" class="sk.openhouse.pipelineservice.dao.impl.VersionReadDaoImpl">
+        <constructor-arg name="dataSource" ref="dataSource" />
+    </bean>
+</beans>

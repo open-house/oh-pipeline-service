@@ -7,10 +7,40 @@
         http://www.springframework.org/schema/context
         http://www.springframework.org/schema/context/spring-context-3.0.xsd">
 
-    <!-- properties location + spring default values -->
-    <!-- 
-    <context:property-placeholder location="classpath:oh-pipeline-service.properties" />
+    <context:component-scan base-package="sk.openhouse.pipelineservice.resource" />
+    <context:property-placeholder location="classpath:oh-pipeline-service.properties,classpath:oh-pipeline-service-jdbc.properties" />
 
+    <!-- resources -->
+    <bean name="rootResource" class="sk.openhouse.pipelineservice.resource.RootResource">
+        <constructor-arg name="rootResourceService" ref="rootResourceService" />
+        <constructor-arg name="xmlUtil" ref="xmlUtil" />
+    </bean>
+
+    <bean name="projectsResource" class="sk.openhouse.pipelineservice.resource.ProjectsResource">
+        <constructor-arg name="projectService" ref="projectService" />
+        <constructor-arg name="xmlUtil" ref="xmlUtil" />
+    </bean>
+
+    <bean name="projectResource" class="sk.openhouse.pipelineservice.resource.ProjectResource">
+        <constructor-arg name="projectService" ref="projectService" />
+        <constructor-arg name="xmlUtil" ref="xmlUtil" />
+    </bean>
+
+    <bean name="versionResource" class="sk.openhouse.pipelineservice.resource.VersionResource">
+        <constructor-arg name="versionService" ref="versionService" />
+        <constructor-arg name="xmlUtil" ref="xmlUtil" />
+    </bean>
+
+    <!-- utils -->
+    <bean name="xmlUtil" class="sk.openhouse.pipelineservice.util.impl.XmlUtilImpl" />
+
+    <bean name="httpUtil" class="sk.openhouse.pipelineservice.util.impl.HttpUtilImpl">
+        <constructor-arg name="rootURI" value="${httpUtil.rootURI}" />
+    </bean>
+
+    <!-- imports -->
+    <import resource="oh-pipeline-service-datasource.xml" />
+    <import resource="oh-pipeline-service-dao.xml" />
     <import resource="oh-pipeline-service-service.xml" />
-    -->
+
 </beans>
