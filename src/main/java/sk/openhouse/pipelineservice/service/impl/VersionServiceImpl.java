@@ -4,6 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import sk.openhouse.pipelineservice.dao.VersionReadDao;
+import sk.openhouse.pipelineservice.dao.VersionWriteDao;
+import sk.openhouse.pipelineservice.domain.request.VersionRequest;
+import sk.openhouse.pipelineservice.domain.response.BuildResponse;
 import sk.openhouse.pipelineservice.domain.response.ResourceResponse;
 import sk.openhouse.pipelineservice.domain.response.ResourcesResponse;
 import sk.openhouse.pipelineservice.domain.response.VersionDetailsResponse;
@@ -14,10 +17,12 @@ public class VersionServiceImpl implements VersionService {
 
     private HttpUtil httpUtil;
     private VersionReadDao versionReadDao;
+    private VersionWriteDao versionWriteDao;
 
-    public VersionServiceImpl(HttpUtil httpUtil, VersionReadDao versionReadDao) {
+    public VersionServiceImpl(HttpUtil httpUtil, VersionReadDao versionReadDao, VersionWriteDao versionWriteDao) {
         this.httpUtil = httpUtil;
         this.versionReadDao = versionReadDao;
+        this.versionWriteDao = versionWriteDao;
     }
 
     @Override
@@ -26,9 +31,28 @@ public class VersionServiceImpl implements VersionService {
         VersionDetailsResponse versionDetailsResponse = versionReadDao.getVersion(projectName, versionNumber);
         if (null != versionDetailsResponse) {
             versionDetailsResponse.getVersion().setResources(getVersionDetailsResources(projectName, versionNumber));
+
+            for (BuildResponse build : versionDetailsResponse.getBuilds().getBuilds()) {
+                build.setResources(getBuildResources(projectName, versionNumber, build.getNumber()));
+            }
         }
 
         return versionDetailsResponse;
+    }
+
+    @Override
+    public void addVersion(String projectName, VersionRequest versionRequest) {
+        versionWriteDao.addVersion(projectName, versionRequest);
+    }
+
+    @Override
+    public void updateVersion(String projectName, String versionNumber, VersionRequest versionRequest) {
+        versionWriteDao.updateVersion(projectName, versionNumber, versionRequest);
+    }
+
+    @Override
+    public void deleteVersion(String projectName, String versionNumber) {
+        versionWriteDao.deleteVersion(projectName, versionNumber);
     }
 
     /**
@@ -53,6 +77,18 @@ public class VersionServiceImpl implements VersionService {
 
         ResourcesResponse resourcesResponse = new ResourcesResponse();
         resourcesResponse.setResources(versionDetailsResources);
+        return resourcesResponse;
+    }
+
+    private ResourcesResponse getBuildResources(String projectName, String versionNumber, int buildNumber) {
+
+        List<ResourceResponse> buildResources = new ArrayList<ResourceResponse>();
+        /* GET */
+        buildResources.add(httpUtil.getResource(httpUtil.getBuildRelativeURI(projectName, versionNumber, buildNumber), 
+                "Version Details"));
+
+        ResourcesResponse resourcesResponse = new ResourcesResponse();
+        resourcesResponse.setResources(buildResources);
         return resourcesResponse;
     }
 }

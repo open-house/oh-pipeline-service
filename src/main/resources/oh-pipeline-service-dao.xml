@@ -16,4 +16,16 @@
     <bean id="versionReadDao" class="sk.openhouse.pipelineservice.dao.impl.VersionReadDaoImpl">
         <constructor-arg name="dataSource" ref="dataSource" />
     </bean>
+
+    <bean id="versionWriteDao" class="sk.openhouse.pipelineservice.dao.impl.VersionWriteDaoImpl">
+        <constructor-arg name="dataSource" ref="dataSource" />
+    </bean>
+
+    <bean id="buildReadDao" class="sk.openhouse.pipelineservice.dao.impl.BuildReadDaoImpl">
+        <constructor-arg name="dataSource" ref="dataSource" />
+    </bean>
+
+    <bean id="buildWriteDao" class="sk.openhouse.pipelineservice.dao.impl.BuildWriteDaoImpl">
+        <constructor-arg name="dataSource" ref="dataSource" />
+    </bean>
 </beans>

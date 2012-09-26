@@ -15,6 +15,7 @@ import org.springframework.jdbc.core.RowMapper;
 import sk.openhouse.pipelineservice.dao.ProjectReadDao;
 import sk.openhouse.pipelineservice.domain.response.ProjectDetailsResponse;
 import sk.openhouse.pipelineservice.domain.response.ProjectResponse;
+import sk.openhouse.pipelineservice.domain.response.ProjectsResponse;
 import sk.openhouse.pipelineservice.domain.response.VersionResponse;
 import sk.openhouse.pipelineservice.domain.response.VersionsResponse;
 
@@ -40,11 +41,17 @@ public class ProjectReadDaoImpl implements ProjectReadDao {
     }
 
     @Override
-    public List<ProjectResponse> getProjects() {
+    public ProjectsResponse getProjects() {
 
         String sql = "SELECT name FROM projects";
         logger.debug(String.format("Quering projects - %s", sql));
-        return jdbcTemplate.query(sql, new ProjectMapper());
+        List<ProjectResponse> projects = jdbcTemplate.query(sql, new ProjectMapper());
+
+        ProjectsResponse projectsResponse = new ProjectsResponse();
+        if (null != projects) {
+            projectsResponse.setProjects(projects);
+        }
+        return projectsResponse;
     }
 
     private static final class ProjectMapper implements RowMapper<ProjectResponse> {

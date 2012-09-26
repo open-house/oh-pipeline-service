@@ -1,24 +1,16 @@
-package sk.openhouse.pipelineservice.service;
+package sk.openhouse.pipelineservice.dao;
 
 import sk.openhouse.pipelineservice.domain.request.VersionRequest;
-import sk.openhouse.pipelineservice.domain.response.VersionDetailsResponse;
 
 /**
- * Service for project version(s)
+ * Write DAO for project version write access
  * 
  * @author pete
  */
-public interface VersionService {
+public interface VersionWriteDao {
 
     /**
-     * @param projectName
-     * @param versionNumber
-     * @return specific version for the specified project
-     */
-    VersionDetailsResponse getVersion(String projectName, String versionNumber);
-
-    /**
-     * Add new (or overrides existing) project version
+     * Adds new or overrides existing (if this version already exists) project version
      * 
      * @param projectName
      * @param versionRequest
@@ -26,7 +18,7 @@ public interface VersionService {
     void addVersion(String projectName, VersionRequest versionRequest);
 
     /**
-     * Updates existing project version
+     * Updates existing project version number
      * 
      * @param projectName
      * @param versionNumber

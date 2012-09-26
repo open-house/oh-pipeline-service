@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import sk.openhouse.pipelineservice.dao.ProjectReadDao;
-import sk.openhouse.pipelineservice.dao.impl.ProjectWriteDaoImpl;
+import sk.openhouse.pipelineservice.dao.ProjectWriteDao;
 import sk.openhouse.pipelineservice.domain.request.ProjectRequest;
 import sk.openhouse.pipelineservice.domain.response.ProjectDetailsResponse;
 import sk.openhouse.pipelineservice.domain.response.ProjectResponse;
@@ -19,9 +19,9 @@ public class ProjectServiceImpl implements ProjectService {
 
     private HttpUtil httpUtil;
     private ProjectReadDao projectReadDao;
-    private ProjectWriteDaoImpl projectWriteDao;
+    private ProjectWriteDao projectWriteDao;
 
-    public ProjectServiceImpl(HttpUtil httpUtil, ProjectReadDao projectReadDao, ProjectWriteDaoImpl projectWriteDao) {
+    public ProjectServiceImpl(HttpUtil httpUtil, ProjectReadDao projectReadDao, ProjectWriteDao projectWriteDao) {
         this.httpUtil = httpUtil;
         this.projectReadDao = projectReadDao;
         this.projectWriteDao = projectWriteDao;
@@ -30,14 +30,9 @@ public class ProjectServiceImpl implements ProjectService {
     @Override
     public ProjectsResponse getProjects() {
 
-        List<ProjectResponse> projects = projectReadDao.getProjects();
-        ProjectsResponse projectsResponse = new ProjectsResponse();
+        ProjectsResponse projectsResponse = projectReadDao.getProjects();
 
-        if (null != projects) {
-            projectsResponse.setProjects(projects);
-        }
-
-        for (ProjectResponse project : projects) {
+        for (ProjectResponse project : projectsResponse.getProjects()) {
             String projectName = project.getName();
             project.setResources(getProjectResources(projectName));
         }
@@ -116,13 +111,12 @@ public class ProjectServiceImpl implements ProjectService {
 
     private ResourcesResponse getVersionResources(String projectName, String versionNumber) {
 
-        List<ResourceResponse> projectResources = new ArrayList<ResourceResponse>();
+        List<ResourceResponse> versionResources = new ArrayList<ResourceResponse>();
         /* GET */
-        projectResources.add(httpUtil.getResource(httpUtil.getVersionRelativeURI(projectName, versionNumber), "Version Details"));
+        versionResources.add(httpUtil.getResource(httpUtil.getVersionRelativeURI(projectName, versionNumber), "Version Details"));
 
         ResourcesResponse resourcesResponse = new ResourcesResponse();
-        resourcesResponse.setResources(projectResources);
+        resourcesResponse.setResources(versionResources);
         return resourcesResponse;
     }
-
 }

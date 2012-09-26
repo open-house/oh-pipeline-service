@@ -44,6 +44,11 @@ public interface HttpUtil {
     String getVersionRelativeURI(String projectName, String versionNumber);
 
     /**
+     * Returns relative URI for a specified project build
+     */
+    String getBuildRelativeURI(String projectName, String versionNumber, int buildNumber);
+
+    /**
      * Constructs and returns resource response with method set to GET
      * 
      * @param relativeURI

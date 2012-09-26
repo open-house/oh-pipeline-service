@@ -31,6 +31,11 @@
         <constructor-arg name="xmlUtil" ref="xmlUtil" />
     </bean>
 
+    <bean name="buildResource" class="sk.openhouse.pipelineservice.resource.BuildResource">
+        <constructor-arg name="buildService" ref="buildService" />
+        <constructor-arg name="xmlUtil" ref="xmlUtil" />
+    </bean>
+
     <!-- utils -->
     <bean name="xmlUtil" class="sk.openhouse.pipelineservice.util.impl.XmlUtilImpl" />
 

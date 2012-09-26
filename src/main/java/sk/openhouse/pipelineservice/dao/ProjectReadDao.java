@@ -1,9 +1,8 @@
 package sk.openhouse.pipelineservice.dao;
 
-import java.util.List;
 
 import sk.openhouse.pipelineservice.domain.response.ProjectDetailsResponse;
-import sk.openhouse.pipelineservice.domain.response.ProjectResponse;
+import sk.openhouse.pipelineservice.domain.response.ProjectsResponse;
 
 /**
  * Read DAO for project
@@ -19,7 +18,7 @@ public interface ProjectReadDao {
     ProjectDetailsResponse getProject(String name);
 
     /**
-     * @return list of projects
+     * @return all projects (with no resources set)
      */
-    List<ProjectResponse> getProjects();
+    ProjectsResponse getProjects();
 }

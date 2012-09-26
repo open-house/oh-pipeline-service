@@ -14,6 +14,7 @@ public class HttpUtilImpl implements HttpUtil {
     private static final Logger logger = Logger.getLogger(HttpUtilImpl.class);
 
     private static final String PROJECTS_RELATIVE_URI = "projects";
+    private static final String VERSIONS_URI_PART = "versions";
     private URI rootURI;
 
     /**
@@ -75,7 +76,13 @@ public class HttpUtilImpl implements HttpUtil {
 
     @Override
     public String getVersionRelativeURI(String projectName, String versionNumber) {
-        return String.format("%s/%s/%s", PROJECTS_RELATIVE_URI, projectName, versionNumber);
+        return String.format("%s/%s/%s/%s", PROJECTS_RELATIVE_URI, projectName, VERSIONS_URI_PART, versionNumber);
+    }
+
+    @Override
+    public String getBuildRelativeURI(String projectName, String versionNumber, int buildNumber) {
+        return String.format("%s/%s/%s/%s/%d", 
+                PROJECTS_RELATIVE_URI, projectName, VERSIONS_URI_PART, versionNumber, buildNumber);
     }
 
     @Override

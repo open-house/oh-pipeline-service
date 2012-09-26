@@ -1,4 +1,4 @@
-package sk.openhouse.pipelineservice.domain.response;
+package sk.openhouse.pipelineservice.domain.request;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -11,37 +11,27 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlRootElement(name = "resource")
-@XmlType(propOrder = {"number", "resources"})
-public class BuildResponse {
+@XmlRootElement(name = "version")
+@XmlType(propOrder = {"number"})
+public class VersionRequest {
 
     @XmlElement(name = "number")
-    private int number;
+    private String number;
 
-    @XmlElement(name = "resources")
-    private ResourcesResponse resources;
-
-    public int getNumber() {
+    /**
+     * @return product version number
+     */
+    public String getNumber() {
         return number;
     }
 
-    public void setNumber(int number) {
+    /**
+     * @param number product version number
+     */
+    public void setNumber(String number) {
         this.number = number;
     }
 
-    /**
-     * @return list of resources for a project(s)
-     */
-    public ResourcesResponse getResources() {
-        return resources;
-    }
-
-    /**
-     * @param links list of resources for a project(s)
-     */
-    public void setResources(ResourcesResponse resources) {
-        this.resources = resources;
-    }
 
     @Override
     public final int hashCode() {
@@ -54,11 +44,11 @@ public class BuildResponse {
     @Override
     public final boolean equals(Object object) {
 
-        if (!(object instanceof BuildResponse)) {
+        if (!(object instanceof VersionRequest)) {
             return false;
         }
 
-        final BuildResponse other = (BuildResponse) object;
+        final VersionRequest other = (VersionRequest) object;
         return new EqualsBuilder()
                 .append(number, other.number)
                 .isEquals();
@@ -69,7 +59,6 @@ public class BuildResponse {
 
         return new ToStringBuilder(this)
                 .append("number", number)
-                .append("resources", resources)
                 .toString();
     }
 }

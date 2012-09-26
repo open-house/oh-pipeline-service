@@ -24,5 +24,12 @@
     <bean name="versionService" class="sk.openhouse.pipelineservice.service.impl.VersionServiceImpl">
         <constructor-arg name="httpUtil" ref="httpUtil" />
         <constructor-arg name="versionReadDao" ref="versionReadDao" />
+        <constructor-arg name="versionWriteDao" ref="versionWriteDao" />
+    </bean>
+
+    <bean name="buildService" class="sk.openhouse.pipelineservice.service.impl.BuildServiceImpl">
+        <constructor-arg name="httpUtil" ref="httpUtil" />
+        <constructor-arg name="buildReadDao" ref="buildReadDao" />
+        <constructor-arg name="buildWriteDao" ref="buildWriteDao" />
     </bean>
 </beans>
