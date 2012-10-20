@@ -1,6 +1,6 @@
 #!/bin/sh
 
-ln -s /etc/init.d/oh-pipeline-service /etc/init.d/${PACKAGE}
+ln -s /etc/init.d/oh-tomcat-app /etc/init.d/${PACKAGE}
 ln -s /var/lib/tomcat7/conf/web.xml /var/app/${PACKAGE}/web.xml
 
 chown tomcat7:tomcat7 /var/app/${PACKAGE}/webapps

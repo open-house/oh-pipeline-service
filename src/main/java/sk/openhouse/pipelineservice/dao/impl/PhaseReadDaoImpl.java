@@ -3,9 +3,8 @@ package sk.openhouse.pipelineservice.dao.impl;
 import java.net.URISyntaxException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.HashMap;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import javax.sql.DataSource;
 
@@ -16,7 +15,6 @@ import org.springframework.jdbc.core.RowMapper;
 import sk.openhouse.pipelineservice.dao.PhaseReadDao;
 import sk.openhouse.pipelineservice.domain.response.PhaseResponse;
 import sk.openhouse.pipelineservice.domain.response.PhasesResponse;
-import sk.openhouse.pipelineservice.domain.response.ProjectResponse;
 
 public class PhaseReadDaoImpl implements PhaseReadDao {
 
@@ -39,14 +37,18 @@ public class PhaseReadDaoImpl implements PhaseReadDao {
 
         String sql = "SELECT name, call_uri, poll_uri, timeout_seconds, order_index "
                 + "FROM phases WHERE project_id = "
-                + "(SELECT id FROM projects WHERE name = :projectName)";
+                + "(SELECT id FROM projects WHERE name = ?)";
 
-        Map<String, String> args = new HashMap<String, String>();
-        args.put("projectName", projectName);
+        String[] args = new String[] {projectName};
 
-        // TODO - finish
-        List<PhaseResponse> phases = jdbcTemplate.query(psc, rse);
-        return null;
+        List<PhaseResponse> phases = jdbcTemplate.query(sql, args, new PhaseMapper());
+        if (null == phases) {
+            phases = new ArrayList<PhaseResponse>();
+        }
+
+        PhasesResponse phasesResponse = new PhasesResponse();
+        phasesResponse.setPhases(phases);
+        return phasesResponse;
     }
 
     private static final class PhaseMapper implements RowMapper<PhaseResponse> {
