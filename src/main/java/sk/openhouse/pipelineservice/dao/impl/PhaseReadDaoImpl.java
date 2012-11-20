@@ -28,7 +28,15 @@ public class PhaseReadDaoImpl implements PhaseReadDao {
 
     @Override
     public PhaseResponse getPhase(String projectName, String phaseName) {
-        // TODO Auto-generated method stub
+
+        String sql = "SELECT ph.name, ph.call_uri, ph.poll_uri, ph.timeout_seconds, ph.order_index "
+                + "FROM phases ph " 
+                + "JOIN projects pr ON (ph.project_id = pr.id) "
+                + "WHERE pr.name = ? AND ph.name = ?";
+
+        String[] args = new String[] {projectName, phaseName};
+
+        //return jdbcTemplate.query(sql, args, new PhaseMapper());
         return null;
     }
 

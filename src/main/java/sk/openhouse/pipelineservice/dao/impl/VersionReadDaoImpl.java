@@ -10,11 +10,14 @@ import javax.sql.DataSource;
 import org.apache.log4j.Logger;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.ResultSetExtractor;
+import org.springframework.jdbc.core.RowMapper;
 
 import sk.openhouse.pipelineservice.dao.VersionReadDao;
 import sk.openhouse.pipelineservice.domain.response.BuildResponse;
 import sk.openhouse.pipelineservice.domain.response.BuildsResponse;
 import sk.openhouse.pipelineservice.domain.response.VersionDetailsResponse;
+import sk.openhouse.pipelineservice.domain.response.VersionResponse;
+import sk.openhouse.pipelineservice.domain.response.VersionsResponse;
 
 /**
  * 
@@ -30,6 +33,9 @@ public class VersionReadDaoImpl implements VersionReadDao {
         this.jdbcTemplate = new JdbcTemplate(dataSource);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public VersionDetailsResponse getVersion(String projectName, String versionNumber) {
 
@@ -47,6 +53,38 @@ public class VersionReadDaoImpl implements VersionReadDao {
             response.getVersion().setNumber(versionNumber);
         }
         return response;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public VersionsResponse getVersions(String projectName) {
+
+        String sql = "SELECT v.number FROM versions v "
+                + "JOIN projects p ON (v.project_id = p.id) "
+                + "WHERE p.name = ?";
+
+        Object[] args = new Object[]{projectName};
+
+        logger.debug(String.format("Quering for versions - %s args - [%s]", sql, projectName));
+        List<VersionResponse> versions = jdbcTemplate.query(sql, args, new VersionMapper());
+
+        VersionsResponse versionsResponse = new VersionsResponse();
+        if (null != versions) {
+            versionsResponse.setVersions(versions);
+        }
+        return versionsResponse;
+    }
+
+    private static final class VersionMapper implements RowMapper<VersionResponse> {
+
+        public VersionResponse mapRow(ResultSet rs, int rowNum) throws SQLException {
+
+            VersionResponse version = new VersionResponse();
+            version.setNumber(rs.getString("number"));
+            return version;
+        }
     }
 
     private static final class VersionDetailsExtractor implements ResultSetExtractor<VersionDetailsResponse> {

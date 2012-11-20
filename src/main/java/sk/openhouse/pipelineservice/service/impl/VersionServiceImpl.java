@@ -10,6 +10,7 @@ import sk.openhouse.pipelineservice.domain.response.BuildResponse;
 import sk.openhouse.pipelineservice.domain.response.ResourceResponse;
 import sk.openhouse.pipelineservice.domain.response.ResourcesResponse;
 import sk.openhouse.pipelineservice.domain.response.VersionDetailsResponse;
+import sk.openhouse.pipelineservice.domain.response.VersionsResponse;
 import sk.openhouse.pipelineservice.service.VersionService;
 import sk.openhouse.pipelineservice.util.HttpUtil;
 
@@ -25,6 +26,9 @@ public class VersionServiceImpl implements VersionService {
         this.versionWriteDao = versionWriteDao;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public VersionDetailsResponse getVersion(String projectName, String versionNumber) {
 
@@ -40,16 +44,33 @@ public class VersionServiceImpl implements VersionService {
         return versionDetailsResponse;
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public VersionsResponse getVersions(String projectName) {
+        return versionReadDao.getVersions(projectName);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void addVersion(String projectName, VersionRequest versionRequest) {
         versionWriteDao.addVersion(projectName, versionRequest);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void updateVersion(String projectName, String versionNumber, VersionRequest versionRequest) {
         versionWriteDao.updateVersion(projectName, versionNumber, versionRequest);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void deleteVersion(String projectName, String versionNumber) {
         versionWriteDao.deleteVersion(projectName, versionNumber);

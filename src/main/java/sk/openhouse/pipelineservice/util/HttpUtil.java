@@ -34,10 +34,16 @@ public interface HttpUtil {
     String getProjectsRelativeURI();
 
     /**
-     * Returns relative URI for a specified project
+     * Returns relative URI for a specified project. If the supplied project name is null, 
+     * parent uri (projects relative uri) is returned.
+     * 
+     * @param projectName
+     * @return
      */
     String getProjectRelativeURI(String projectName);
 
+    // TODO - finish comment - as the one above, implementation should throw exception if the arg is
+    // null, empty string or invalid uri part
     /**
      * Returns relative URI for a specified project version
      */

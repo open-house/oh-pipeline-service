@@ -26,6 +26,11 @@
         <constructor-arg name="xmlUtil" ref="xmlUtil" />
     </bean>
 
+    <bean name="versionsResource" class="sk.openhouse.pipelineservice.resource.VersionsResource">
+        <constructor-arg name="versionService" ref="versionService" />
+        <constructor-arg name="xmlUtil" ref="xmlUtil" />
+    </bean>
+
     <bean name="versionResource" class="sk.openhouse.pipelineservice.resource.VersionResource">
         <constructor-arg name="versionService" ref="versionService" />
         <constructor-arg name="xmlUtil" ref="xmlUtil" />

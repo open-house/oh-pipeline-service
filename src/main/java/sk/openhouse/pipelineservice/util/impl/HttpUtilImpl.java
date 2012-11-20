@@ -37,11 +37,17 @@ public class HttpUtilImpl implements HttpUtil {
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String getRootURI() {
         return rootURI.toString();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public URI getAbsoluteURI(String relativeURI) {
 
@@ -64,37 +70,67 @@ public class HttpUtilImpl implements HttpUtil {
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String getProjectsRelativeURI() {
         return PROJECTS_RELATIVE_URI;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String getProjectRelativeURI(String projectName) {
+
+        if (null == projectName || projectName.isEmpty()) {
+            return getProjectsRelativeURI();
+        }
         return String.format("%s/%s", PROJECTS_RELATIVE_URI, projectName);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String getVersionRelativeURI(String projectName, String versionNumber) {
+
+        if (null == versionNumber || versionNumber.isEmpty()) {
+            return getProjectRelativeURI(projectName);
+        }
         return String.format("%s/%s/%s/%s", PROJECTS_RELATIVE_URI, projectName, VERSIONS_URI_PART, versionNumber);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String getBuildRelativeURI(String projectName, String versionNumber, int buildNumber) {
+
         return String.format("%s/%s/%s/%s/%d", 
                 PROJECTS_RELATIVE_URI, projectName, VERSIONS_URI_PART, versionNumber, buildNumber);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ResourceResponse getResource(String relativeURI, String description) {
         return getResource(relativeURI, description, "GET", null);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ResourceResponse getResource(String relativeURI, String description, String method) {
         return getResource(relativeURI, description, method, null);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ResourceResponse getResource(String relativeURI, String description, String method, String relativeSchemaURI) {
 
