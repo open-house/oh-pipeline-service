@@ -1,7 +1,7 @@
 package sk.openhouse.pipelineservice.service;
 
 import sk.openhouse.pipelineservice.domain.request.ProjectRequest;
-import sk.openhouse.pipelineservice.domain.response.ProjectDetailsResponse;
+import sk.openhouse.pipelineservice.domain.response.ProjectResponse;
 import sk.openhouse.pipelineservice.domain.response.ProjectsResponse;
 
 /**
@@ -20,7 +20,7 @@ public interface ProjectService {
      * @param name unique product name
      * @return projetct details
      */
-    ProjectDetailsResponse getProject(String name);
+    ProjectResponse getProject(String name);
 
     /**
      * @param project adds new project, project name has to be unique

@@ -6,10 +6,9 @@ import java.util.List;
 import sk.openhouse.pipelineservice.dao.VersionReadDao;
 import sk.openhouse.pipelineservice.dao.VersionWriteDao;
 import sk.openhouse.pipelineservice.domain.request.VersionRequest;
-import sk.openhouse.pipelineservice.domain.response.BuildResponse;
 import sk.openhouse.pipelineservice.domain.response.ResourceResponse;
 import sk.openhouse.pipelineservice.domain.response.ResourcesResponse;
-import sk.openhouse.pipelineservice.domain.response.VersionDetailsResponse;
+import sk.openhouse.pipelineservice.domain.response.VersionResponse;
 import sk.openhouse.pipelineservice.domain.response.VersionsResponse;
 import sk.openhouse.pipelineservice.service.VersionService;
 import sk.openhouse.pipelineservice.util.HttpUtil;
@@ -30,18 +29,14 @@ public class VersionServiceImpl implements VersionService {
      * {@inheritDoc}
      */
     @Override
-    public VersionDetailsResponse getVersion(String projectName, String versionNumber) {
+    public VersionResponse getVersion(String projectName, String versionNumber) {
 
-        VersionDetailsResponse versionDetailsResponse = versionReadDao.getVersion(projectName, versionNumber);
-        if (null != versionDetailsResponse) {
-            versionDetailsResponse.getVersion().setResources(getVersionDetailsResources(projectName, versionNumber));
-
-            for (BuildResponse build : versionDetailsResponse.getBuilds().getBuilds()) {
-                build.setResources(getBuildResources(projectName, versionNumber, build.getNumber()));
-            }
+        VersionResponse versionResponse = versionReadDao.getVersion(projectName, versionNumber);
+        if (null != versionResponse) {
+            versionResponse.setResources(getVersionDetailsResources(projectName, versionNumber));
         }
 
-        return versionDetailsResponse;
+        return versionResponse;
     }
 
     /**
@@ -49,7 +44,13 @@ public class VersionServiceImpl implements VersionService {
      */
     @Override
     public VersionsResponse getVersions(String projectName) {
-        return versionReadDao.getVersions(projectName);
+
+        VersionsResponse versionsResponse = versionReadDao.getVersions(projectName);
+        for (VersionResponse versionResponse : versionsResponse.getVersions()) {
+            versionResponse.setResources(getVersionResources(projectName, versionResponse.getNumber()));
+        }
+
+        return versionsResponse;
     }
 
     /**
@@ -76,6 +77,18 @@ public class VersionServiceImpl implements VersionService {
         versionWriteDao.deleteVersion(projectName, versionNumber);
     }
 
+    private ResourcesResponse getVersionResources(String projectName, String versionNumber) {
+
+        List<ResourceResponse> versionResources = new ArrayList<ResourceResponse>();
+        /* GET */
+        versionResources.add(httpUtil.getResource(httpUtil.getVersionRelativeURI(projectName, versionNumber), 
+                "Version Details"));
+
+        ResourcesResponse resourcesResponse = new ResourcesResponse();
+        resourcesResponse.setResources(versionResources);
+        return resourcesResponse;
+    }
+
     /**
      * Returns resources for a specific version
      */
@@ -85,7 +98,10 @@ public class VersionServiceImpl implements VersionService {
 
         List<ResourceResponse> versionDetailsResources = new ArrayList<ResourceResponse>();
         /* GET */
-        versionDetailsResources.add(httpUtil.getResource(httpUtil.getProjectRelativeURI(projectName), "Project details"));
+        versionDetailsResources.add(httpUtil.getResource(httpUtil.getVersionsRelativeURI(projectName), "Project details"));
+        /* GET */
+        versionDetailsResources.add(httpUtil.getResource(httpUtil.getBuildsRelativeURI(projectName, versionNumber), 
+                "List of all builds for this version."));
         /* PUT */
         versionDetailsResources.add(httpUtil.getResource(versionURI, 
                 "Insert new version, or overwride existing version", "PUT"));
@@ -98,18 +114,6 @@ public class VersionServiceImpl implements VersionService {
 
         ResourcesResponse resourcesResponse = new ResourcesResponse();
         resourcesResponse.setResources(versionDetailsResources);
-        return resourcesResponse;
-    }
-
-    private ResourcesResponse getBuildResources(String projectName, String versionNumber, int buildNumber) {
-
-        List<ResourceResponse> buildResources = new ArrayList<ResourceResponse>();
-        /* GET */
-        buildResources.add(httpUtil.getResource(httpUtil.getBuildRelativeURI(projectName, versionNumber, buildNumber), 
-                "Version Details"));
-
-        ResourcesResponse resourcesResponse = new ResourcesResponse();
-        resourcesResponse.setResources(buildResources);
         return resourcesResponse;
     }
 }

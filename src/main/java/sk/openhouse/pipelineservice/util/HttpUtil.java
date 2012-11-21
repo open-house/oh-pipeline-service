@@ -42,12 +42,18 @@ public interface HttpUtil {
      */
     String getProjectRelativeURI(String projectName);
 
+    // TODO - javadocs
+    String getVersionsRelativeURI(String projectName);
+
     // TODO - finish comment - as the one above, implementation should throw exception if the arg is
     // null, empty string or invalid uri part
     /**
      * Returns relative URI for a specified project version
      */
     String getVersionRelativeURI(String projectName, String versionNumber);
+
+    // TODO - javadocs
+    String getBuildsRelativeURI(String projectName, String versionNumber);
 
     /**
      * Returns relative URI for a specified project build

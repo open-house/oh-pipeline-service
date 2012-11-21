@@ -1,6 +1,6 @@
 package sk.openhouse.pipelineservice.dao;
 
-import sk.openhouse.pipelineservice.domain.response.VersionDetailsResponse;
+import sk.openhouse.pipelineservice.domain.response.VersionResponse;
 import sk.openhouse.pipelineservice.domain.response.VersionsResponse;
 
 /**
@@ -15,7 +15,7 @@ public interface VersionReadDao {
      * @param versionNumber
      * @return specific version for the specified project
      */
-    VersionDetailsResponse getVersion(String projectName, String versionNumber);
+    VersionResponse getVersion(String projectName, String versionNumber);
 
     /**
      * 

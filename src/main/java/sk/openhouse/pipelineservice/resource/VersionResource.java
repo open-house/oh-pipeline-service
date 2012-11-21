@@ -14,7 +14,7 @@ import javax.xml.bind.JAXBException;
 import org.springframework.stereotype.Component;
 
 import sk.openhouse.pipelineservice.domain.request.VersionRequest;
-import sk.openhouse.pipelineservice.domain.response.VersionDetailsResponse;
+import sk.openhouse.pipelineservice.domain.response.VersionResponse;
 import sk.openhouse.pipelineservice.service.VersionService;
 import sk.openhouse.pipelineservice.util.XmlUtil;
 
@@ -35,8 +35,8 @@ public class VersionResource {
     public String getVersion(@PathParam("project") String projectName, 
             @PathParam("version") String versionNumber) throws JAXBException {
 
-        VersionDetailsResponse versionDetailsResponse = versionService.getVersion(projectName, versionNumber);
-        return xmlUtil.marshall(VersionDetailsResponse.class, versionDetailsResponse);
+        VersionResponse versionResponse = versionService.getVersion(projectName, versionNumber);
+        return xmlUtil.marshall(VersionResponse.class, versionResponse);
     }
 
     @PUT

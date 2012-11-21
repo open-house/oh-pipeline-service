@@ -14,7 +14,7 @@ import javax.xml.bind.JAXBException;
 import org.springframework.stereotype.Component;
 
 import sk.openhouse.pipelineservice.domain.request.ProjectRequest;
-import sk.openhouse.pipelineservice.domain.response.ProjectDetailsResponse;
+import sk.openhouse.pipelineservice.domain.response.ProjectResponse;
 import sk.openhouse.pipelineservice.service.ProjectService;
 import sk.openhouse.pipelineservice.util.XmlUtil;
 
@@ -34,8 +34,8 @@ public class ProjectResource {
     @Produces(MediaType.APPLICATION_XML)
     public String getProject(@PathParam("project") String projectName) throws JAXBException {
 
-        ProjectDetailsResponse projectDetailsResponse = projectService.getProject(projectName);
-        return xmlUtil.marshall(ProjectDetailsResponse.class, projectDetailsResponse);
+        ProjectResponse projectResponse = projectService.getProject(projectName);
+        return xmlUtil.marshall(ProjectResponse.class, projectResponse);
     }
 
     @PUT

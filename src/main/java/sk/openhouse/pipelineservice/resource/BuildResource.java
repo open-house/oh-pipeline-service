@@ -13,12 +13,12 @@ import javax.xml.bind.JAXBException;
 import org.springframework.stereotype.Component;
 
 import sk.openhouse.pipelineservice.domain.request.BuildRequest;
-import sk.openhouse.pipelineservice.domain.response.BuildDetailsResponse;
+import sk.openhouse.pipelineservice.domain.response.BuildResponse;
 import sk.openhouse.pipelineservice.service.BuildService;
 import sk.openhouse.pipelineservice.util.XmlUtil;
 
 @Component
-@Path("/projects/{project: [a-zA-Z0-9-_]+}/versions/{version: [0-9\\.]+}/{build: [0-9]+}")
+@Path("/projects/{project: [a-zA-Z0-9-_]+}/versions/{version: [0-9\\.]+}/builds/{build: [0-9]+}")
 public class BuildResource {
 
     private BuildService buildService;
@@ -35,8 +35,8 @@ public class BuildResource {
             @PathParam("version") String versionNumber,
             @PathParam("build") int buildNumber) throws JAXBException {
 
-        BuildDetailsResponse buildDetails = buildService.getBuild(projectName, versionNumber, buildNumber);
-        return xmlUtil.marshall(BuildDetailsResponse.class, buildDetails);
+        BuildResponse buildResponse = buildService.getBuild(projectName, versionNumber, buildNumber);
+        return xmlUtil.marshall(BuildResponse.class, buildResponse);
     }
 
     @PUT

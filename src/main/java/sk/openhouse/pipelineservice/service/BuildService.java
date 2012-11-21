@@ -1,7 +1,8 @@
 package sk.openhouse.pipelineservice.service;
 
 import sk.openhouse.pipelineservice.domain.request.BuildRequest;
-import sk.openhouse.pipelineservice.domain.response.BuildDetailsResponse;
+import sk.openhouse.pipelineservice.domain.response.BuildResponse;
+import sk.openhouse.pipelineservice.domain.response.BuildsResponse;
 
 /**
  * Service for build(s)
@@ -11,6 +12,15 @@ import sk.openhouse.pipelineservice.domain.response.BuildDetailsResponse;
 public interface BuildService {
 
     /**
+     * Returns all builds for specified project and version
+     * 
+     * @param projectName
+     * @param versionNumber
+     * @return
+     */
+    BuildsResponse getBuilds(String projectName, String versionNumber);
+
+    /**
      * Returns specific build for product and version
      * 
      * @param projectName
@@ -18,7 +28,7 @@ public interface BuildService {
      * @param buildNumber
      * @return
      */
-    BuildDetailsResponse getBuild(String projectName, String versionNumber, int buildNumber);
+    BuildResponse getBuild(String projectName, String versionNumber, int buildNumber);
 
 
     /**

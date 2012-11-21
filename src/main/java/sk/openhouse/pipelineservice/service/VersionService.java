@@ -1,7 +1,7 @@
 package sk.openhouse.pipelineservice.service;
 
 import sk.openhouse.pipelineservice.domain.request.VersionRequest;
-import sk.openhouse.pipelineservice.domain.response.VersionDetailsResponse;
+import sk.openhouse.pipelineservice.domain.response.VersionResponse;
 import sk.openhouse.pipelineservice.domain.response.VersionsResponse;
 
 /**
@@ -16,7 +16,7 @@ public interface VersionService {
      * @param versionNumber
      * @return specific version for the specified project
      */
-    VersionDetailsResponse getVersion(String projectName, String versionNumber);
+    VersionResponse getVersion(String projectName, String versionNumber);
 
     /**
      * @param projectName

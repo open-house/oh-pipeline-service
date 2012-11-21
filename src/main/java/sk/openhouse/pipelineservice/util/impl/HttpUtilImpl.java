@@ -15,6 +15,8 @@ public class HttpUtilImpl implements HttpUtil {
 
     private static final String PROJECTS_RELATIVE_URI = "projects";
     private static final String VERSIONS_URI_PART = "versions";
+    private static final String BUILDS_URI_PART = "builds";
+
     private URI rootURI;
 
     /**
@@ -94,12 +96,34 @@ public class HttpUtilImpl implements HttpUtil {
      * {@inheritDoc}
      */
     @Override
+    public String getVersionsRelativeURI(String projectName) {
+
+        if (null == projectName || projectName.isEmpty()) {
+            return getProjectsRelativeURI();
+        }
+        return String.format("%s/%s/%s", PROJECTS_RELATIVE_URI, projectName, VERSIONS_URI_PART);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public String getVersionRelativeURI(String projectName, String versionNumber) {
 
         if (null == versionNumber || versionNumber.isEmpty()) {
             return getProjectRelativeURI(projectName);
         }
         return String.format("%s/%s/%s/%s", PROJECTS_RELATIVE_URI, projectName, VERSIONS_URI_PART, versionNumber);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String getBuildsRelativeURI(String projectName, String versionNumber) {
+
+        return String.format("%s/%s/%s/%s/%s", 
+                PROJECTS_RELATIVE_URI, projectName, VERSIONS_URI_PART, versionNumber, BUILDS_URI_PART);
     }
 
     /**
