@@ -13,8 +13,9 @@ public class HttpUtilImpl implements HttpUtil {
 
     private static final Logger logger = Logger.getLogger(HttpUtilImpl.class);
 
-    private static final String PROJECTS_RELATIVE_URI = "projects";
+    private static final String PROJECTS_URI_PART = "projects";
     private static final String VERSIONS_URI_PART = "versions";
+    private static final String PHASES_URI_PART = "phases";
     private static final String BUILDS_URI_PART = "builds";
 
     private URI rootURI;
@@ -43,7 +44,7 @@ public class HttpUtilImpl implements HttpUtil {
      * {@inheritDoc}
      */
     @Override
-    public String getRootURI() {
+    public String getRootURIString() {
         return rootURI.toString();
     }
 
@@ -51,119 +52,100 @@ public class HttpUtilImpl implements HttpUtil {
      * {@inheritDoc}
      */
     @Override
-    public URI getAbsoluteURI(String relativeURI) {
-
-        if (null == relativeURI || relativeURI.isEmpty()) {
-            return rootURI;
-        }
-
-        relativeURI = relativeURI.trim();
-        if (relativeURI.startsWith("/")) {
-            relativeURI = relativeURI.substring(1, relativeURI.length());
-        }
-
-        String absoluteURI = String.format("%s/%s", getRootURI(), relativeURI);
-        try {
-            return new URI(absoluteURI);
-        } catch (URISyntaxException e) {
-            String message = String.format("Invalid URI - %s", absoluteURI);
-            logger.error(message, e);
-            throw new IllegalArgumentException(message);
-        }
+    public String getProjectsURIString() {
+        return PROJECTS_URI_PART;
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public String getProjectsRelativeURI() {
-        return PROJECTS_RELATIVE_URI;
+    public String getProjectURIString(String projectName) {
+        return String.format("%s/%s", PROJECTS_URI_PART, projectName);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public String getProjectRelativeURI(String projectName) {
-
-        if (null == projectName || projectName.isEmpty()) {
-            return getProjectsRelativeURI();
-        }
-        return String.format("%s/%s", PROJECTS_RELATIVE_URI, projectName);
+    public String getVersionsURIString(String projectName) {
+        return String.format("%s/%s/%s", PROJECTS_URI_PART, projectName, VERSIONS_URI_PART);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public String getVersionsRelativeURI(String projectName) {
-
-        if (null == projectName || projectName.isEmpty()) {
-            return getProjectsRelativeURI();
-        }
-        return String.format("%s/%s/%s", PROJECTS_RELATIVE_URI, projectName, VERSIONS_URI_PART);
+    public String getPhasesURIString(String projectName) {
+        return String.format("%s/%s/%s", PROJECTS_URI_PART, projectName, PHASES_URI_PART);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public String getVersionRelativeURI(String projectName, String versionNumber) {
-
-        if (null == versionNumber || versionNumber.isEmpty()) {
-            return getProjectRelativeURI(projectName);
-        }
-        return String.format("%s/%s/%s/%s", PROJECTS_RELATIVE_URI, projectName, VERSIONS_URI_PART, versionNumber);
+    public String getVersionURIString(String projectName, String versionNumber) {
+        return String.format("%s/%s/%s/%s", PROJECTS_URI_PART, projectName, VERSIONS_URI_PART, versionNumber);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public String getBuildsRelativeURI(String projectName, String versionNumber) {
+    public String getBuildsURIString(String projectName, String versionNumber) {
 
         return String.format("%s/%s/%s/%s/%s", 
-                PROJECTS_RELATIVE_URI, projectName, VERSIONS_URI_PART, versionNumber, BUILDS_URI_PART);
+                PROJECTS_URI_PART, projectName, VERSIONS_URI_PART, versionNumber, BUILDS_URI_PART);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public String getBuildRelativeURI(String projectName, String versionNumber, int buildNumber) {
+    public String getBuildURIString(String projectName, String versionNumber, int buildNumber) {
 
-        return String.format("%s/%s/%s/%s/%d", 
-                PROJECTS_RELATIVE_URI, projectName, VERSIONS_URI_PART, versionNumber, buildNumber);
+        return String.format("%s/%s/%s/%s/%s/%d", 
+                PROJECTS_URI_PART, projectName, VERSIONS_URI_PART, versionNumber, BUILDS_URI_PART, buildNumber);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public ResourceResponse getResource(String relativeURI, String description) {
-        return getResource(relativeURI, description, "GET", null);
+    public ResourceResponse getResource(String uriString, String description) {
+        return getResource(uriString, description, "GET", null);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public ResourceResponse getResource(String relativeURI, String description, String method) {
-        return getResource(relativeURI, description, method, null);
+    public ResourceResponse getResource(String uriString, String description, String method) {
+        return getResource(uriString, description, method, null);
     }
 
     /**
      * {@inheritDoc}
+     * @throws URISyntaxException 
      */
     @Override
-    public ResourceResponse getResource(String relativeURI, String description, String method, String relativeSchemaURI) {
+    public ResourceResponse getResource(String uriString, String description, String method, String schemaURIString) {
 
         LinkResponse linkResponse = new LinkResponse();
-        linkResponse.setHref(getAbsoluteURI(relativeURI));
         linkResponse.setMethod(method);
 
-        if (null != relativeSchemaURI) {
-            linkResponse.setSchemaLocation(getAbsoluteURI(relativeSchemaURI));
+        try {
+            linkResponse.setHref(new URI(uriString));
+        } catch (URISyntaxException e) {
+            throw new IllegalArgumentException(String.format("URI String %s is invalid", uriString));
+        }
+
+        if (null != schemaURIString) {
+            try {
+                linkResponse.setSchemaLocation(new URI(schemaURIString));
+            } catch (URISyntaxException e) {
+                throw new IllegalArgumentException(String.format("Schema URI String %s is invalid", schemaURIString));
+            }
         }
 
         ResourceResponse resourceResponse = new ResourceResponse();

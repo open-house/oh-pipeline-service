@@ -81,7 +81,7 @@ public class VersionServiceImpl implements VersionService {
 
         List<ResourceResponse> versionResources = new ArrayList<ResourceResponse>();
         /* GET */
-        versionResources.add(httpUtil.getResource(httpUtil.getVersionRelativeURI(projectName, versionNumber), 
+        versionResources.add(httpUtil.getResource(httpUtil.getVersionURIString(projectName, versionNumber), 
                 "Version Details"));
 
         ResourcesResponse resourcesResponse = new ResourcesResponse();
@@ -94,13 +94,13 @@ public class VersionServiceImpl implements VersionService {
      */
     private ResourcesResponse getVersionDetailsResources(String projectName, String versionNumber) {
 
-        String versionURI = httpUtil.getVersionRelativeURI(projectName, versionNumber);
+        String versionURI = httpUtil.getVersionURIString(projectName, versionNumber);
 
         List<ResourceResponse> versionDetailsResources = new ArrayList<ResourceResponse>();
         /* GET */
-        versionDetailsResources.add(httpUtil.getResource(httpUtil.getVersionsRelativeURI(projectName), "Project details"));
+        versionDetailsResources.add(httpUtil.getResource(httpUtil.getVersionsURIString(projectName), "Project versions"));
         /* GET */
-        versionDetailsResources.add(httpUtil.getResource(httpUtil.getBuildsRelativeURI(projectName, versionNumber), 
+        versionDetailsResources.add(httpUtil.getResource(httpUtil.getBuildsURIString(projectName, versionNumber), 
                 "List of all builds for this version."));
         /* PUT */
         versionDetailsResources.add(httpUtil.getResource(versionURI, 

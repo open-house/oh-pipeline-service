@@ -28,4 +28,8 @@
     <bean id="buildWriteDao" class="sk.openhouse.pipelineservice.dao.impl.BuildWriteDaoImpl">
         <constructor-arg name="dataSource" ref="dataSource" />
     </bean>
+
+    <bean id="phaseReadDao" class="sk.openhouse.pipelineservice.dao.impl.PhaseReadDaoImpl">
+        <constructor-arg name="dataSource" ref="dataSource" />
+    </bean>
 </beans>

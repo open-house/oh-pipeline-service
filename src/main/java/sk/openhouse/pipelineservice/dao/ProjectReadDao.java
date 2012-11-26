@@ -13,7 +13,7 @@ public interface ProjectReadDao {
 
     /**
      * @param name unique project name
-     * @return project
+     * @return project or null if the project cannot be found
      */
     ProjectResponse getProject(String name);
 

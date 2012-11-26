@@ -13,7 +13,7 @@ public interface VersionReadDao {
     /**
      * @param projectName
      * @param versionNumber
-     * @return specific version for the specified project
+     * @return specific version for the specified project or null if the version cannot be found
      */
     VersionResponse getVersion(String projectName, String versionNumber);
 

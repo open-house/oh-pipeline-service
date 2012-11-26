@@ -1,4 +1,4 @@
-package sk.openhouse.pipelineservice.domain.response;
+package sk.openhouse.pipelineservice.domain.request;
 
 import java.net.URI;
 
@@ -12,15 +12,10 @@ import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
-/**
- * Represents a single project phase
- * 
- * @author pete
- */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlRootElement(name = "phase")
 @XmlType(propOrder = {"name", "uri"})
-public class PhaseResponse {
+public class PhaseRequest {
 
     @XmlElement(name = "name")
     private String name;
@@ -56,11 +51,11 @@ public class PhaseResponse {
     @Override
     public final boolean equals(Object object) {
 
-        if (!(object instanceof PhaseResponse)) {
+        if (!(object instanceof PhaseRequest)) {
             return false;
         }
 
-        final PhaseResponse other = (PhaseResponse) object;
+        final PhaseRequest other = (PhaseRequest) object;
         return new EqualsBuilder()
                 .append(name, other.name)
                 .append(uri, other.uri)

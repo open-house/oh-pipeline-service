@@ -7,8 +7,10 @@ import java.util.List;
 import javax.sql.DataSource;
 
 import org.apache.log4j.Logger;
-import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
+import org.springframework.jdbc.core.simple.SimpleJdbcTemplate;
 
 import sk.openhouse.pipelineservice.dao.VersionReadDao;
 import sk.openhouse.pipelineservice.domain.response.VersionResponse;
@@ -22,10 +24,10 @@ public class VersionReadDaoImpl implements VersionReadDao {
 
     private static final Logger logger = Logger.getLogger(VersionReadDaoImpl.class);
 
-    private JdbcTemplate jdbcTemplate;
+    private SimpleJdbcTemplate simpleJdbcTemplate;
 
     public VersionReadDaoImpl(DataSource dataSource) {
-        this.jdbcTemplate = new JdbcTemplate(dataSource);
+        this.simpleJdbcTemplate = new SimpleJdbcTemplate(dataSource);
     }
 
     /**
@@ -35,12 +37,20 @@ public class VersionReadDaoImpl implements VersionReadDao {
     public VersionResponse getVersion(String projectName, String versionNumber) {
 
         String sql = "SELECT v.number from versions v " + "JOIN projects p ON (v.project_id = p.id) "
-                + "WHERE p.name = ? AND v.number = ?";
+                + "WHERE p.name = :projectName AND v.number = :versionNumber";
 
-        Object[] args = new Object[] { projectName, versionNumber };
+        MapSqlParameterSource args = new MapSqlParameterSource();
+        args.addValue("projectName", projectName);
+        args.addValue("versionNumber", versionNumber);
 
         logger.debug(String.format("Quering for versions - %s args - [%s,%s]", sql, projectName, versionNumber));
-        return jdbcTemplate.queryForObject(sql, args, new VersionMapper());
+        try {
+            return simpleJdbcTemplate.queryForObject(sql, new VersionMapper(), args);
+        } catch (EmptyResultDataAccessException e) {
+            logger.debug(String.format("Cannot find project %s version $s.", projectName, versionNumber));
+        }
+
+        return null;
     }
 
     /**
@@ -49,13 +59,15 @@ public class VersionReadDaoImpl implements VersionReadDao {
     @Override
     public VersionsResponse getVersions(String projectName) {
 
-        String sql = "SELECT v.number FROM versions v " + "JOIN projects p ON (v.project_id = p.id) "
-                + "WHERE p.name = ?";
+        String sql = "SELECT v.number FROM versions v " 
+                + "JOIN projects p ON (v.project_id = p.id) "
+                + "WHERE p.name = :projectName";
 
-        Object[] args = new Object[] { projectName };
+        MapSqlParameterSource args = new MapSqlParameterSource();
+        args.addValue("projectName", projectName);
 
         logger.debug(String.format("Quering for versions - %s args - [%s]", sql, projectName));
-        List<VersionResponse> versions = jdbcTemplate.query(sql, args, new VersionMapper());
+        List<VersionResponse> versions = simpleJdbcTemplate.query(sql, new VersionMapper(), args);
 
         VersionsResponse versionsResponse = new VersionsResponse();
         if (null != versions) {

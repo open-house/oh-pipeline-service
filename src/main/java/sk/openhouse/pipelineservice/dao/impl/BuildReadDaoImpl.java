@@ -7,6 +7,7 @@ import java.util.List;
 import javax.sql.DataSource;
 
 import org.apache.log4j.Logger;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.simple.SimpleJdbcTemplate;
@@ -25,6 +26,10 @@ public class BuildReadDaoImpl implements BuildReadDao {
         this.simpleJdbcTemplate = new SimpleJdbcTemplate(dataSource);
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public BuildsResponse getBuilds(String projectName, String versionNumber) {
 
         String sql = "SELECT b.number from builds b\n" 
@@ -45,6 +50,7 @@ public class BuildReadDaoImpl implements BuildReadDao {
         }
         return buildsResponse;
     }
+
     /**
      * {@inheritDoc}
      */
@@ -62,7 +68,14 @@ public class BuildReadDaoImpl implements BuildReadDao {
         args.addValue("buildNumber", buildNumber);
 
         logger.debug(String.format("Quering for builds - %s args - %s", sql, args));
-        return simpleJdbcTemplate.queryForObject(sql, new BuildMapper(), args);
+        try {
+            return simpleJdbcTemplate.queryForObject(sql, new BuildMapper(), args);
+        } catch (EmptyResultDataAccessException e) {
+            logger.debug(String.format("Build %d for project $s and version %s cannot be fond", 
+                    buildNumber, projectName, versionNumber));
+        }
+
+        return null;
     }
 
     private static final class BuildMapper implements RowMapper<BuildResponse> {

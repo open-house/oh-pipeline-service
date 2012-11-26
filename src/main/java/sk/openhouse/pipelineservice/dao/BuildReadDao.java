@@ -21,7 +21,7 @@ public interface BuildReadDao {
      * @param projectName
      * @param versionNumber
      * @param buildNumber
-     * @return specific build for selected product and version
+     * @return specific build for selected product and version or null if the build cannot be found
      */
     BuildResponse getBuild(String projectName, String versionNumber, int buildNumber);
 }

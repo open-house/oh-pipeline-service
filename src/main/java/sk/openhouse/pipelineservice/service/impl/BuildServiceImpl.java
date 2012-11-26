@@ -1,10 +1,14 @@
 package sk.openhouse.pipelineservice.service.impl;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import sk.openhouse.pipelineservice.dao.BuildReadDao;
 import sk.openhouse.pipelineservice.dao.BuildWriteDao;
 import sk.openhouse.pipelineservice.domain.request.BuildRequest;
 import sk.openhouse.pipelineservice.domain.response.BuildResponse;
 import sk.openhouse.pipelineservice.domain.response.BuildsResponse;
+import sk.openhouse.pipelineservice.domain.response.ResourceResponse;
 import sk.openhouse.pipelineservice.domain.response.ResourcesResponse;
 import sk.openhouse.pipelineservice.service.BuildService;
 import sk.openhouse.pipelineservice.util.HttpUtil;
@@ -26,7 +30,12 @@ public class BuildServiceImpl implements BuildService {
      */
     @Override
     public BuildsResponse getBuilds(String projectName, String versionNumber) {
-        return buildReadDao.getBuilds(projectName, versionNumber);
+
+        BuildsResponse buildsResponse = buildReadDao.getBuilds(projectName, versionNumber);
+        for (BuildResponse buildResponse : buildsResponse.getBuilds()) {
+            buildResponse.setResources(getBuildResources(projectName, versionNumber, buildResponse.getNumber()));
+        }
+        return buildsResponse;
     }
 
     /**
@@ -39,7 +48,6 @@ public class BuildServiceImpl implements BuildService {
         if (null != buildResponse) {
             buildResponse.setResources(getBuildDetailsResources(projectName, versionNumber, buildNumber));
         }
-
         return buildResponse;
     }
 
@@ -67,10 +75,38 @@ public class BuildServiceImpl implements BuildService {
         buildWriteDao.deleteBuild(projectName, versionNumber, buildNumber);
     }
 
+    private ResourcesResponse getBuildResources(String projectName, String versionNumber, int buildNumber) {
+
+        List<ResourceResponse> buildResources = new ArrayList<ResourceResponse>();
+        /* GET */
+        buildResources.add(httpUtil.getResource(
+                httpUtil.getBuildURIString(projectName, versionNumber, buildNumber),
+                "Build Details"));
+
+        ResourcesResponse resourcesResponse = new ResourcesResponse();
+        resourcesResponse.setResources(buildResources);
+        return resourcesResponse;
+    }
+
     private ResourcesResponse getBuildDetailsResources(String projectName, String versionNumber, int buildNumber) {
 
-        // TODO
-        return null;
+        List<ResourceResponse> buildResources = new ArrayList<ResourceResponse>();
+        String buildURIString = httpUtil.getBuildURIString(projectName, versionNumber, buildNumber);
+
+        /* GET */
+        buildResources.add(httpUtil.getResource(
+                httpUtil.getBuildsURIString(projectName, versionNumber),
+                "List of all builds for project and its version"));
+        /* PUT */
+        buildResources.add(httpUtil.getResource(buildURIString, "Insert new, or overwride existing build", "PUT"));
+        /* POST */
+        buildResources.add(httpUtil.getResource(buildURIString, "Update existing build", "POST"));
+        /* DELETE */
+        buildResources.add(httpUtil.getResource(buildURIString, "Delete existing build", "DELETE"));
+
+        ResourcesResponse resourcesResponse = new ResourcesResponse();
+        resourcesResponse.setResources(buildResources);
+        return resourcesResponse;
     }
 
 }

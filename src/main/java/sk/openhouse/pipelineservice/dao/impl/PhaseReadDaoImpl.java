@@ -9,8 +9,9 @@ import java.util.List;
 import javax.sql.DataSource;
 
 import org.apache.log4j.Logger;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
+import org.springframework.jdbc.core.simple.SimpleJdbcTemplate;
 
 import sk.openhouse.pipelineservice.dao.PhaseReadDao;
 import sk.openhouse.pipelineservice.domain.response.PhaseResponse;
@@ -20,36 +21,45 @@ public class PhaseReadDaoImpl implements PhaseReadDao {
 
     private static final Logger logger = Logger.getLogger(PhaseReadDaoImpl.class);
 
-    private JdbcTemplate jdbcTemplate;
+    private SimpleJdbcTemplate simpleJdbcTemplate;
 
     public PhaseReadDaoImpl(DataSource dataSource) {
-        this.jdbcTemplate = new JdbcTemplate(dataSource);
+        this.simpleJdbcTemplate = new SimpleJdbcTemplate(dataSource);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public PhaseResponse getPhase(String projectName, String phaseName) {
 
-        String sql = "SELECT ph.name, ph.call_uri, ph.poll_uri, ph.timeout_seconds, ph.order_index "
+        String sql = "SELECT ph.name, ph.uri "
                 + "FROM phases ph " 
                 + "JOIN projects pr ON (ph.project_id = pr.id) "
-                + "WHERE pr.name = ? AND ph.name = ?";
+                + "WHERE pr.name = :projectName AND ph.name = :phaseName";
 
-        String[] args = new String[] {projectName, phaseName};
+        MapSqlParameterSource args = new MapSqlParameterSource();
+        args.addValue("projectName", projectName);
+        args.addValue("phaseName", phaseName);
 
-        //return jdbcTemplate.query(sql, args, new PhaseMapper());
-        return null;
+        return simpleJdbcTemplate.queryForObject(sql, new PhaseMapper(), args);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public PhasesResponse getPhases(String projectName) {
 
-        String sql = "SELECT name, call_uri, poll_uri, timeout_seconds, order_index "
-                + "FROM phases WHERE project_id = "
-                + "(SELECT id FROM projects WHERE name = ?)";
+        String sql = "SELECT ph.name, ph.uri "
+                + "FROM phases ph " 
+                + "JOIN projects pr ON (ph.project_id = pr.id) "
+                + "WHERE pr.name = :projectName";
 
-        String[] args = new String[] {projectName};
+        MapSqlParameterSource args = new MapSqlParameterSource();
+        args.addValue("projectName", projectName);
 
-        List<PhaseResponse> phases = jdbcTemplate.query(sql, args, new PhaseMapper());
+        List<PhaseResponse> phases = simpleJdbcTemplate.query(sql, new PhaseMapper(), args);
         if (null == phases) {
             phases = new ArrayList<PhaseResponse>();
         }
@@ -66,13 +76,10 @@ public class PhaseReadDaoImpl implements PhaseReadDao {
             PhaseResponse phase = new PhaseResponse();
             phase.setName(rs.getString("name"));
             try {
-                phase.setCallURI(rs.getURL("call_uri").toURI());
-                phase.setCallURI(rs.getURL("poll_uri").toURI());
+                phase.setUri(rs.getURL("uri").toURI());
             } catch (URISyntaxException e) {
                 logger.error("URI in phase table is incorrect");
             }
-            phase.setTimeoutSeconds(rs.getInt("timeout_seconds"));
-            phase.setOrderIndex(rs.getInt("order_index"));
 
             return phase;
         }

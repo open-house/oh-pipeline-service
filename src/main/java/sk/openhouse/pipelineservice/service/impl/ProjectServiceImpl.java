@@ -69,14 +69,17 @@ public class ProjectServiceImpl implements ProjectService {
      */
     private ResourcesResponse getProjectDetailsResources(String projectName) {
 
-        String projectURI = httpUtil.getProjectRelativeURI(projectName);
-        String versionsURI = httpUtil.getVersionsRelativeURI(projectName);
+        String projectURI = httpUtil.getProjectURIString(projectName);
+        String versionsURI = httpUtil.getVersionsURIString(projectName);
+        String phasesURI = httpUtil.getPhasesURIString(projectName);
 
         List<ResourceResponse> projectDetailsResources = new ArrayList<ResourceResponse>();
         /* GET */
-        projectDetailsResources.add(httpUtil.getResource(httpUtil.getProjectsRelativeURI(), "List of all projects"));
+        projectDetailsResources.add(httpUtil.getResource(httpUtil.getProjectsURIString(), "List of all projects"));
         /* GET */
         projectDetailsResources.add(httpUtil.getResource(versionsURI, "List of all versions of this project"));
+        /* GET */
+        projectDetailsResources.add(httpUtil.getResource(phasesURI, "List of all phases of this project"));
         /* PUT */
         projectDetailsResources.add(httpUtil.getResource(projectURI, 
                 "Insert new project, or overwride existing project", "PUT"));
@@ -99,7 +102,7 @@ public class ProjectServiceImpl implements ProjectService {
 
         List<ResourceResponse> projectResources = new ArrayList<ResourceResponse>();
         /* GET */
-        projectResources.add(httpUtil.getResource(httpUtil.getProjectRelativeURI(projectName), "Project Details"));
+        projectResources.add(httpUtil.getResource(httpUtil.getProjectURIString(projectName), "Project Details"));
 
         ResourcesResponse resourcesResponse = new ResourcesResponse();
         resourcesResponse.setResources(projectResources);

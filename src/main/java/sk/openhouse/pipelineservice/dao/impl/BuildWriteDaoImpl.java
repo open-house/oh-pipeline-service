@@ -1,11 +1,9 @@
 package sk.openhouse.pipelineservice.dao.impl;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import javax.sql.DataSource;
 
 import org.apache.log4j.Logger;
+import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.simple.SimpleJdbcTemplate;
 
 import sk.openhouse.pipelineservice.dao.BuildWriteDao;
@@ -21,6 +19,9 @@ public class BuildWriteDaoImpl implements BuildWriteDao {
         this.simpleJdbcTemplate = new SimpleJdbcTemplate(dataSource);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void addBuild(String projectName, String versionNumber, BuildRequest buildRequest) {
 
@@ -30,15 +31,18 @@ public class BuildWriteDaoImpl implements BuildWriteDao {
                 + "ON (v.project_id = p.id) " 
                 + "WHERE v.number = :versionNumber AND p.name = :projectName))";
 
-        Map<String, Object> args = new HashMap<String, Object>();
-        args.put("projectName", projectName);
-        args.put("versionNumber", versionNumber);
-        args.put("buildNumber", buildRequest.getNumber());
+        MapSqlParameterSource args = new MapSqlParameterSource();
+        args.addValue("projectName", projectName);
+        args.addValue("versionNumber", versionNumber);
+        args.addValue("buildNumber", buildRequest.getNumber());
 
         logger.debug(String.format("Adding build - %s args - %s", sql, args));
         simpleJdbcTemplate.update(sql, args);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void updateBuild(String projectName, String versionNumber, int buildNumber, BuildRequest buildRequest) {
 
@@ -48,16 +52,19 @@ public class BuildWriteDaoImpl implements BuildWriteDao {
                 + "ON (v.project_id = p.id) " 
                 + "WHERE v.number = :versionNumber AND p.name = :projectName)";
 
-        Map<String, Object> args = new HashMap<String, Object>();
-        args.put("projectName", projectName);
-        args.put("versionNumber", versionNumber);
-        args.put("buildNumber", buildNumber);
-        args.put("newBuildNumber", buildRequest.getNumber());
+        MapSqlParameterSource args = new MapSqlParameterSource();
+        args.addValue("projectName", projectName);
+        args.addValue("versionNumber", versionNumber);
+        args.addValue("buildNumber", buildNumber);
+        args.addValue("newBuildNumber", buildRequest.getNumber());
 
         logger.debug(String.format("Updating build - %s args - %s", sql, args));
         simpleJdbcTemplate.update(sql, args);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void deleteBuild(String projectName, String versionNumber, int buildNumber) {
 
@@ -67,10 +74,10 @@ public class BuildWriteDaoImpl implements BuildWriteDao {
                 + "ON (v.project_id = p.id) " 
                 + "WHERE v.number = :versionNumber AND p.name = :projectName)";
 
-        Map<String, Object> args = new HashMap<String, Object>();
-        args.put("projectName", projectName);
-        args.put("versionNumber", versionNumber);
-        args.put("buildNumber", buildNumber);
+        MapSqlParameterSource args = new MapSqlParameterSource();
+        args.addValue("projectName", projectName);
+        args.addValue("versionNumber", versionNumber);
+        args.addValue("buildNumber", buildNumber);
 
         logger.debug(String.format("Deleting build - %s args - %s", sql, args));
         simpleJdbcTemplate.update(sql, args);

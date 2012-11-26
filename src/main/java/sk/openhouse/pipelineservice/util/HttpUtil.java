@@ -1,7 +1,5 @@
 package sk.openhouse.pipelineservice.util;
 
-import java.net.URI;
-
 import sk.openhouse.pipelineservice.domain.response.ResourceResponse;
 
 /**
@@ -17,76 +15,96 @@ public interface HttpUtil {
      * 
      * @return root url without trailing slash
      */
-    String getRootURI();
+    String getRootURIString();
 
     /**
-     * Constructs absolute URI from supplied relative URI string
-     * 
-     * @param relativeURI
-     * @return absolute URI
-     * @throws IllegalArgumentException if the relative URI is invalid
+     * @return URI for all projects
      */
-    URI getAbsoluteURI(String relativeURI);
+    String getProjectsURIString();
 
     /**
-     * Returns relative URI for all projects
-     */
-    String getProjectsRelativeURI();
-
-    /**
-     * Returns relative URI for a specified project. If the supplied project name is null, 
-     * parent uri (projects relative uri) is returned.
+     * There is no validation, therefore URI is not valid if the argument(s) is not valid URI part
      * 
      * @param projectName
-     * @return
+     * @return URI for a specified project.
      */
-    String getProjectRelativeURI(String projectName);
-
-    // TODO - javadocs
-    String getVersionsRelativeURI(String projectName);
-
-    // TODO - finish comment - as the one above, implementation should throw exception if the arg is
-    // null, empty string or invalid uri part
-    /**
-     * Returns relative URI for a specified project version
-     */
-    String getVersionRelativeURI(String projectName, String versionNumber);
-
-    // TODO - javadocs
-    String getBuildsRelativeURI(String projectName, String versionNumber);
+    String getProjectURIString(String projectName);
 
     /**
-     * Returns relative URI for a specified project build
+     * There is no validation, therefore URI is not valid if the argument(s) is not valid URI part
+     * 
+     * @param projectName
+     * @return URI for versions of a specified project
      */
-    String getBuildRelativeURI(String projectName, String versionNumber, int buildNumber);
+    String getVersionsURIString(String projectName);
+
+    /**
+     * There is no validation, therefore URI is not valid if the argument(s) is not valid URI part
+     * 
+     * @param projectName
+     * @return URI for phases of a specified project
+     */
+    String getPhasesURIString(String projectName);
+
+    /**
+     * There is no validation, therefore URI is not valid if the argument(s) is not valid URI part
+     * 
+     * @param projectName
+     * @param versionNumber
+     * @return URI for a specified project and its version
+     */
+    String getVersionURIString(String projectName, String versionNumber);
+
+    /**
+     * There is no validation, therefore URI is not valid if the argument(s) is not valid URI part
+     * 
+     * @param projectName
+     * @param versionNumber
+     * @return URI for builds of a specified project and its version
+     */
+    String getBuildsURIString(String projectName, String versionNumber);
+
+    /**
+     * There is no validation, therefore URI is not valid if the argument(s) is not valid URI part
+     * 
+     * @param projectName
+     * @param versionNumber
+     * @param buildNumber
+     * @return URI for build of a specified project and its version
+     */
+    String getBuildURIString(String projectName, String versionNumber, int buildNumber);
 
     /**
      * Constructs and returns resource response with method set to GET
      * 
-     * @param relativeURI
+     * @param uriString
      * @param description
      * @return
+     * @throws IllegalArgumentException if the supplied uri string is invalid
      */
-    ResourceResponse getResource(String relativeURI, String description);
+    ResourceResponse getResource(String uriString, String description) throws IllegalArgumentException;
 
     /**
      * Constructs and returns resource response
      * 
-     * @param relativeURI
+     * @param uriString
      * @param description
      * @param method GET, PUT, POST etc.
      * @return
+     * @throws IllegalArgumentException if the supplied uri string is invalid
      */
-    ResourceResponse getResource(String relativeURI, String description, String method);
+    ResourceResponse getResource(String uriString, String description, String method) throws IllegalArgumentException;
 
     /**
      * Constructs and returns resource response
      * 
-     * @param relativeURI
+     * @param uriString
      * @param description
      * @param method GET, PUT, POST etc.
      * @param relativeSchemaURI schema location
      * @return
+     * @throws IllegalArgumentException if the supplied uri (or schema uri) string is invalid
      */
-    ResourceResponse getResource(String relativeURI, String description, String method, String relativeSchemaURI);
+    ResourceResponse getResource(String uriString, String description, String method, String schemaURIString)
+            throws IllegalArgumentException;
 }
