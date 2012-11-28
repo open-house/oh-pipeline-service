@@ -12,14 +12,16 @@ public interface PhaseService {
 
     /**
      * @param projectName
+     * @param versionNumber
      * @param phaseName
      * @return specific phase
      */
-    PhaseResponse getPhase(String projectName, String phaseName);
+    PhaseResponse getPhase(String projectName, String versionNumber, String phaseName);
 
     /**
      * @param projectName
-     * @return phases for specified project
+     * @param versionNumber
+     * @return phases for specified project version
      */
-    PhasesResponse getPhases(String projectName);
+    PhasesResponse getPhases(String projectName, String versionNumber);
 }

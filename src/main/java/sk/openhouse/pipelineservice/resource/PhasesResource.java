@@ -14,7 +14,7 @@ import sk.openhouse.pipelineservice.service.PhaseService;
 import sk.openhouse.pipelineservice.util.XmlUtil;
 
 @Component
-@Path("/projects/{project: [a-zA-Z0-9-_]+}/phases")
+@Path("/projects/{project: [a-zA-Z0-9-_]+}/versions/{version: [0-9\\.]+}/phases")
 public class PhasesResource {
 
     private PhaseService phaseService;
@@ -27,9 +27,10 @@ public class PhasesResource {
 
     @GET
     @Produces(MediaType.APPLICATION_XML)
-    public String getVersions(@PathParam("project") String projectName) throws JAXBException {
+    public String getVersions(@PathParam("project") String projectName, 
+            @PathParam("version") String versionNumber) throws JAXBException {
 
-        PhasesResponse phasesResponse = phaseService.getPhases(projectName);
+        PhasesResponse phasesResponse = phaseService.getPhases(projectName, versionNumber);
         return xmlUtil.marshall(PhasesResponse.class, phasesResponse);
     }
 }

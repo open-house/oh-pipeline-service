@@ -95,6 +95,7 @@ public class VersionServiceImpl implements VersionService {
     private ResourcesResponse getVersionDetailsResources(String projectName, String versionNumber) {
 
         String versionURI = httpUtil.getVersionURIString(projectName, versionNumber);
+        String phasesURI = httpUtil.getPhasesURIString(projectName, versionNumber);
 
         List<ResourceResponse> versionDetailsResources = new ArrayList<ResourceResponse>();
         /* GET */
@@ -102,6 +103,8 @@ public class VersionServiceImpl implements VersionService {
         /* GET */
         versionDetailsResources.add(httpUtil.getResource(httpUtil.getBuildsURIString(projectName, versionNumber), 
                 "List of all builds for this version."));
+        /* GET */
+        versionDetailsResources.add(httpUtil.getResource(phasesURI, "List of all phases of this project"));
         /* PUT */
         versionDetailsResources.add(httpUtil.getResource(versionURI, 
                 "Insert new version, or overwride existing version", "PUT"));

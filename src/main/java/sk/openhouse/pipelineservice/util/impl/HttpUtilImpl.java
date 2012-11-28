@@ -76,8 +76,9 @@ public class HttpUtilImpl implements HttpUtil {
      * {@inheritDoc}
      */
     @Override
-    public String getPhasesURIString(String projectName) {
-        return String.format("%s/%s/%s", PROJECTS_URI_PART, projectName, PHASES_URI_PART);
+    public String getPhasesURIString(String projectName, String versionNumber) {
+        return String.format("%s/%s/%s/%s/%s", PROJECTS_URI_PART, projectName, 
+                VERSIONS_URI_PART, versionNumber, PHASES_URI_PART);
     }
 
     /**

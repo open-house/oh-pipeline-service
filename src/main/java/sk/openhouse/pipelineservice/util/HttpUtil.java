@@ -42,9 +42,10 @@ public interface HttpUtil {
      * There is no validation, therefore URI is not valid if the argument(s) is not valid URI part
      * 
      * @param projectName
+     * @param versionNumber
      * @return URI for phases of a specified project
      */
-    String getPhasesURIString(String projectName);
+    String getPhasesURIString(String projectName, String versionNumber);
 
     /**
      * There is no validation, therefore URI is not valid if the argument(s) is not valid URI part

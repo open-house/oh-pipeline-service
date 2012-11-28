@@ -71,15 +71,12 @@ public class ProjectServiceImpl implements ProjectService {
 
         String projectURI = httpUtil.getProjectURIString(projectName);
         String versionsURI = httpUtil.getVersionsURIString(projectName);
-        String phasesURI = httpUtil.getPhasesURIString(projectName);
 
         List<ResourceResponse> projectDetailsResources = new ArrayList<ResourceResponse>();
         /* GET */
         projectDetailsResources.add(httpUtil.getResource(httpUtil.getProjectsURIString(), "List of all projects"));
         /* GET */
         projectDetailsResources.add(httpUtil.getResource(versionsURI, "List of all versions of this project"));
-        /* GET */
-        projectDetailsResources.add(httpUtil.getResource(phasesURI, "List of all phases of this project"));
         /* PUT */
         projectDetailsResources.add(httpUtil.getResource(projectURI, 
                 "Insert new project, or overwride existing project", "PUT"));

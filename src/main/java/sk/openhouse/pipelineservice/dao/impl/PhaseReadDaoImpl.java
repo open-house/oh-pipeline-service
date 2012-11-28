@@ -31,15 +31,16 @@ public class PhaseReadDaoImpl implements PhaseReadDao {
      * {@inheritDoc}
      */
     @Override
-    public PhaseResponse getPhase(String projectName, String phaseName) {
+    public PhaseResponse getPhase(String projectName, String versionNumber, String phaseName) {
 
-        String sql = "SELECT ph.name, ph.uri "
-                + "FROM phases ph " 
-                + "JOIN projects pr ON (ph.project_id = pr.id) "
-                + "WHERE pr.name = :projectName AND ph.name = :phaseName";
+        String sql = "SELECT ph.name, ph.uri FROM phases ph " 
+                + "JOIN versions v ON (ph.version_id = v.id) "
+                + "JOIN projects p ON (v.project_id = p.id) "
+                + "WHERE p.name = :projectName AND v.number = :versionNumber AND ph.name = :phaseName";
 
         MapSqlParameterSource args = new MapSqlParameterSource();
         args.addValue("projectName", projectName);
+        args.addValue("versionNumber", versionNumber);
         args.addValue("phaseName", phaseName);
 
         return simpleJdbcTemplate.queryForObject(sql, new PhaseMapper(), args);
@@ -49,15 +50,16 @@ public class PhaseReadDaoImpl implements PhaseReadDao {
      * {@inheritDoc}
      */
     @Override
-    public PhasesResponse getPhases(String projectName) {
+    public PhasesResponse getPhases(String projectName, String versionNumber) {
 
-        String sql = "SELECT ph.name, ph.uri "
-                + "FROM phases ph " 
-                + "JOIN projects pr ON (ph.project_id = pr.id) "
-                + "WHERE pr.name = :projectName";
+        String sql = "SELECT ph.name, ph.uri FROM phases ph " 
+                + "JOIN versions v ON (ph.version_id = v.id) "
+                + "JOIN projects p ON (v.project_id = p.id) "
+                + "WHERE p.name = :projectName AND v.number = :versionNumber";
 
         MapSqlParameterSource args = new MapSqlParameterSource();
         args.addValue("projectName", projectName);
+        args.addValue("versionNumber", versionNumber);
 
         List<PhaseResponse> phases = simpleJdbcTemplate.query(sql, new PhaseMapper(), args);
         if (null == phases) {

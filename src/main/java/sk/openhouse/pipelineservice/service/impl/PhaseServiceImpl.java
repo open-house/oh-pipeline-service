@@ -18,15 +18,15 @@ public class PhaseServiceImpl implements PhaseService {
      * {@inheritDoc}
      */
     @Override
-    public PhaseResponse getPhase(String projectName, String phaseName) {
-        return phaseReadDao.getPhase(projectName, phaseName);
+    public PhaseResponse getPhase(String projectName, String versionNumber, String phaseName) {
+        return phaseReadDao.getPhase(projectName, versionNumber, phaseName);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public PhasesResponse getPhases(String projectName) {
-        return phaseReadDao.getPhases(projectName);
+    public PhasesResponse getPhases(String projectName, String versionNumber) {
+        return phaseReadDao.getPhases(projectName, versionNumber);
     }
 }
