@@ -25,13 +25,13 @@ public class VersionWriteDaoImpl implements VersionWriteDao {
     @Override
     public void addVersion(String projectName, VersionRequest versionRequest) {
 
-        String sql = "INSERT INTO versions (number, project_id)v" 
+        String sql = "INSERT INTO versions (version_number, project_id) " 
                 + "VALUES(:versionNumber, " 
                 + "(SELECT id FROM projects WHERE name = :projectName))";
 
         MapSqlParameterSource args = new MapSqlParameterSource();
         args.addValue("projectName", projectName);
-        args.addValue("versionNumber", versionRequest.getNumber());
+        args.addValue("versionNumber", versionRequest.getVersionNumber());
 
         logger.debug(String.format("Adding version - %s args - %s", sql, args));
         simpleJdbcTemplate.update(sql, args);
@@ -43,14 +43,14 @@ public class VersionWriteDaoImpl implements VersionWriteDao {
     @Override
     public void updateVersion(String projectName, String versionNumber, VersionRequest versionRequest) {
 
-        String sql = "UPDATE versions SET number = :newVersionNumber " 
-                + "WHERE versions.number = :versionNumber " 
+        String sql = "UPDATE versions SET version_number = :newVersionNumber " 
+                + "WHERE versions.version_number = :versionNumber " 
                 + "AND versions.project_id = (SELECT id FROM projects WHERE projects.name = :projectName)";
 
         MapSqlParameterSource args = new MapSqlParameterSource();
         args.addValue("projectName", projectName);
         args.addValue("versionNumber", versionNumber);
-        args.addValue("newVersionNumber", versionRequest.getNumber());
+        args.addValue("newVersionNumber", versionRequest.getVersionNumber());
 
         logger.debug(String.format("Updating version - %s args - %s", sql, args));
         simpleJdbcTemplate.update(sql, args);
@@ -63,7 +63,7 @@ public class VersionWriteDaoImpl implements VersionWriteDao {
     public void deleteVersion(String projectName, String versionNumber) {
 
         String sql = "DELETE FROM versions " 
-                + "WHERE versions.number = :versionNumber " 
+                + "WHERE versions.version_number = :versionNumber " 
                 + "AND versions.project_id = (SELECT id FROM projects WHERE projects.name = :projectName)";
 
         MapSqlParameterSource args = new MapSqlParameterSource();

@@ -11,22 +11,22 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlRootElement(name = "resource")
-@XmlType(propOrder = {"number", "resources"})
+@XmlRootElement(name = "version")
+@XmlType(propOrder = {"versionNumber", "resources"})
 public class VersionResponse {
 
-    @XmlElement(name = "number")
-    private String number;
+    @XmlElement(name = "version-number")
+    private String versionNumber;
 
     @XmlElement(name = "resources")
     private ResourcesResponse resources;
 
-    public String getNumber() {
-        return number;
+    public String getVersionNumber() {
+        return versionNumber;
     }
 
-    public void setNumber(String number) {
-        this.number = number;
+    public void setVersionNumber(String versionNumber) {
+        this.versionNumber = versionNumber;
     }
 
     /**
@@ -47,7 +47,7 @@ public class VersionResponse {
     public final int hashCode() {
 
         return new HashCodeBuilder()
-                .append(number)
+                .append(versionNumber)
                 .toHashCode();
     }
 
@@ -60,7 +60,7 @@ public class VersionResponse {
 
         final VersionResponse other = (VersionResponse) object;
         return new EqualsBuilder()
-                .append(number, other.number)
+                .append(versionNumber, other.versionNumber)
                 .isEquals();
     }
 
@@ -68,7 +68,7 @@ public class VersionResponse {
     public String toString() {
 
         return new ToStringBuilder(this)
-                .append("number", number)
+                .append("number", versionNumber)
                 .append("resources", resources)
                 .toString();
     }

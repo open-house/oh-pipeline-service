@@ -35,7 +35,7 @@ public class BuildReadDaoImpl implements BuildReadDao {
         String sql = "SELECT b.number FROM builds b " 
                 + "JOIN versions v ON (b.version_id = v.id) "
                 + "JOIN projects p ON (v.project_id = p.id) "
-                + "WHERE p.name = :projectName AND v.number = :versionNumber";
+                + "WHERE p.name = :projectName AND v.version_number = :versionNumber";
 
         MapSqlParameterSource args = new MapSqlParameterSource();
         args.addValue("projectName", projectName);
@@ -60,7 +60,7 @@ public class BuildReadDaoImpl implements BuildReadDao {
         String sql = "SELECT b.number FROM builds b " 
                 + "JOIN versions v ON (b.version_id = v.id) "
                 + "JOIN projects p ON (v.project_id = p.id) "
-                + "WHERE p.name = :projectName AND v.number = :versionNumber AND b.number = :buildNumber";
+                + "WHERE p.name = :projectName AND v.version_number = :versionNumber AND b.number = :buildNumber";
 
         MapSqlParameterSource args = new MapSqlParameterSource();
         args.addValue("projectName", projectName);

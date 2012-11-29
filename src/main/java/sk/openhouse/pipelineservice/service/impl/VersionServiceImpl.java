@@ -47,7 +47,7 @@ public class VersionServiceImpl implements VersionService {
 
         VersionsResponse versionsResponse = versionReadDao.getVersions(projectName);
         for (VersionResponse versionResponse : versionsResponse.getVersions()) {
-            versionResponse.setResources(getVersionResources(projectName, versionResponse.getNumber()));
+            versionResponse.setResources(getVersionResources(projectName, versionResponse.getVersionNumber()));
         }
 
         return versionsResponse;

@@ -1,4 +1,6 @@
-package sk.openhouse.pipelineservice.domain.request;
+package sk.openhouse.pipelineservice.domain.response;
+
+import java.util.Date;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -11,46 +13,52 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlRootElement(name = "version")
-@XmlType(propOrder = {"version-number"})
-public class VersionRequest {
+@XmlRootElement(name = "state")
+@XmlType(propOrder = { "name", "date" })
+public class StateResponse {
 
-    @XmlElement(name = "version-number")
-    private String versionNumber;
+    @XmlElement(name = "name")
+    private String name;
 
-    /**
-     * @return product version number
-     */
-    public String getVersionNumber() {
-        return versionNumber;
+    @XmlElement(name = "date")
+    private Date date;
+
+    public String getName() {
+        return name;
     }
 
-    /**
-     * @param number product version number
-     */
-    public void setVersionNumber(String versionNumber) {
-        this.versionNumber = versionNumber;
+    public void setName(String name) {
+        this.name = name;
     }
 
+    public Date getDate() {
+        return date;
+    }
+
+    public void setDate(Date date) {
+        this.date = date;
+    }
 
     @Override
     public final int hashCode() {
 
         return new HashCodeBuilder()
-                .append(versionNumber)
+                .append(name)
+                .append(date)
                 .toHashCode();
     }
 
     @Override
     public final boolean equals(Object object) {
 
-        if (!(object instanceof VersionRequest)) {
+        if (!(object instanceof StateResponse)) {
             return false;
         }
 
-        final VersionRequest other = (VersionRequest) object;
+        final StateResponse other = (StateResponse) object;
         return new EqualsBuilder()
-                .append(versionNumber, other.versionNumber)
+                .append(name, other.name)
+                .append(date, other.date)
                 .isEquals();
     }
 
@@ -58,7 +66,8 @@ public class VersionRequest {
     public String toString() {
 
         return new ToStringBuilder(this)
-                .append("versionNumber", versionNumber)
+                .append("name", name)
+                .append("date", date)
                 .toString();
     }
 }

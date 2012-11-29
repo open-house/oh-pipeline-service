@@ -1,0 +1,18 @@
+<build>
+    <number>3</number>
+    <build-phases>
+        <build-phase>
+            <name>QA</name>
+            <states>
+                <state>
+                    <name>IN_PROGRESS</name>
+                    <time>...</time>
+                </state>
+                <state>
+                    <name>FAIL</name>
+                    <time>...</time>
+                </state>
+            </states>
+        </build-phase>
+    </build-phases>
+</build>

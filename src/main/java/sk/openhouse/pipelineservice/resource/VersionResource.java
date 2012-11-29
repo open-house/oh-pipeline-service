@@ -50,7 +50,7 @@ public class VersionResource {
     public void addVersion(@PathParam("project") String projectName, @PathParam("version") String versionNumber) {
 
         VersionRequest versionRequest = new VersionRequest();
-        versionRequest.setNumber(versionNumber);
+        versionRequest.setVersionNumber(versionNumber);
         versionService.addVersion(projectName, versionRequest);
     }
 

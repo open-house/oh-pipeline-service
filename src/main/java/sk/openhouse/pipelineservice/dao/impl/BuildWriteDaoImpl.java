@@ -29,7 +29,7 @@ public class BuildWriteDaoImpl implements BuildWriteDao {
                 + "VALUES(:buildNumber, " 
                 + "(SELECT v.id FROM versions v JOIN projects p "
                 + "ON (v.project_id = p.id) " 
-                + "WHERE v.number = :versionNumber AND p.name = :projectName))";
+                + "WHERE v.version_number = :versionNumber AND p.name = :projectName))";
 
         MapSqlParameterSource args = new MapSqlParameterSource();
         args.addValue("projectName", projectName);
@@ -50,7 +50,7 @@ public class BuildWriteDaoImpl implements BuildWriteDao {
                 + "WHERE b.number = :buildNumber "
                 + "AND b.version_id = (SELECT v.id FROM versions v JOIN projects p "
                 + "ON (v.project_id = p.id) " 
-                + "WHERE v.number = :versionNumber AND p.name = :projectName)";
+                + "WHERE v.version_number = :versionNumber AND p.name = :projectName)";
 
         MapSqlParameterSource args = new MapSqlParameterSource();
         args.addValue("projectName", projectName);
@@ -72,7 +72,7 @@ public class BuildWriteDaoImpl implements BuildWriteDao {
                 + "WHERE builds.number = :buildNumber "
                 + "AND builds.version_id = (SELECT v.id FROM versions v JOIN projects p "
                 + "ON (v.project_id = p.id) " 
-                + "WHERE v.number = :versionNumber AND p.name = :projectName)";
+                + "WHERE v.version_number = :versionNumber AND p.name = :projectName)";
 
         MapSqlParameterSource args = new MapSqlParameterSource();
         args.addValue("projectName", projectName);

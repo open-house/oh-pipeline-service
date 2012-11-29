@@ -36,8 +36,10 @@ public class VersionReadDaoImpl implements VersionReadDao {
     @Override
     public VersionResponse getVersion(String projectName, String versionNumber) {
 
-        String sql = "SELECT v.number from versions v " + "JOIN projects p ON (v.project_id = p.id) "
-                + "WHERE p.name = :projectName AND v.number = :versionNumber";
+        String sql = "SELECT v.version_number "
+                + "FROM versions v "
+                + "JOIN projects p ON (v.project_id = p.id) "
+                + "WHERE p.name = :projectName AND v.version_number = :versionNumber";
 
         MapSqlParameterSource args = new MapSqlParameterSource();
         args.addValue("projectName", projectName);
@@ -59,7 +61,7 @@ public class VersionReadDaoImpl implements VersionReadDao {
     @Override
     public VersionsResponse getVersions(String projectName) {
 
-        String sql = "SELECT v.number FROM versions v " 
+        String sql = "SELECT v.version_number FROM versions v " 
                 + "JOIN projects p ON (v.project_id = p.id) "
                 + "WHERE p.name = :projectName";
 
@@ -81,7 +83,7 @@ public class VersionReadDaoImpl implements VersionReadDao {
         public VersionResponse mapRow(ResultSet rs, int rowNum) throws SQLException {
 
             VersionResponse version = new VersionResponse();
-            version.setNumber(rs.getString("number"));
+            version.setVersionNumber(rs.getString("version_number"));
             return version;
         }
     }
