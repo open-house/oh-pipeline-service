@@ -11,6 +11,7 @@ import sk.openhouse.pipelineservice.domain.response.ResourcesResponse;
 import sk.openhouse.pipelineservice.domain.response.VersionResponse;
 import sk.openhouse.pipelineservice.domain.response.VersionsResponse;
 import sk.openhouse.pipelineservice.service.VersionService;
+import sk.openhouse.pipelineservice.service.exception.NotFoundException;
 import sk.openhouse.pipelineservice.util.HttpUtil;
 
 public class VersionServiceImpl implements VersionService {
@@ -32,10 +33,12 @@ public class VersionServiceImpl implements VersionService {
     public VersionResponse getVersion(String projectName, String versionNumber) {
 
         VersionResponse versionResponse = versionReadDao.getVersion(projectName, versionNumber);
-        if (null != versionResponse) {
-            versionResponse.setResources(getVersionDetailsResources(projectName, versionNumber));
+        if (null == versionResponse) {
+            throw new NotFoundException(String.format("Version %s for project %s cannot be found.",
+                    versionNumber, projectName));
         }
 
+        versionResponse.setResources(getVersionDetailsResources(projectName, versionNumber));
         return versionResponse;
     }
 

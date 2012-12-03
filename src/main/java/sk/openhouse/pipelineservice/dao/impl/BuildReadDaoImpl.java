@@ -10,7 +10,7 @@ import org.apache.log4j.Logger;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
-import org.springframework.jdbc.core.simple.SimpleJdbcTemplate;
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 
 import sk.openhouse.pipelineservice.dao.BuildReadDao;
 import sk.openhouse.pipelineservice.domain.response.BuildResponse;
@@ -20,10 +20,10 @@ public class BuildReadDaoImpl implements BuildReadDao {
 
     private static final Logger logger = Logger.getLogger(VersionReadDaoImpl.class);
 
-    private SimpleJdbcTemplate simpleJdbcTemplate;
+    private final NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
     public BuildReadDaoImpl(DataSource dataSource) {
-        this.simpleJdbcTemplate = new SimpleJdbcTemplate(dataSource);
+        this.namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(dataSource);
     }
 
     /**
@@ -42,7 +42,7 @@ public class BuildReadDaoImpl implements BuildReadDao {
         args.addValue("versionNumber", versionNumber);
 
         logger.debug(String.format("Quering for builds - %s args - %s", sql, args));
-        List<BuildResponse> builds = simpleJdbcTemplate.query(sql, new BuildMapper(), args);
+        List<BuildResponse> builds = namedParameterJdbcTemplate.query(sql, args, new BuildMapper());
 
         BuildsResponse buildsResponse = new BuildsResponse();
         if (null != builds) {
@@ -69,7 +69,7 @@ public class BuildReadDaoImpl implements BuildReadDao {
 
         logger.debug(String.format("Quering for builds - %s args - %s", sql, args));
         try {
-            return simpleJdbcTemplate.queryForObject(sql, new BuildMapper(), args);
+            return namedParameterJdbcTemplate.queryForObject(sql, args, new BuildMapper());
         } catch (EmptyResultDataAccessException e) {
             logger.debug(String.format("Build %d for project $s and version %s cannot be fond", 
                     buildNumber, projectName, versionNumber));

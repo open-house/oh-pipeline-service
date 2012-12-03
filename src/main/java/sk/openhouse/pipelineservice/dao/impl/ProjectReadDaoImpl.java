@@ -10,7 +10,7 @@ import org.apache.log4j.Logger;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
-import org.springframework.jdbc.core.simple.SimpleJdbcTemplate;
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 
 import sk.openhouse.pipelineservice.dao.ProjectReadDao;
 import sk.openhouse.pipelineservice.domain.response.ProjectResponse;
@@ -19,11 +19,12 @@ import sk.openhouse.pipelineservice.domain.response.ProjectsResponse;
 public class ProjectReadDaoImpl implements ProjectReadDao {
 
     private static final Logger logger = Logger.getLogger(ProjectReadDaoImpl.class);
+    private static final MapSqlParameterSource NO_ARGS = new MapSqlParameterSource();
 
-    private SimpleJdbcTemplate simpleJdbcTemplate;
+    private final NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
     public ProjectReadDaoImpl(DataSource dataSource) {
-        this.simpleJdbcTemplate = new SimpleJdbcTemplate(dataSource);
+        this.namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(dataSource);
     }
 
     /**
@@ -38,7 +39,7 @@ public class ProjectReadDaoImpl implements ProjectReadDao {
 
         logger.debug(String.format("Quering for project - %s args - %s", sql, name));
         try {
-            return simpleJdbcTemplate.queryForObject(sql, new ProjectMapper(), args);
+            return namedParameterJdbcTemplate.queryForObject(sql, args, new ProjectMapper());
         } catch (EmptyResultDataAccessException e) {
             logger.debug(String.format("Project $s found", name));
         }
@@ -54,7 +55,7 @@ public class ProjectReadDaoImpl implements ProjectReadDao {
 
         String sql = "SELECT name FROM projects";
         logger.debug(String.format("Quering projects - %s", sql));
-        List<ProjectResponse> projects = simpleJdbcTemplate.query(sql, new ProjectMapper());
+        List<ProjectResponse> projects = namedParameterJdbcTemplate.query(sql, NO_ARGS, new ProjectMapper());
 
         ProjectsResponse projectsResponse = new ProjectsResponse();
         if (null != projects) {

@@ -11,6 +11,7 @@ import sk.openhouse.pipelineservice.domain.response.ProjectsResponse;
 import sk.openhouse.pipelineservice.domain.response.ResourceResponse;
 import sk.openhouse.pipelineservice.domain.response.ResourcesResponse;
 import sk.openhouse.pipelineservice.service.ProjectService;
+import sk.openhouse.pipelineservice.service.exception.NotFoundException;
 import sk.openhouse.pipelineservice.util.HttpUtil;
 
 public class ProjectServiceImpl implements ProjectService {
@@ -39,13 +40,14 @@ public class ProjectServiceImpl implements ProjectService {
     }
 
     @Override
-    public ProjectResponse getProject(String name) {
+    public ProjectResponse getProject(String projectName) {
 
-        ProjectResponse projectResponse = projectReadDao.getProject(name);
-        if (null != projectResponse) {
-            projectResponse.setResources(getProjectDetailsResources(name));
+        ProjectResponse projectResponse = projectReadDao.getProject(projectName);
+        if (null == projectResponse) {
+            throw new NotFoundException(String.format("Project %s cannot be found.", projectName));
         }
 
+        projectResponse.setResources(getProjectDetailsResources(projectName));
         return projectResponse;
     }
 

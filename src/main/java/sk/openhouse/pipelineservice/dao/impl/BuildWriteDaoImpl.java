@@ -4,7 +4,7 @@ import javax.sql.DataSource;
 
 import org.apache.log4j.Logger;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
-import org.springframework.jdbc.core.simple.SimpleJdbcTemplate;
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 
 import sk.openhouse.pipelineservice.dao.BuildWriteDao;
 import sk.openhouse.pipelineservice.domain.request.BuildRequest;
@@ -13,10 +13,10 @@ public class BuildWriteDaoImpl implements BuildWriteDao {
 
     private static final Logger logger = Logger.getLogger(BuildWriteDaoImpl.class);
 
-    private SimpleJdbcTemplate simpleJdbcTemplate;
+    private final NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
     public BuildWriteDaoImpl(DataSource dataSource) {
-        this.simpleJdbcTemplate = new SimpleJdbcTemplate(dataSource);
+        this.namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(dataSource);
     }
 
     /**
@@ -37,7 +37,7 @@ public class BuildWriteDaoImpl implements BuildWriteDao {
         args.addValue("buildNumber", buildRequest.getNumber());
 
         logger.debug(String.format("Adding build - %s args - %s", sql, args));
-        simpleJdbcTemplate.update(sql, args);
+        namedParameterJdbcTemplate.update(sql, args);
     }
 
     /**
@@ -59,7 +59,7 @@ public class BuildWriteDaoImpl implements BuildWriteDao {
         args.addValue("newBuildNumber", buildRequest.getNumber());
 
         logger.debug(String.format("Updating build - %s args - %s", sql, args));
-        simpleJdbcTemplate.update(sql, args);
+        namedParameterJdbcTemplate.update(sql, args);
     }
 
     /**
@@ -80,6 +80,6 @@ public class BuildWriteDaoImpl implements BuildWriteDao {
         args.addValue("buildNumber", buildNumber);
 
         logger.debug(String.format("Deleting build - %s args - %s", sql, args));
-        simpleJdbcTemplate.update(sql, args);
+        namedParameterJdbcTemplate.update(sql, args);
     }
 }

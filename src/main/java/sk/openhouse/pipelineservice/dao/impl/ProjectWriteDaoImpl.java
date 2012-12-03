@@ -4,7 +4,7 @@ import javax.sql.DataSource;
 
 import org.apache.log4j.Logger;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
-import org.springframework.jdbc.core.simple.SimpleJdbcTemplate;
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 
 import sk.openhouse.pipelineservice.dao.ProjectWriteDao;
 import sk.openhouse.pipelineservice.domain.request.ProjectRequest;
@@ -13,10 +13,10 @@ public class ProjectWriteDaoImpl implements ProjectWriteDao {
 
     private static final Logger logger = Logger.getLogger(ProjectWriteDao.class);
 
-    private SimpleJdbcTemplate simpleJdbcTemplate;
+    private final NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
     public ProjectWriteDaoImpl(DataSource dataSource) {
-        this.simpleJdbcTemplate = new SimpleJdbcTemplate(dataSource);
+        this.namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(dataSource);
     }
 
     /**
@@ -31,7 +31,7 @@ public class ProjectWriteDaoImpl implements ProjectWriteDao {
         args.addValue("projectName", project.getName());
 
         logger.debug(String.format("Adding project - %s args - %s", sql, args));
-        simpleJdbcTemplate.update(sql, args);
+        namedParameterJdbcTemplate.update(sql, args);
     }
 
     /**
@@ -47,7 +47,7 @@ public class ProjectWriteDaoImpl implements ProjectWriteDao {
         args.addValue("newName", project.getName());
 
         logger.debug(String.format("Updating project - %s args - %s", sql, args));
-        simpleJdbcTemplate.update(sql, args);
+        namedParameterJdbcTemplate.update(sql, args);
     }
 
     /**
@@ -62,6 +62,6 @@ public class ProjectWriteDaoImpl implements ProjectWriteDao {
         args.addValue("projectName", projectName);
 
         logger.debug(String.format("Deleting project - %s args - %s", sql, args));
-        simpleJdbcTemplate.update(sql, args);
+        namedParameterJdbcTemplate.update(sql, args);
     }
 }

@@ -13,8 +13,6 @@ import javax.xml.bind.JAXBException;
 
 import org.springframework.stereotype.Component;
 
-import com.sun.jersey.api.NotFoundException;
-
 import sk.openhouse.pipelineservice.domain.request.VersionRequest;
 import sk.openhouse.pipelineservice.domain.response.VersionResponse;
 import sk.openhouse.pipelineservice.service.VersionService;
@@ -38,11 +36,6 @@ public class VersionResource {
             @PathParam("version") String versionNumber) throws JAXBException {
 
         VersionResponse versionResponse = versionService.getVersion(projectName, versionNumber);
-
-        // TODO throw custom exception in the service and map it, so it doesn't have to be caught here
-        if (null == versionResponse) {
-            throw new NotFoundException();
-        }
         return xmlUtil.marshall(VersionResponse.class, versionResponse);
     }
 

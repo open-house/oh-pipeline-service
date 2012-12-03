@@ -3,6 +3,7 @@ package sk.openhouse.pipelineservice.service;
 import sk.openhouse.pipelineservice.domain.request.BuildRequest;
 import sk.openhouse.pipelineservice.domain.response.BuildResponse;
 import sk.openhouse.pipelineservice.domain.response.BuildsResponse;
+import sk.openhouse.pipelineservice.service.exception.NotFoundException;
 
 /**
  * Service for build(s)
@@ -27,8 +28,9 @@ public interface BuildService {
      * @param versionNumber
      * @param buildNumber
      * @return
+     * @throws NotFoundException if the build cannot be found
      */
-    BuildResponse getBuild(String projectName, String versionNumber, int buildNumber);
+    BuildResponse getBuild(String projectName, String versionNumber, int buildNumber) throws NotFoundException;
 
 
     /**

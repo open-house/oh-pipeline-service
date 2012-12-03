@@ -10,7 +10,7 @@ import org.apache.log4j.Logger;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
-import org.springframework.jdbc.core.simple.SimpleJdbcTemplate;
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 
 import sk.openhouse.pipelineservice.dao.VersionReadDao;
 import sk.openhouse.pipelineservice.domain.response.VersionResponse;
@@ -24,10 +24,10 @@ public class VersionReadDaoImpl implements VersionReadDao {
 
     private static final Logger logger = Logger.getLogger(VersionReadDaoImpl.class);
 
-    private SimpleJdbcTemplate simpleJdbcTemplate;
+    private final NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
     public VersionReadDaoImpl(DataSource dataSource) {
-        this.simpleJdbcTemplate = new SimpleJdbcTemplate(dataSource);
+        this.namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(dataSource);
     }
 
     /**
@@ -47,7 +47,7 @@ public class VersionReadDaoImpl implements VersionReadDao {
 
         logger.debug(String.format("Quering for versions - %s args - [%s,%s]", sql, projectName, versionNumber));
         try {
-            return simpleJdbcTemplate.queryForObject(sql, new VersionMapper(), args);
+            return namedParameterJdbcTemplate.queryForObject(sql, args, new VersionMapper());
         } catch (EmptyResultDataAccessException e) {
             logger.debug(String.format("Cannot find project %s version $s.", projectName, versionNumber));
         }
@@ -69,7 +69,7 @@ public class VersionReadDaoImpl implements VersionReadDao {
         args.addValue("projectName", projectName);
 
         logger.debug(String.format("Quering for versions - %s args - [%s]", sql, projectName));
-        List<VersionResponse> versions = simpleJdbcTemplate.query(sql, new VersionMapper(), args);
+        List<VersionResponse> versions = namedParameterJdbcTemplate.query(sql, args, new VersionMapper());
 
         VersionsResponse versionsResponse = new VersionsResponse();
         if (null != versions) {

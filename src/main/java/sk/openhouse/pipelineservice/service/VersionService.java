@@ -3,6 +3,7 @@ package sk.openhouse.pipelineservice.service;
 import sk.openhouse.pipelineservice.domain.request.VersionRequest;
 import sk.openhouse.pipelineservice.domain.response.VersionResponse;
 import sk.openhouse.pipelineservice.domain.response.VersionsResponse;
+import sk.openhouse.pipelineservice.service.exception.NotFoundException;
 
 /**
  * Service for project version(s)
@@ -15,8 +16,9 @@ public interface VersionService {
      * @param projectName
      * @param versionNumber
      * @return specific version for the specified project
+     * @throws NotFoundException if the version cannot be found
      */
-    VersionResponse getVersion(String projectName, String versionNumber);
+    VersionResponse getVersion(String projectName, String versionNumber) throws NotFoundException;
 
     /**
      * @param projectName

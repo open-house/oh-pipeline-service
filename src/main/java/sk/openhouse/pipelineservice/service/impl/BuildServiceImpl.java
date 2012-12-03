@@ -11,6 +11,7 @@ import sk.openhouse.pipelineservice.domain.response.BuildsResponse;
 import sk.openhouse.pipelineservice.domain.response.ResourceResponse;
 import sk.openhouse.pipelineservice.domain.response.ResourcesResponse;
 import sk.openhouse.pipelineservice.service.BuildService;
+import sk.openhouse.pipelineservice.service.exception.NotFoundException;
 import sk.openhouse.pipelineservice.util.HttpUtil;
 
 public class BuildServiceImpl implements BuildService {
@@ -45,9 +46,12 @@ public class BuildServiceImpl implements BuildService {
     public BuildResponse getBuild(String projectName, String versionNumber, int buildNumber) {
 
         BuildResponse buildResponse = buildReadDao.getBuild(projectName, versionNumber, buildNumber);
-        if (null != buildResponse) {
-            buildResponse.setResources(getBuildDetailsResources(projectName, versionNumber, buildNumber));
+        if (null == buildResponse) {
+            throw new NotFoundException(String.format("Build %d for project %s and version %s cannot be found.", 
+                    buildNumber, projectName, versionNumber));
         }
+
+        buildResponse.setResources(getBuildDetailsResources(projectName, versionNumber, buildNumber));
         return buildResponse;
     }
 

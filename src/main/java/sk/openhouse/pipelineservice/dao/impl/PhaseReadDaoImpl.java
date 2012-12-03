@@ -11,7 +11,7 @@ import javax.sql.DataSource;
 import org.apache.log4j.Logger;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
-import org.springframework.jdbc.core.simple.SimpleJdbcTemplate;
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 
 import sk.openhouse.pipelineservice.dao.PhaseReadDao;
 import sk.openhouse.pipelineservice.domain.response.PhaseResponse;
@@ -21,10 +21,10 @@ public class PhaseReadDaoImpl implements PhaseReadDao {
 
     private static final Logger logger = Logger.getLogger(PhaseReadDaoImpl.class);
 
-    private SimpleJdbcTemplate simpleJdbcTemplate;
+    private final NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
     public PhaseReadDaoImpl(DataSource dataSource) {
-        this.simpleJdbcTemplate = new SimpleJdbcTemplate(dataSource);
+        this.namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(dataSource);
     }
 
     /**
@@ -36,14 +36,14 @@ public class PhaseReadDaoImpl implements PhaseReadDao {
         String sql = "SELECT ph.name, ph.uri FROM phases ph " 
                 + "JOIN versions v ON (ph.version_id = v.id) "
                 + "JOIN projects p ON (v.project_id = p.id) "
-                + "WHERE p.name = :projectName AND v.number = :versionNumber AND ph.name = :phaseName";
+                + "WHERE p.name = :projectName AND v.version_number = :versionNumber AND ph.name = :phaseName";
 
         MapSqlParameterSource args = new MapSqlParameterSource();
         args.addValue("projectName", projectName);
         args.addValue("versionNumber", versionNumber);
         args.addValue("phaseName", phaseName);
 
-        return simpleJdbcTemplate.queryForObject(sql, new PhaseMapper(), args);
+        return namedParameterJdbcTemplate.queryForObject(sql, args, new PhaseMapper());
     }
 
     /**
@@ -55,13 +55,13 @@ public class PhaseReadDaoImpl implements PhaseReadDao {
         String sql = "SELECT ph.name, ph.uri FROM phases ph " 
                 + "JOIN versions v ON (ph.version_id = v.id) "
                 + "JOIN projects p ON (v.project_id = p.id) "
-                + "WHERE p.name = :projectName AND v.number = :versionNumber";
+                + "WHERE p.name = :projectName AND v.version_number = :versionNumber";
 
         MapSqlParameterSource args = new MapSqlParameterSource();
         args.addValue("projectName", projectName);
         args.addValue("versionNumber", versionNumber);
 
-        List<PhaseResponse> phases = simpleJdbcTemplate.query(sql, new PhaseMapper(), args);
+        List<PhaseResponse> phases = namedParameterJdbcTemplate.query(sql, args, new PhaseMapper());
         if (null == phases) {
             phases = new ArrayList<PhaseResponse>();
         }

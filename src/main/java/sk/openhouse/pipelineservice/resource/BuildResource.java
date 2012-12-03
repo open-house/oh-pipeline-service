@@ -12,8 +12,6 @@ import javax.xml.bind.JAXBException;
 
 import org.springframework.stereotype.Component;
 
-import com.sun.jersey.api.NotFoundException;
-
 import sk.openhouse.pipelineservice.domain.request.BuildRequest;
 import sk.openhouse.pipelineservice.domain.response.BuildResponse;
 import sk.openhouse.pipelineservice.service.BuildService;
@@ -38,11 +36,6 @@ public class BuildResource {
             @PathParam("build") int buildNumber) throws JAXBException {
 
         BuildResponse buildResponse = buildService.getBuild(projectName, versionNumber, buildNumber);
-
-        // TODO throw custom exception in the service and map it, so it doesn't have to be caught here
-        if (null == buildResponse) {
-            throw new NotFoundException();
-        }
         return xmlUtil.marshall(BuildResponse.class, buildResponse);
     }
 

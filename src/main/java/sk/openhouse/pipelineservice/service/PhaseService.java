@@ -1,7 +1,9 @@
 package sk.openhouse.pipelineservice.service;
 
+import sk.openhouse.pipelineservice.domain.request.PhaseRequest;
 import sk.openhouse.pipelineservice.domain.response.PhaseResponse;
 import sk.openhouse.pipelineservice.domain.response.PhasesResponse;
+import sk.openhouse.pipelineservice.service.exception.NotFoundException;
 
 /**
  * Project Phase(s) Service
@@ -15,8 +17,9 @@ public interface PhaseService {
      * @param versionNumber
      * @param phaseName
      * @return specific phase
+     * @throws NotFoundException if the phase cannot be found
      */
-    PhaseResponse getPhase(String projectName, String versionNumber, String phaseName);
+    PhaseResponse getPhase(String projectName, String versionNumber, String phaseName) throws NotFoundException;
 
     /**
      * @param projectName
@@ -24,4 +27,33 @@ public interface PhaseService {
      * @return phases for specified project version
      */
     PhasesResponse getPhases(String projectName, String versionNumber);
+
+    /**
+     * Adds new or overrides existing (if this phase already exists) project phase
+     * 
+     * @param projectName
+     * @param versionNumber
+     * @param phaseName
+     * @param phaseRequest
+     */
+    void addPhase(String projectName, String versionNumber, String phaseName, PhaseRequest phaseRequest);
+
+    /**
+     * Updates existing phase
+     * 
+     * @param projectName
+     * @param versionNumber
+     * @param phaseName
+     * @param buildRequest
+     */
+    void updatePhase(String projectName, String versionNumber, String phaseName, PhaseRequest phaseRequest);
+
+    /**
+     * Deletes project phase
+     * 
+     * @param projectName
+     * @param versionNumber
+     * @param phaseName
+     */
+    void deletePhase(String projectName, String versionNumber, String phaseName);
 }

@@ -4,7 +4,7 @@ import javax.sql.DataSource;
 
 import org.apache.log4j.Logger;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
-import org.springframework.jdbc.core.simple.SimpleJdbcTemplate;
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 
 import sk.openhouse.pipelineservice.dao.VersionWriteDao;
 import sk.openhouse.pipelineservice.domain.request.VersionRequest;
@@ -13,10 +13,10 @@ public class VersionWriteDaoImpl implements VersionWriteDao {
 
     private static final Logger logger = Logger.getLogger(VersionWriteDaoImpl.class);
 
-    private SimpleJdbcTemplate simpleJdbcTemplate;
+    private final NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
     public VersionWriteDaoImpl(DataSource dataSource) {
-        this.simpleJdbcTemplate = new SimpleJdbcTemplate(dataSource);
+        this.namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(dataSource);
     }
 
     /**
@@ -34,7 +34,7 @@ public class VersionWriteDaoImpl implements VersionWriteDao {
         args.addValue("versionNumber", versionRequest.getVersionNumber());
 
         logger.debug(String.format("Adding version - %s args - %s", sql, args));
-        simpleJdbcTemplate.update(sql, args);
+        namedParameterJdbcTemplate.update(sql, args);
     }
 
     /**
@@ -53,7 +53,7 @@ public class VersionWriteDaoImpl implements VersionWriteDao {
         args.addValue("newVersionNumber", versionRequest.getVersionNumber());
 
         logger.debug(String.format("Updating version - %s args - %s", sql, args));
-        simpleJdbcTemplate.update(sql, args);
+        namedParameterJdbcTemplate.update(sql, args);
     }
 
     /**
@@ -71,6 +71,6 @@ public class VersionWriteDaoImpl implements VersionWriteDao {
         args.addValue("versionNumber", versionNumber);
 
         logger.debug(String.format("Deleting version - %s args - %s", sql, args));
-        simpleJdbcTemplate.update(sql, args);
+        namedParameterJdbcTemplate.update(sql, args);
     }
 }
