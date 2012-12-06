@@ -18,7 +18,7 @@ import sk.openhouse.pipelineservice.util.XmlUtil;
  * @author pete
  */
 @Component
-@Path("")
+@Path(ResourceUtil.ROOT_PATH)
 public class RootResource {
 
     private XmlUtil xmlUtil;

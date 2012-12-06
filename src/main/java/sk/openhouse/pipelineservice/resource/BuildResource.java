@@ -18,7 +18,7 @@ import sk.openhouse.pipelineservice.service.BuildService;
 import sk.openhouse.pipelineservice.util.XmlUtil;
 
 @Component
-@Path("/projects/{project: [a-zA-Z0-9-_]+}/versions/{version: [0-9\\.]+}/builds/{build: [0-9]+}")
+@Path(ResourceUtil.BUILD_PATH)
 public class BuildResource {
 
     private BuildService buildService;

@@ -14,7 +14,7 @@ import sk.openhouse.pipelineservice.service.VersionService;
 import sk.openhouse.pipelineservice.util.XmlUtil;
 
 @Component
-@Path("/projects/{project: [a-zA-Z0-9-_]+}/versions")
+@Path(ResourceUtil.VERSIONS_PATH)
 public class VersionsResource {
 
     private VersionService versionService;

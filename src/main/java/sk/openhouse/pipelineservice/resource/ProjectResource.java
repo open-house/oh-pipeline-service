@@ -19,7 +19,7 @@ import sk.openhouse.pipelineservice.service.ProjectService;
 import sk.openhouse.pipelineservice.util.XmlUtil;
 
 @Component
-@Path("/projects/{project: [a-zA-Z0-9-_]+}")
+@Path(ResourceUtil.PROJECT_PATH)
 public class ProjectResource {
 
     private ProjectService projectService;

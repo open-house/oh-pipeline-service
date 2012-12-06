@@ -13,7 +13,7 @@ import sk.openhouse.pipelineservice.service.ProjectService;
 import sk.openhouse.pipelineservice.util.XmlUtil;
 
 @Component
-@Path("/projects")
+@Path(ResourceUtil.PROJECTS_PATH)
 public class ProjectsResource {
 
     private ProjectService projectService;
