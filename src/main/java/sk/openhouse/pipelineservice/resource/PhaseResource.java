@@ -32,9 +32,9 @@ public class PhaseResource {
 
     @GET
     @Produces(MediaType.APPLICATION_XML)
-    public String getPhase(@PathParam("project") String projectName, 
-            @PathParam("version") String versionNumber,
-            @PathParam("phase") String phaseName) throws JAXBException {
+    public String getPhase(@PathParam(ResourceUtil.PROJECT_PARAM) String projectName, 
+            @PathParam(ResourceUtil.VERSION_PARAM) String versionNumber,
+            @PathParam(ResourceUtil.PHASE_PARAM) String phaseName) throws JAXBException {
 
         PhaseResponse phaseResponse = phaseService.getPhase(projectName, versionNumber, phaseName);
         return xmlUtil.marshall(PhaseResponse.class, phaseResponse);
@@ -42,27 +42,27 @@ public class PhaseResource {
 
     @PUT
     @Consumes(MediaType.APPLICATION_XML)
-    public void addPhase(@PathParam("project") String projectName, 
-            @PathParam("version") String versionNumber,
-            @PathParam("phase") String phaseName,
+    public void addPhase(@PathParam(ResourceUtil.PROJECT_PARAM) String projectName, 
+            @PathParam(ResourceUtil.VERSION_PARAM) String versionNumber,
+            @PathParam(ResourceUtil.PHASE_PARAM) String phaseName,
             PhaseRequest phaseRequest) {
 
         phaseService.addPhase(projectName, versionNumber, phaseName, phaseRequest);
     }
 
     @POST
-    public void updatePhase(@PathParam("project") String projectName, 
-            @PathParam("version") String versionNumber,
-            @PathParam("phase") String phaseName,
+    public void updatePhase(@PathParam(ResourceUtil.PROJECT_PARAM) String projectName, 
+            @PathParam(ResourceUtil.VERSION_PARAM) String versionNumber,
+            @PathParam(ResourceUtil.PHASE_PARAM) String phaseName,
             PhaseRequest phaseRequest) {
 
         phaseService.updatePhase(projectName, versionNumber, phaseName, phaseRequest);
     }
 
     @DELETE
-    public void deletePhase(@PathParam("project") String projectName, 
-            @PathParam("version") String versionNumber,
-            @PathParam("phase") String phaseName) {
+    public void deletePhase(@PathParam(ResourceUtil.PROJECT_PARAM) String projectName, 
+            @PathParam(ResourceUtil.VERSION_PARAM) String versionNumber,
+            @PathParam(ResourceUtil.PHASE_PARAM) String phaseName) {
 
         phaseService.deletePhase(projectName, versionNumber, phaseName);
     }

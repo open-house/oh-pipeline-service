@@ -32,14 +32,14 @@ public class ProjectResource {
 
     @GET
     @Produces(MediaType.APPLICATION_XML)
-    public String getProject(@PathParam("project") String projectName) throws JAXBException {
+    public String getProject(@PathParam(ResourceUtil.PROJECT_PARAM) String projectName) throws JAXBException {
 
         ProjectResponse projectResponse = projectService.getProject(projectName);
         return xmlUtil.marshall(ProjectResponse.class, projectResponse);
     }
 
     @PUT
-    public void addProject(@PathParam("project") String projectName) {
+    public void addProject(@PathParam(ResourceUtil.PROJECT_PARAM) String projectName) {
 
         ProjectRequest project = new ProjectRequest();
         project.setName(projectName);
@@ -48,12 +48,12 @@ public class ProjectResource {
 
     @POST
     @Consumes(MediaType.APPLICATION_XML)
-    public void updateProject(@PathParam("project") String projectName, ProjectRequest project) {
+    public void updateProject(@PathParam(ResourceUtil.PROJECT_PARAM) String projectName, ProjectRequest project) {
         projectService.updateProject(projectName, project);
     }
 
     @DELETE
-    public void deleteProject(@PathParam("project") String projectName) {
+    public void deleteProject(@PathParam(ResourceUtil.PROJECT_PARAM) String projectName) {
         projectService.deleteProject(projectName);
     }
 }

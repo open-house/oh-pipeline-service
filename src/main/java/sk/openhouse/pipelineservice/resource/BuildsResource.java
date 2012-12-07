@@ -27,8 +27,8 @@ public class BuildsResource {
 
     @GET
     @Produces(MediaType.APPLICATION_XML)
-    public String getBuild(@PathParam("project") String projectName, 
-            @PathParam("version") String versionNumber) throws JAXBException {
+    public String getBuild(@PathParam(ResourceUtil.PROJECT_PARAM) String projectName, 
+            @PathParam(ResourceUtil.VERSION_PARAM) String versionNumber) throws JAXBException {
 
         BuildsResponse builds = buildService.getBuilds(projectName, versionNumber);
         return xmlUtil.marshall(BuildsResponse.class, builds);

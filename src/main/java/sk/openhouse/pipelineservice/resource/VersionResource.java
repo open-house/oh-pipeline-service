@@ -32,15 +32,16 @@ public class VersionResource {
 
     @GET
     @Produces(MediaType.APPLICATION_XML)
-    public String getVersion(@PathParam("project") String projectName, 
-            @PathParam("version") String versionNumber) throws JAXBException {
+    public String getVersion(@PathParam(ResourceUtil.PROJECT_PARAM) String projectName, 
+            @PathParam(ResourceUtil.VERSION_PARAM) String versionNumber) throws JAXBException {
 
         VersionResponse versionResponse = versionService.getVersion(projectName, versionNumber);
         return xmlUtil.marshall(VersionResponse.class, versionResponse);
     }
 
     @PUT
-    public void addVersion(@PathParam("project") String projectName, @PathParam("version") String versionNumber) {
+    public void addVersion(@PathParam(ResourceUtil.PROJECT_PARAM) String projectName, 
+            @PathParam(ResourceUtil.VERSION_PARAM) String versionNumber) {
 
         VersionRequest versionRequest = new VersionRequest();
         versionRequest.setVersionNumber(versionNumber);
@@ -49,15 +50,17 @@ public class VersionResource {
 
     @POST
     @Consumes(MediaType.APPLICATION_XML)
-    public void updateVersion(@PathParam("project") String projectName, 
-            @PathParam("version") String versionNumber, 
+    public void updateVersion(@PathParam(ResourceUtil.PROJECT_PARAM) String projectName, 
+            @PathParam(ResourceUtil.VERSION_PARAM) String versionNumber, 
             VersionRequest versionRequest) {
 
         versionService.updateVersion(projectName, versionNumber, versionRequest);
     }
 
     @DELETE
-    public void deleteVersion(@PathParam("project") String projectName, @PathParam("version") String versionNumber) {
+    public void deleteVersion(@PathParam(ResourceUtil.PROJECT_PARAM) String projectName, 
+            @PathParam(ResourceUtil.VERSION_PARAM) String versionNumber) {
+
         versionService.deleteVersion(projectName, versionNumber);
     }
 }

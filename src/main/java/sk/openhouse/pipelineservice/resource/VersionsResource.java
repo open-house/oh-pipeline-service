@@ -27,7 +27,7 @@ public class VersionsResource {
 
     @GET
     @Produces(MediaType.APPLICATION_XML)
-    public String getVersions(@PathParam("project") String projectName) throws JAXBException {
+    public String getVersions(@PathParam(ResourceUtil.PROJECT_PARAM) String projectName) throws JAXBException {
 
         VersionsResponse versionsResponse = versionService.getVersions(projectName);
         return xmlUtil.marshall(VersionsResponse.class, versionsResponse);

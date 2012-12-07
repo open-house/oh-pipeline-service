@@ -27,8 +27,8 @@ public class PhasesResource {
 
     @GET
     @Produces(MediaType.APPLICATION_XML)
-    public String getVersions(@PathParam("project") String projectName, 
-            @PathParam("version") String versionNumber) throws JAXBException {
+    public String getVersions(@PathParam(ResourceUtil.PROJECT_PARAM) String projectName, 
+            @PathParam(ResourceUtil.VERSION_PARAM) String versionNumber) throws JAXBException {
 
         PhasesResponse phasesResponse = phaseService.getPhases(projectName, versionNumber);
         return xmlUtil.marshall(PhasesResponse.class, phasesResponse);

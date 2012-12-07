@@ -31,18 +31,18 @@ public class BuildResource {
 
     @GET
     @Produces(MediaType.APPLICATION_XML)
-    public String getBuild(@PathParam("project") String projectName, 
-            @PathParam("version") String versionNumber,
-            @PathParam("build") int buildNumber) throws JAXBException {
+    public String getBuild(@PathParam(ResourceUtil.PROJECT_PARAM) String projectName, 
+            @PathParam(ResourceUtil.VERSION_PARAM) String versionNumber,
+            @PathParam(ResourceUtil.BUILD_PARAM) int buildNumber) throws JAXBException {
 
         BuildResponse buildResponse = buildService.getBuild(projectName, versionNumber, buildNumber);
         return xmlUtil.marshall(BuildResponse.class, buildResponse);
     }
 
     @PUT
-    public void addBuild(@PathParam("project") String projectName, 
-            @PathParam("version") String versionNumber,
-            @PathParam("build") int buildNumber) {
+    public void addBuild(@PathParam(ResourceUtil.PROJECT_PARAM) String projectName, 
+            @PathParam(ResourceUtil.VERSION_PARAM) String versionNumber,
+            @PathParam(ResourceUtil.BUILD_PARAM) int buildNumber) {
 
         BuildRequest buildRequest = new BuildRequest();
         buildRequest.setNumber(buildNumber);
@@ -50,18 +50,18 @@ public class BuildResource {
     }
 
     @POST
-    public void updateBuild(@PathParam("project") String projectName, 
-            @PathParam("version") String versionNumber,
-            @PathParam("build") int buildNumber,
+    public void updateBuild(@PathParam(ResourceUtil.PROJECT_PARAM) String projectName, 
+            @PathParam(ResourceUtil.VERSION_PARAM) String versionNumber,
+            @PathParam(ResourceUtil.BUILD_PARAM) int buildNumber,
             BuildRequest build) {
 
         buildService.updateBuild(projectName, versionNumber, buildNumber, build);
     }
 
     @DELETE
-    public void deleteBuild(@PathParam("project") String projectName, 
-            @PathParam("version") String versionNumber,
-            @PathParam("build") int buildNumber) {
+    public void deleteBuild(@PathParam(ResourceUtil.PROJECT_PARAM) String projectName, 
+            @PathParam(ResourceUtil.VERSION_PARAM) String versionNumber,
+            @PathParam(ResourceUtil.BUILD_PARAM) int buildNumber) {
 
         buildService.deleteBuild(projectName, versionNumber, buildNumber);
     }
