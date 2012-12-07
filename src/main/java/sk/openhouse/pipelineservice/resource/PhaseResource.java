@@ -51,6 +51,7 @@ public class PhaseResource {
     }
 
     @POST
+    @Consumes(MediaType.APPLICATION_XML)
     public void updatePhase(@PathParam(ResourceUtil.PROJECT_PARAM) String projectName, 
             @PathParam(ResourceUtil.VERSION_PARAM) String versionNumber,
             @PathParam(ResourceUtil.PHASE_PARAM) String phaseName,

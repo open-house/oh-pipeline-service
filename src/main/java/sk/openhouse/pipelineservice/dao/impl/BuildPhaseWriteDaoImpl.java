@@ -8,6 +8,7 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 
 import sk.openhouse.pipelineservice.dao.BuildPhaseWriteDao;
 import sk.openhouse.pipelineservice.domain.PhaseState;
+import sk.openhouse.pipelineservice.domain.request.StateRequest;
 
 public class BuildPhaseWriteDaoImpl implements BuildPhaseWriteDao {
 
@@ -48,7 +49,7 @@ public class BuildPhaseWriteDaoImpl implements BuildPhaseWriteDao {
     }
 
     @Override
-    public void addState(String projectName, String versionNumber, int buildNumber, String phaseName, PhaseState state) {
+    public void addState(String projectName, String versionNumber, int buildNumber, String phaseName, StateRequest stateRequest) {
 
         String sql = "INSERT INTO build_phases (build_id, phase_id, state) "
                 + "VALUES("
@@ -66,7 +67,7 @@ public class BuildPhaseWriteDaoImpl implements BuildPhaseWriteDao {
         args.addValue("versionNumber", versionNumber);
         args.addValue("buildNumber", buildNumber);
         args.addValue("phaseName", phaseName);
-        args.addValue("phaseState", state);
+        args.addValue("phaseState", stateRequest.getName());
 
         logger.debug(String.format("Adding build phase - %s args - %s", sql, args));
         namedParameterJdbcTemplate.update(sql, args);

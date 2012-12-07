@@ -21,7 +21,6 @@ public class BuildServiceImpl implements BuildService {
     private HttpUtil httpUtil;
     private BuildReadDao buildReadDao;
     private BuildWriteDao buildWriteDao;
-    private BuildPhaseReadDao buildPhaseReadDao;
     private BuildPhaseWriteDao buildPhaseWriteDao;
 
     public BuildServiceImpl(HttpUtil httpUtil, BuildReadDao buildReadDao, BuildWriteDao buildWriteDao,
@@ -30,7 +29,6 @@ public class BuildServiceImpl implements BuildService {
         this.httpUtil = httpUtil;
         this.buildReadDao = buildReadDao;
         this.buildWriteDao = buildWriteDao;
-        this.buildPhaseReadDao = buildPhaseReadDao;
         this.buildPhaseWriteDao = buildPhaseWriteDao;
     }
 

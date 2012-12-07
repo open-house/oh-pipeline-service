@@ -1,6 +1,8 @@
 package sk.openhouse.pipelineservice.resource;
 
+import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
+import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
@@ -9,6 +11,8 @@ import javax.xml.bind.JAXBException;
 
 import org.springframework.stereotype.Component;
 
+import sk.openhouse.pipelineservice.domain.request.StateRequest;
+import sk.openhouse.pipelineservice.domain.response.BuildPhaseResponse;
 import sk.openhouse.pipelineservice.service.BuildPhaseService;
 import sk.openhouse.pipelineservice.util.XmlUtil;
 
@@ -29,9 +33,21 @@ public class BuildPhaseResource {
     public String getBuildPhase(@PathParam(ResourceUtil.PROJECT_PARAM) String projectName, 
             @PathParam(ResourceUtil.VERSION_PARAM) String versionNumber,
             @PathParam(ResourceUtil.BUILD_PARAM) int buildNumber,
-            @PathParam(ResourceUtil.PHASE_PARAM) String phase) throws JAXBException {
+            @PathParam(ResourceUtil.PHASE_PARAM) String phaseName) throws JAXBException {
 
-        // TODO
-        return null;
+        BuildPhaseResponse buildPhaseResponse = buildPhaseService.getBuildPhase(
+                projectName, versionNumber, buildNumber, phaseName);
+        return xmlUtil.marshall(BuildPhaseResponse.class, buildPhaseResponse);
+    }
+
+    @POST
+    @Consumes(MediaType.APPLICATION_XML)
+    public void addBuildState(@PathParam(ResourceUtil.PROJECT_PARAM) String projectName, 
+            @PathParam(ResourceUtil.VERSION_PARAM) String versionNumber,
+            @PathParam(ResourceUtil.BUILD_PARAM) int buildNumber,
+            @PathParam(ResourceUtil.PHASE_PARAM) String phaseName,
+            StateRequest stateRequest) {
+
+        buildPhaseService.addState(projectName, versionNumber, buildNumber, phaseName, stateRequest);
     }
 }
