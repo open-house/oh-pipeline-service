@@ -1,8 +1,5 @@
 package sk.openhouse.pipelineservice.domain.response;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
@@ -14,7 +11,7 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlRootElement(name = "resource")
+@XmlRootElement(name = "build")
 @XmlType(propOrder = {"number", "buildPhases", "resources"})
 public class BuildResponse {
 
@@ -22,7 +19,7 @@ public class BuildResponse {
     private int number;
 
     @XmlElement(name = "build-phases")
-    private List<BuildPhaseResponse> buildPhases = new ArrayList<BuildPhaseResponse>();
+    private BuildPhasesResponse buildPhases = new BuildPhasesResponse();
 
     @XmlElement(name = "resources")
     private ResourcesResponse resources;
@@ -35,11 +32,11 @@ public class BuildResponse {
         this.number = number;
     }
 
-    public List<BuildPhaseResponse> getBuildPhases() {
+    public BuildPhasesResponse getBuildPhases() {
         return buildPhases;
     }
 
-    public void setBuildPhases(List<BuildPhaseResponse> buildPhases) {
+    public void setBuildPhases(BuildPhasesResponse buildPhases) {
         this.buildPhases = buildPhases;
     }
 
@@ -62,7 +59,6 @@ public class BuildResponse {
 
         return new HashCodeBuilder()
                 .append(number)
-                .append(buildPhases)
                 .toHashCode();
     }
 
@@ -76,7 +72,6 @@ public class BuildResponse {
         final BuildResponse other = (BuildResponse) object;
         return new EqualsBuilder()
                 .append(number, other.number)
-                .append(buildPhases, other.buildPhases)
                 .isEquals();
     }
 

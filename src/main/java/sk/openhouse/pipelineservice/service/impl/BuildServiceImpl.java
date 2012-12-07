@@ -3,6 +3,8 @@ package sk.openhouse.pipelineservice.service.impl;
 import java.util.ArrayList;
 import java.util.List;
 
+import sk.openhouse.pipelineservice.dao.BuildPhaseReadDao;
+import sk.openhouse.pipelineservice.dao.BuildPhaseWriteDao;
 import sk.openhouse.pipelineservice.dao.BuildReadDao;
 import sk.openhouse.pipelineservice.dao.BuildWriteDao;
 import sk.openhouse.pipelineservice.domain.request.BuildRequest;
@@ -19,11 +21,17 @@ public class BuildServiceImpl implements BuildService {
     private HttpUtil httpUtil;
     private BuildReadDao buildReadDao;
     private BuildWriteDao buildWriteDao;
+    private BuildPhaseReadDao buildPhaseReadDao;
+    private BuildPhaseWriteDao buildPhaseWriteDao;
 
-    public BuildServiceImpl(HttpUtil httpUtil, BuildReadDao buildReadDao, BuildWriteDao buildWriteDao) {
+    public BuildServiceImpl(HttpUtil httpUtil, BuildReadDao buildReadDao, BuildWriteDao buildWriteDao,
+            BuildPhaseReadDao buildPhaseReadDao, BuildPhaseWriteDao buildPhaseWriteDao) {
+
         this.httpUtil = httpUtil;
         this.buildReadDao = buildReadDao;
         this.buildWriteDao = buildWriteDao;
+        this.buildPhaseReadDao = buildPhaseReadDao;
+        this.buildPhaseWriteDao = buildPhaseWriteDao;
     }
 
     /**
@@ -60,7 +68,10 @@ public class BuildServiceImpl implements BuildService {
      */
     @Override
     public void addBuild(String projectName, String versionNumber, BuildRequest buildRequest) {
+
+        // TODO - phase cannot be hardcoded here, but should be automatically done in build phase dao
         buildWriteDao.addBuild(projectName, versionNumber, buildRequest);
+        buildPhaseWriteDao.addPhase(projectName, versionNumber, buildRequest.getNumber(), "QA");
     }
 
     /**

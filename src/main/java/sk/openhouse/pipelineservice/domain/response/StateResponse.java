@@ -12,22 +12,24 @@ import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
+import sk.openhouse.pipelineservice.domain.PhaseState;
+
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlRootElement(name = "state")
 @XmlType(propOrder = { "name", "date" })
 public class StateResponse {
 
     @XmlElement(name = "name")
-    private String name;
+    private PhaseState name;
 
     @XmlElement(name = "date")
     private Date date;
 
-    public String getName() {
+    public PhaseState getName() {
         return name;
     }
 
-    public void setName(String name) {
+    public void setName(PhaseState name) {
         this.name = name;
     }
 

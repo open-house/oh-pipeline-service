@@ -1,5 +1,8 @@
 package sk.openhouse.pipelineservice.domain.response;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
@@ -11,50 +14,39 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlRootElement(name = "build-phase")
-@XmlType(propOrder = { "name", "states" })
-public class BuildPhaseResponse {
+@XmlRootElement(name = "build-phases")
+@XmlType(propOrder = { "buildPhases" })
+public class BuildPhasesResponse {
 
-    @XmlElement(name = "name")
-    private String name;
+    @XmlElement(name = "build-phase")
+    private List<BuildPhaseResponse> buildPhases = new ArrayList<BuildPhaseResponse>();
 
-    @XmlElement(name = "states")
-    private StatesResponse states = new StatesResponse();
-
-    public String getName() {
-        return name;
+    public List<BuildPhaseResponse> getBuildPhases() {
+        return buildPhases;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public StatesResponse getStates() {
-        return states;
-    }
-
-    public void setStates(StatesResponse states) {
-        this.states = states;
+    public void setBuildPhases(List<BuildPhaseResponse> buildPhases) {
+        this.buildPhases = buildPhases;
     }
 
     @Override
     public final int hashCode() {
 
         return new HashCodeBuilder()
-                .append(name)
+                .append(buildPhases)
                 .toHashCode();
     }
 
     @Override
     public final boolean equals(Object object) {
 
-        if (!(object instanceof BuildPhaseResponse)) {
+        if (!(object instanceof BuildPhasesResponse)) {
             return false;
         }
 
-        final BuildPhaseResponse other = (BuildPhaseResponse) object;
+        final BuildPhasesResponse other = (BuildPhasesResponse) object;
         return new EqualsBuilder()
-                .append(name, other.name)
+                .append(buildPhases, other.buildPhases)
                 .isEquals();
     }
 
@@ -62,8 +54,7 @@ public class BuildPhaseResponse {
     public String toString() {
 
         return new ToStringBuilder(this)
-                .append("name", name)
-                .append("states", states)
+                .append("buildPhases", buildPhases)
                 .toString();
     }
 }
