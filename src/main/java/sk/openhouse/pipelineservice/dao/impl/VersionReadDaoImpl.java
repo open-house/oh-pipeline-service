@@ -72,9 +72,7 @@ public class VersionReadDaoImpl implements VersionReadDao {
         List<VersionResponse> versions = namedParameterJdbcTemplate.query(sql, args, new VersionMapper());
 
         VersionsResponse versionsResponse = new VersionsResponse();
-        if (null != versions) {
-            versionsResponse.setVersions(versions);
-        }
+        versionsResponse.setVersions(versions);
         return versionsResponse;
     }
 

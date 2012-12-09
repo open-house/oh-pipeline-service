@@ -12,16 +12,16 @@ import sk.openhouse.pipelineservice.domain.response.ResourceResponse;
 import sk.openhouse.pipelineservice.domain.response.ResourcesResponse;
 import sk.openhouse.pipelineservice.service.ProjectService;
 import sk.openhouse.pipelineservice.service.exception.NotFoundException;
-import sk.openhouse.pipelineservice.util.HttpUtil;
+import sk.openhouse.pipelineservice.service.ResourceService;
 
 public class ProjectServiceImpl implements ProjectService {
 
-    private HttpUtil httpUtil;
+    private ResourceService resourceService;
     private ProjectReadDao projectReadDao;
     private ProjectWriteDao projectWriteDao;
 
-    public ProjectServiceImpl(HttpUtil httpUtil, ProjectReadDao projectReadDao, ProjectWriteDao projectWriteDao) {
-        this.httpUtil = httpUtil;
+    public ProjectServiceImpl(ResourceService resourceService, ProjectReadDao projectReadDao, ProjectWriteDao projectWriteDao) {
+        this.resourceService = resourceService;
         this.projectReadDao = projectReadDao;
         this.projectWriteDao = projectWriteDao;
     }
@@ -71,22 +71,22 @@ public class ProjectServiceImpl implements ProjectService {
      */
     private ResourcesResponse getProjectDetailsResources(String projectName) {
 
-        String projectURI = httpUtil.getProjectURIString(projectName);
-        String versionsURI = httpUtil.getVersionsURIString(projectName);
+        String projectURI = resourceService.getProjectURIString(projectName);
+        String versionsURI = resourceService.getVersionsURIString(projectName);
 
         List<ResourceResponse> projectDetailsResources = new ArrayList<ResourceResponse>();
         /* GET */
-        projectDetailsResources.add(httpUtil.getResource(httpUtil.getProjectsURIString(), "List of all projects"));
+        projectDetailsResources.add(resourceService.getResource(resourceService.getProjectsURIString(), "List of all projects"));
         /* GET */
-        projectDetailsResources.add(httpUtil.getResource(versionsURI, "List of all versions of this project"));
+        projectDetailsResources.add(resourceService.getResource(versionsURI, "List of all versions of this project"));
         /* PUT */
-        projectDetailsResources.add(httpUtil.getResource(projectURI, 
+        projectDetailsResources.add(resourceService.getResource(projectURI, 
                 "Insert new project, or overwride existing project", "PUT"));
         /* POST */
-        projectDetailsResources.add(httpUtil.getResource(projectURI, 
+        projectDetailsResources.add(resourceService.getResource(projectURI, 
                 "Update existing project", "POST"));
         /* DELETE */
-        projectDetailsResources.add(httpUtil.getResource(projectURI, 
+        projectDetailsResources.add(resourceService.getResource(projectURI, 
                 "Delete existing project", "DELETE"));
 
         ResourcesResponse resourcesResponse = new ResourcesResponse();
@@ -101,7 +101,7 @@ public class ProjectServiceImpl implements ProjectService {
 
         List<ResourceResponse> projectResources = new ArrayList<ResourceResponse>();
         /* GET */
-        projectResources.add(httpUtil.getResource(httpUtil.getProjectURIString(projectName), "Project Details"));
+        projectResources.add(resourceService.getResource(resourceService.getProjectURIString(projectName), "Project Details"));
 
         ResourcesResponse resourcesResponse = new ResourcesResponse();
         resourcesResponse.setResources(projectResources);

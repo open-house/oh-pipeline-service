@@ -3,32 +3,35 @@ package sk.openhouse.pipelineservice.service.impl;
 import java.util.ArrayList;
 import java.util.List;
 
-import sk.openhouse.pipelineservice.dao.BuildPhaseReadDao;
 import sk.openhouse.pipelineservice.dao.BuildPhaseWriteDao;
 import sk.openhouse.pipelineservice.dao.BuildReadDao;
 import sk.openhouse.pipelineservice.dao.BuildWriteDao;
+import sk.openhouse.pipelineservice.dao.PhaseReadDao;
 import sk.openhouse.pipelineservice.domain.request.BuildRequest;
 import sk.openhouse.pipelineservice.domain.response.BuildResponse;
 import sk.openhouse.pipelineservice.domain.response.BuildsResponse;
+import sk.openhouse.pipelineservice.domain.response.PhaseResponse;
 import sk.openhouse.pipelineservice.domain.response.ResourceResponse;
 import sk.openhouse.pipelineservice.domain.response.ResourcesResponse;
 import sk.openhouse.pipelineservice.service.BuildService;
 import sk.openhouse.pipelineservice.service.exception.NotFoundException;
-import sk.openhouse.pipelineservice.util.HttpUtil;
+import sk.openhouse.pipelineservice.service.ResourceService;
 
 public class BuildServiceImpl implements BuildService {
 
-    private HttpUtil httpUtil;
+    private ResourceService resourceService;
     private BuildReadDao buildReadDao;
     private BuildWriteDao buildWriteDao;
+    private PhaseReadDao phaseReadDao;
     private BuildPhaseWriteDao buildPhaseWriteDao;
 
-    public BuildServiceImpl(HttpUtil httpUtil, BuildReadDao buildReadDao, BuildWriteDao buildWriteDao,
-            BuildPhaseReadDao buildPhaseReadDao, BuildPhaseWriteDao buildPhaseWriteDao) {
+    public BuildServiceImpl(ResourceService resourceService, BuildReadDao buildReadDao, BuildWriteDao buildWriteDao,
+            PhaseReadDao phaseReadDao, BuildPhaseWriteDao buildPhaseWriteDao) {
 
-        this.httpUtil = httpUtil;
+        this.resourceService = resourceService;
         this.buildReadDao = buildReadDao;
         this.buildWriteDao = buildWriteDao;
+        this.phaseReadDao = phaseReadDao;
         this.buildPhaseWriteDao = buildPhaseWriteDao;
     }
 
@@ -67,9 +70,12 @@ public class BuildServiceImpl implements BuildService {
     @Override
     public void addBuild(String projectName, String versionNumber, BuildRequest buildRequest) {
 
-        // TODO - phase cannot be hardcoded here, but should be automatically done in build phase dao
         buildWriteDao.addBuild(projectName, versionNumber, buildRequest);
-        buildPhaseWriteDao.addPhase(projectName, versionNumber, buildRequest.getNumber(), "QA");
+
+        PhaseResponse phaseResponse = phaseReadDao.getFirstPhase(projectName, versionNumber);
+        buildPhaseWriteDao.addPhase(projectName, versionNumber, buildRequest.getNumber(), phaseResponse.getName());
+
+        // TODO - call url in the first phase
     }
 
     /**
@@ -92,8 +98,8 @@ public class BuildServiceImpl implements BuildService {
 
         List<ResourceResponse> buildResources = new ArrayList<ResourceResponse>();
         /* GET */
-        buildResources.add(httpUtil.getResource(
-                httpUtil.getBuildURIString(projectName, versionNumber, buildNumber),
+        buildResources.add(resourceService.getResource(
+                resourceService.getBuildURIString(projectName, versionNumber, buildNumber),
                 "Build Details"));
 
         ResourcesResponse resourcesResponse = new ResourcesResponse();
@@ -104,18 +110,18 @@ public class BuildServiceImpl implements BuildService {
     private ResourcesResponse getBuildDetailsResources(String projectName, String versionNumber, int buildNumber) {
 
         List<ResourceResponse> buildResources = new ArrayList<ResourceResponse>();
-        String buildURIString = httpUtil.getBuildURIString(projectName, versionNumber, buildNumber);
+        String buildURIString = resourceService.getBuildURIString(projectName, versionNumber, buildNumber);
 
         /* GET */
-        buildResources.add(httpUtil.getResource(
-                httpUtil.getBuildsURIString(projectName, versionNumber),
+        buildResources.add(resourceService.getResource(
+                resourceService.getBuildsURIString(projectName, versionNumber),
                 "List of all builds for project and its version"));
         /* PUT */
-        buildResources.add(httpUtil.getResource(buildURIString, "Insert new, or overwride existing build", "PUT"));
+        buildResources.add(resourceService.getResource(buildURIString, "Insert new, or overwride existing build", "PUT"));
         /* POST */
-        buildResources.add(httpUtil.getResource(buildURIString, "Update existing build", "POST"));
+        buildResources.add(resourceService.getResource(buildURIString, "Update existing build", "POST"));
         /* DELETE */
-        buildResources.add(httpUtil.getResource(buildURIString, "Delete existing build", "DELETE"));
+        buildResources.add(resourceService.getResource(buildURIString, "Delete existing build", "DELETE"));
 
         ResourcesResponse resourcesResponse = new ResourcesResponse();
         resourcesResponse.setResources(buildResources);

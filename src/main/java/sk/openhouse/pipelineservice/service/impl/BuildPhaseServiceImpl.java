@@ -1,5 +1,6 @@
 package sk.openhouse.pipelineservice.service.impl;
 
+import com.sun.jersey.api.ConflictException;
 import com.sun.jersey.api.NotFoundException;
 
 import sk.openhouse.pipelineservice.dao.BuildPhaseReadDao;
@@ -21,6 +22,9 @@ public class BuildPhaseServiceImpl implements BuildPhaseService {
         this.buildPhaseWriteDao = buildPhaseWriteDao;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void addState(String projectName, String versionNumber, int buildNumber, String phaseName, StateRequest stateRequest) {
 
@@ -30,20 +34,35 @@ public class BuildPhaseServiceImpl implements BuildPhaseService {
                     projectName, versionNumber, buildNumber, phaseName));
         }
 
+        /* build phase has already been successfully completed */
+        if (lastPhaseState.equals(PhaseState.SUCCESS)) {
+            throw new ConflictException(String.format("Phase %s has already been successfully completed.", phaseName));
+        }
+
         /* already updated */
         PhaseState state = stateRequest.getName();
         if (state.equals(lastPhaseState)) {
-            return;
+            throw new ConflictException(String.format("Build phase is already in %s state.", state));
         }
 
+        /* failed build can only by changed to in progress */
+        if (lastPhaseState.equals(PhaseState.FAIL) && !state.equals(PhaseState.IN_PROGRESS)) {
+            throw new ConflictException("Failed phase can only be moved to in progress.");
+        }
         buildPhaseWriteDao.addState(projectName, versionNumber, buildNumber, phaseName, stateRequest);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public BuildPhasesResponse getBuildPhases(String projectName, String versionNumber, int buildNumber) {
         return buildPhaseReadDao.getBuildPhases(projectName, versionNumber, buildNumber);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public BuildPhaseResponse getBuildPhase(String projectName, String versionNumber, int buildNumber, String phaseName) {
         return buildPhaseReadDao.getBuildPhase(projectName, versionNumber, buildNumber, phaseName);

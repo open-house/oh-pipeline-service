@@ -31,6 +31,25 @@ public class PhaseReadDaoImpl implements PhaseReadDao {
      * {@inheritDoc}
      */
     @Override
+    public PhaseResponse getFirstPhase(String projectName, String versionNumber) {
+
+        String sql = "SELECT ph.name, ph.uri FROM phases ph \n"
+                + "JOIN versions v ON (ph.version_id = v.id) \n"
+                + "JOIN projects p ON (v.project_id = p.id) \n"
+                + "WHERE v.version_number = :versionNumber \n"
+                + "ORDER BY ph.timestamp LIMIT 1";
+
+        MapSqlParameterSource args = new MapSqlParameterSource();
+        args.addValue("projectName", projectName);
+        args.addValue("versionNumber", versionNumber);
+
+        return namedParameterJdbcTemplate.queryForObject(sql, args, new PhaseMapper());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public PhaseResponse getPhase(String projectName, String versionNumber, String phaseName) {
 
         String sql = "SELECT ph.name, ph.uri FROM phases ph " 

@@ -11,6 +11,15 @@ import sk.openhouse.pipelineservice.domain.response.PhasesResponse;
 public interface PhaseReadDao {
 
     /**
+     * Returns a phase that has been added as the first one (sorted by timestamp)
+     * 
+     * @param projectName
+     * @param versionNumber
+     * @return
+     */
+    PhaseResponse getFirstPhase(String projectName, String versionNumber);
+
+    /**
      * @param projectName
      * @param versionNumber
      * @param phaseName

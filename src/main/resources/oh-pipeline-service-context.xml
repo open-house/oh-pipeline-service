@@ -69,9 +69,15 @@
     <!-- utils -->
     <bean name="xmlUtil" class="sk.openhouse.pipelineservice.util.impl.XmlUtilImpl" />
 
-    <bean name="httpUtil" class="sk.openhouse.pipelineservice.util.impl.HttpUtilImpl">
+    <bean name="resourceService" class="sk.openhouse.pipelineservice.service.impl.ResourceServiceImpl">
         <constructor-arg name="rootURI" value="${httpUtil.rootURI}" />
     </bean>
+
+    <bean name="httpUtil" class="sk.openhouse.pipelineservice.util.impl.HttpUtilImpl">
+        <constructor-arg name="httpClient" ref="httpClient" />
+    </bean>
+
+    <bean id="httpClient" class="org.apache.http.impl.client.DefaultHttpClient"/>
 
     <!-- imports -->
     <import resource="oh-pipeline-service-datasource.xml" />

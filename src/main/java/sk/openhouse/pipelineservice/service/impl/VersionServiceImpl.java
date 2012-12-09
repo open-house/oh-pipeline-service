@@ -12,16 +12,16 @@ import sk.openhouse.pipelineservice.domain.response.VersionResponse;
 import sk.openhouse.pipelineservice.domain.response.VersionsResponse;
 import sk.openhouse.pipelineservice.service.VersionService;
 import sk.openhouse.pipelineservice.service.exception.NotFoundException;
-import sk.openhouse.pipelineservice.util.HttpUtil;
+import sk.openhouse.pipelineservice.service.ResourceService;
 
 public class VersionServiceImpl implements VersionService {
 
-    private HttpUtil httpUtil;
+    private ResourceService resourceService;
     private VersionReadDao versionReadDao;
     private VersionWriteDao versionWriteDao;
 
-    public VersionServiceImpl(HttpUtil httpUtil, VersionReadDao versionReadDao, VersionWriteDao versionWriteDao) {
-        this.httpUtil = httpUtil;
+    public VersionServiceImpl(ResourceService resourceService, VersionReadDao versionReadDao, VersionWriteDao versionWriteDao) {
+        this.resourceService = resourceService;
         this.versionReadDao = versionReadDao;
         this.versionWriteDao = versionWriteDao;
     }
@@ -84,7 +84,7 @@ public class VersionServiceImpl implements VersionService {
 
         List<ResourceResponse> versionResources = new ArrayList<ResourceResponse>();
         /* GET */
-        versionResources.add(httpUtil.getResource(httpUtil.getVersionURIString(projectName, versionNumber), 
+        versionResources.add(resourceService.getResource(resourceService.getVersionURIString(projectName, versionNumber), 
                 "Version Details"));
 
         ResourcesResponse resourcesResponse = new ResourcesResponse();
@@ -97,25 +97,25 @@ public class VersionServiceImpl implements VersionService {
      */
     private ResourcesResponse getVersionDetailsResources(String projectName, String versionNumber) {
 
-        String versionURI = httpUtil.getVersionURIString(projectName, versionNumber);
-        String phasesURI = httpUtil.getPhasesURIString(projectName, versionNumber);
+        String versionURI = resourceService.getVersionURIString(projectName, versionNumber);
+        String phasesURI = resourceService.getPhasesURIString(projectName, versionNumber);
 
         List<ResourceResponse> versionDetailsResources = new ArrayList<ResourceResponse>();
         /* GET */
-        versionDetailsResources.add(httpUtil.getResource(httpUtil.getVersionsURIString(projectName), "Project versions"));
+        versionDetailsResources.add(resourceService.getResource(resourceService.getVersionsURIString(projectName), "Project versions"));
         /* GET */
-        versionDetailsResources.add(httpUtil.getResource(httpUtil.getBuildsURIString(projectName, versionNumber), 
+        versionDetailsResources.add(resourceService.getResource(resourceService.getBuildsURIString(projectName, versionNumber), 
                 "List of all builds for this version."));
         /* GET */
-        versionDetailsResources.add(httpUtil.getResource(phasesURI, "List of all phases of this project"));
+        versionDetailsResources.add(resourceService.getResource(phasesURI, "List of all phases of this project"));
         /* PUT */
-        versionDetailsResources.add(httpUtil.getResource(versionURI, 
+        versionDetailsResources.add(resourceService.getResource(versionURI, 
                 "Insert new version, or overwride existing version", "PUT"));
         /* POST */
-        versionDetailsResources.add(httpUtil.getResource(versionURI, 
+        versionDetailsResources.add(resourceService.getResource(versionURI, 
                 "Update existing version", "POST"));
         /* DELETE */
-        versionDetailsResources.add(httpUtil.getResource(versionURI, 
+        versionDetailsResources.add(resourceService.getResource(versionURI, 
                 "Delete existing version", "DELETE"));
 
         ResourcesResponse resourcesResponse = new ResourcesResponse();

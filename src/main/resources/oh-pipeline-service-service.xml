@@ -12,26 +12,26 @@
 
     <!-- services -->
     <bean name="rootResourceService" class="sk.openhouse.pipelineservice.service.impl.RootResourceServiceImpl">
-        <constructor-arg name="httpUtil" ref="httpUtil" />
+        <constructor-arg name="resourceService" ref="resourceService" />
     </bean>
 
     <bean name="projectService" class="sk.openhouse.pipelineservice.service.impl.ProjectServiceImpl">
-        <constructor-arg name="httpUtil" ref="httpUtil" />
+        <constructor-arg name="resourceService" ref="resourceService" />
         <constructor-arg name="projectReadDao" ref="projectReadDao" />
         <constructor-arg name="projectWriteDao" ref="projectWriteDao" />
     </bean>
 
     <bean name="versionService" class="sk.openhouse.pipelineservice.service.impl.VersionServiceImpl">
-        <constructor-arg name="httpUtil" ref="httpUtil" />
+        <constructor-arg name="resourceService" ref="resourceService" />
         <constructor-arg name="versionReadDao" ref="versionReadDao" />
         <constructor-arg name="versionWriteDao" ref="versionWriteDao" />
     </bean>
 
     <bean name="buildService" class="sk.openhouse.pipelineservice.service.impl.BuildServiceImpl">
-        <constructor-arg name="httpUtil" ref="httpUtil" />
+        <constructor-arg name="resourceService" ref="resourceService" />
         <constructor-arg name="buildReadDao" ref="buildReadDao" />
         <constructor-arg name="buildWriteDao" ref="buildWriteDao" />
-        <constructor-arg name="buildPhaseReadDao" ref="buildPhaseReadDao" />
+        <constructor-arg name="phaseReadDao" ref="phaseReadDao" />
         <constructor-arg name="buildPhaseWriteDao" ref="buildPhaseWriteDao" />
     </bean>
 
