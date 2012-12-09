@@ -49,7 +49,6 @@ public class PhaseResponse {
 
         return new HashCodeBuilder()
                 .append(name)
-                .append(uri)
                 .toHashCode();
     }
 
@@ -63,7 +62,6 @@ public class PhaseResponse {
         final PhaseResponse other = (PhaseResponse) object;
         return new EqualsBuilder()
                 .append(name, other.name)
-                .append(uri, other.uri)
                 .isEquals();
     }
 

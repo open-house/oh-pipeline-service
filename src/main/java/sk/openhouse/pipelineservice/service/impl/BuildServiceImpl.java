@@ -3,7 +3,6 @@ package sk.openhouse.pipelineservice.service.impl;
 import java.util.ArrayList;
 import java.util.List;
 
-import sk.openhouse.pipelineservice.dao.BuildPhaseWriteDao;
 import sk.openhouse.pipelineservice.dao.BuildReadDao;
 import sk.openhouse.pipelineservice.dao.BuildWriteDao;
 import sk.openhouse.pipelineservice.dao.PhaseReadDao;
@@ -13,6 +12,7 @@ import sk.openhouse.pipelineservice.domain.response.BuildsResponse;
 import sk.openhouse.pipelineservice.domain.response.PhaseResponse;
 import sk.openhouse.pipelineservice.domain.response.ResourceResponse;
 import sk.openhouse.pipelineservice.domain.response.ResourcesResponse;
+import sk.openhouse.pipelineservice.service.BuildPhaseService;
 import sk.openhouse.pipelineservice.service.BuildService;
 import sk.openhouse.pipelineservice.service.exception.NotFoundException;
 import sk.openhouse.pipelineservice.service.ResourceService;
@@ -23,16 +23,16 @@ public class BuildServiceImpl implements BuildService {
     private BuildReadDao buildReadDao;
     private BuildWriteDao buildWriteDao;
     private PhaseReadDao phaseReadDao;
-    private BuildPhaseWriteDao buildPhaseWriteDao;
+    private BuildPhaseService buildPhaseService;
 
     public BuildServiceImpl(ResourceService resourceService, BuildReadDao buildReadDao, BuildWriteDao buildWriteDao,
-            PhaseReadDao phaseReadDao, BuildPhaseWriteDao buildPhaseWriteDao) {
+            PhaseReadDao phaseReadDao, BuildPhaseService buildPhaseService) {
 
         this.resourceService = resourceService;
         this.buildReadDao = buildReadDao;
         this.buildWriteDao = buildWriteDao;
         this.phaseReadDao = phaseReadDao;
-        this.buildPhaseWriteDao = buildPhaseWriteDao;
+        this.buildPhaseService = buildPhaseService;
     }
 
     /**
@@ -72,10 +72,9 @@ public class BuildServiceImpl implements BuildService {
 
         buildWriteDao.addBuild(projectName, versionNumber, buildRequest);
 
+        /* run first phase */
         PhaseResponse phaseResponse = phaseReadDao.getFirstPhase(projectName, versionNumber);
-        buildPhaseWriteDao.addPhase(projectName, versionNumber, buildRequest.getNumber(), phaseResponse.getName());
-
-        // TODO - call url in the first phase
+        buildPhaseService.runPhase(projectName, versionNumber, buildRequest.getNumber(), phaseResponse);
     }
 
     /**

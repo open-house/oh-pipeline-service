@@ -32,12 +32,14 @@
         <constructor-arg name="buildReadDao" ref="buildReadDao" />
         <constructor-arg name="buildWriteDao" ref="buildWriteDao" />
         <constructor-arg name="phaseReadDao" ref="phaseReadDao" />
-        <constructor-arg name="buildPhaseWriteDao" ref="buildPhaseWriteDao" />
+        <constructor-arg name="buildPhaseService" ref="buildPhaseService" />
     </bean>
 
     <bean name="buildPhaseService" class="sk.openhouse.pipelineservice.service.impl.BuildPhaseServiceImpl">
         <constructor-arg name="buildPhaseReadDao" ref="buildPhaseReadDao" />
         <constructor-arg name="buildPhaseWriteDao" ref="buildPhaseWriteDao" />
+        <constructor-arg name="phaseReadDao" ref="phaseReadDao" />
+        <constructor-arg name="httpUtil" ref="httpUtil" />
     </bean>
 
     <bean name="phaseService" class="sk.openhouse.pipelineservice.service.impl.PhaseServiceImpl">

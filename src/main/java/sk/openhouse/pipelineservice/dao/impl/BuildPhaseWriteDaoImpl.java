@@ -8,7 +8,6 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 
 import sk.openhouse.pipelineservice.dao.BuildPhaseWriteDao;
 import sk.openhouse.pipelineservice.domain.PhaseState;
-import sk.openhouse.pipelineservice.domain.request.StateRequest;
 
 public class BuildPhaseWriteDaoImpl implements BuildPhaseWriteDao {
 
@@ -20,9 +19,6 @@ public class BuildPhaseWriteDaoImpl implements BuildPhaseWriteDao {
         this.namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(dataSource);
     }
 
-    // TODO - test - call from buildService when adding new build
-    // if it works, the after calling this method call uri specified in the phase, if there's
-    // error when calling, immediately fail this phase
     @Override
     public void addPhase(String projectName, String versionNumber, int buildNumber, String phaseName) {
 
@@ -49,7 +45,7 @@ public class BuildPhaseWriteDaoImpl implements BuildPhaseWriteDao {
     }
 
     @Override
-    public void addState(String projectName, String versionNumber, int buildNumber, String phaseName, StateRequest stateRequest) {
+    public void addState(String projectName, String versionNumber, int buildNumber, String phaseName, PhaseState phaseState) {
 
         String sql = "INSERT INTO build_phases (build_id, phase_id, state) \n"
                 + "VALUES(\n"
@@ -67,7 +63,7 @@ public class BuildPhaseWriteDaoImpl implements BuildPhaseWriteDao {
         args.addValue("versionNumber", versionNumber);
         args.addValue("buildNumber", buildNumber);
         args.addValue("phaseName", phaseName);
-        args.addValue("phaseState", stateRequest.getName().name());
+        args.addValue("phaseState", phaseState.name());
 
         logger.debug(String.format("Adding build phase - %s args - %s", sql, args));
         namedParameterJdbcTemplate.update(sql, args);

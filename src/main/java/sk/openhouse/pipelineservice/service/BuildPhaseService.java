@@ -3,6 +3,7 @@ package sk.openhouse.pipelineservice.service;
 import sk.openhouse.pipelineservice.domain.request.StateRequest;
 import sk.openhouse.pipelineservice.domain.response.BuildPhaseResponse;
 import sk.openhouse.pipelineservice.domain.response.BuildPhasesResponse;
+import sk.openhouse.pipelineservice.domain.response.PhaseResponse;
 import sk.openhouse.pipelineservice.service.exception.ConflictException;
 
 /**
@@ -46,4 +47,18 @@ public interface BuildPhaseService {
      */
     void addState(String projectName, String versionNumber, int buildNumber, String phaseName, StateRequest stateRequest)
             throws ConflictException;
+
+    /**
+     * Moves specified phase to IN_PROGRESS state and calls Uri on that phase. If the call fails,
+     * phase is immediately moved to FAIL state.
+     * 
+     * This method is intended to be used ONLY within a service. Make sure you understand what this method does and
+     * how it affects the whole pipeline before using it.
+     * 
+     * @param projectName
+     * @param versionNumber
+     * @param buildNumber
+     * @param phaseResponse
+     */
+    void runPhase(String projectName, String versionNumber, int buildNumber, PhaseResponse phaseResponse);
 }

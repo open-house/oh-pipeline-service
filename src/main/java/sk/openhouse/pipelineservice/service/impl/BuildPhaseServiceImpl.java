@@ -1,25 +1,36 @@
 package sk.openhouse.pipelineservice.service.impl;
 
+import java.util.List;
+
 import com.sun.jersey.api.ConflictException;
 import com.sun.jersey.api.NotFoundException;
 
 import sk.openhouse.pipelineservice.dao.BuildPhaseReadDao;
 import sk.openhouse.pipelineservice.dao.BuildPhaseWriteDao;
+import sk.openhouse.pipelineservice.dao.PhaseReadDao;
 import sk.openhouse.pipelineservice.domain.PhaseState;
 import sk.openhouse.pipelineservice.domain.request.StateRequest;
 import sk.openhouse.pipelineservice.domain.response.BuildPhaseResponse;
 import sk.openhouse.pipelineservice.domain.response.BuildPhasesResponse;
+import sk.openhouse.pipelineservice.domain.response.PhaseResponse;
+import sk.openhouse.pipelineservice.domain.response.PhasesResponse;
 import sk.openhouse.pipelineservice.service.BuildPhaseService;
+import sk.openhouse.pipelineservice.util.HttpUtil;
 
 public class BuildPhaseServiceImpl implements BuildPhaseService {
 
     private BuildPhaseReadDao buildPhaseReadDao;
     private BuildPhaseWriteDao buildPhaseWriteDao;
+    private PhaseReadDao phaseReadDao;
+    private HttpUtil httpUtil;
 
-    public BuildPhaseServiceImpl(BuildPhaseReadDao buildPhaseReadDao, BuildPhaseWriteDao buildPhaseWriteDao) {
+    public BuildPhaseServiceImpl(BuildPhaseReadDao buildPhaseReadDao, BuildPhaseWriteDao buildPhaseWriteDao,
+            PhaseReadDao phaseReadDao, HttpUtil httpUtil) {
 
         this.buildPhaseReadDao = buildPhaseReadDao;
         this.buildPhaseWriteDao = buildPhaseWriteDao;
+        this.phaseReadDao = phaseReadDao;
+        this.httpUtil = httpUtil;
     }
 
     /**
@@ -49,7 +60,11 @@ public class BuildPhaseServiceImpl implements BuildPhaseService {
         if (lastPhaseState.equals(PhaseState.FAIL) && !state.equals(PhaseState.IN_PROGRESS)) {
             throw new ConflictException("Failed phase can only be moved to in progress.");
         }
-        buildPhaseWriteDao.addState(projectName, versionNumber, buildNumber, phaseName, stateRequest);
+        buildPhaseWriteDao.addState(projectName, versionNumber, buildNumber, phaseName, stateRequest.getName());
+
+        if (stateRequest.getName().equals(PhaseState.SUCCESS)) {
+            runNextPhase(projectName, versionNumber, buildNumber, phaseName);
+        }
     }
 
     /**
@@ -66,5 +81,45 @@ public class BuildPhaseServiceImpl implements BuildPhaseService {
     @Override
     public BuildPhaseResponse getBuildPhase(String projectName, String versionNumber, int buildNumber, String phaseName) {
         return buildPhaseReadDao.getBuildPhase(projectName, versionNumber, buildNumber, phaseName);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void runPhase(String projectName, String versionNumber, int buildNumber, PhaseResponse phaseResponse) {
+
+        buildPhaseWriteDao.addPhase(projectName, versionNumber, buildNumber, phaseResponse.getName());
+
+        /* call uri for the first phase */
+        if (!httpUtil.sendPostRequest(phaseResponse.getUri())) {
+            buildPhaseWriteDao.addState(projectName, versionNumber, buildNumber, 
+                    phaseResponse.getName(), PhaseState.FAIL);
+        }
+    }
+
+    /**
+     * Moves next phase (the one after the supplied one) to IN_PROGRESS, and calls its URI.
+     * 
+     * @param phaseName
+     */
+    private void runNextPhase(String projectName, String versionNumber, int buildNumber, String phaseName) {
+
+        PhasesResponse phasesResponse = phaseReadDao.getPhases(projectName, versionNumber);
+        List<PhaseResponse> phaseResponses = phasesResponse.getPhases();
+
+        PhaseResponse currentPhase = new PhaseResponse();
+        currentPhase.setName(phaseName);
+
+        int index = phaseResponses.indexOf(currentPhase) + 1;
+        int lastIndex = phaseResponses.size() - 1;
+
+        /* last phase - nothing to do */
+        if (index > lastIndex) {
+            return;
+        }
+
+        PhaseResponse nextPhase = phaseResponses.get(index);
+        runPhase(projectName, versionNumber, buildNumber, nextPhase);
     }
 }

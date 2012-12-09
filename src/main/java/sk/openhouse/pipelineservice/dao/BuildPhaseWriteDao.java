@@ -1,6 +1,6 @@
 package sk.openhouse.pipelineservice.dao;
 
-import sk.openhouse.pipelineservice.domain.request.StateRequest;
+import sk.openhouse.pipelineservice.domain.PhaseState;
 
 /**
  * Write DAO for for build phases
@@ -26,7 +26,7 @@ public interface BuildPhaseWriteDao {
      * @param versionNumber
      * @param buildNumber
      * @param phaseName
-     * @param stateRequest
+     * @param phaseState
      */
-    void addState(String projectName, String versionNumber, int buildNumber, String phaseName, StateRequest stateRequest);
+    void addState(String projectName, String versionNumber, int buildNumber, String phaseName, PhaseState phaseState);
 }
