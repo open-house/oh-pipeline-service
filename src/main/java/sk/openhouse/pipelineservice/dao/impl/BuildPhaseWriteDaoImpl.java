@@ -51,23 +51,23 @@ public class BuildPhaseWriteDaoImpl implements BuildPhaseWriteDao {
     @Override
     public void addState(String projectName, String versionNumber, int buildNumber, String phaseName, StateRequest stateRequest) {
 
-        String sql = "INSERT INTO build_phases (build_id, phase_id, state) "
-                + "VALUES("
-                    + "(SELECT b.id FROM builds b "
-                        + "JOIN versions v ON (b.version_id = v.id) "
-                        + "JOIN projects p ON (v.project_id = p.id) "
-                        + "WHERE b.number = :buildNumber "
-                        + "AND v.version_number = :versionNumber "
-                        + "AND p.name = :projectName), "
-                    + "(SELECT ph.id FROM phases ph WHERE ph.name = :phaseName), "
-                    + ":phaseState";
+        String sql = "INSERT INTO build_phases (build_id, phase_id, state) \n"
+                + "VALUES(\n"
+                    + "(SELECT b.id FROM builds b \n"
+                        + "JOIN versions v ON (b.version_id = v.id) \n"
+                        + "JOIN projects p ON (v.project_id = p.id) \n"
+                        + "WHERE b.number = :buildNumber \n"
+                        + "AND v.version_number = :versionNumber \n"
+                        + "AND p.name = :projectName), \n"
+                    + "(SELECT ph.id FROM phases ph WHERE ph.name = :phaseName), \n"
+                    + ":phaseState)";
 
         MapSqlParameterSource args = new MapSqlParameterSource();
         args.addValue("projectName", projectName);
         args.addValue("versionNumber", versionNumber);
         args.addValue("buildNumber", buildNumber);
         args.addValue("phaseName", phaseName);
-        args.addValue("phaseState", stateRequest.getName());
+        args.addValue("phaseState", stateRequest.getName().name());
 
         logger.debug(String.format("Adding build phase - %s args - %s", sql, args));
         namedParameterJdbcTemplate.update(sql, args);

@@ -38,7 +38,7 @@ public class BuildPhaseReadDaoImpl implements BuildPhaseReadDao {
     @Override
     public PhaseState getLastState(String projectName, String versionNumber, int buildNumber, String phaseName) {
 
-        String sql = "SELECT  MAX(bp.timestamp), bp.state \n"
+        String sql = "SELECT bp.state \n"
                 + "FROM build_phases bp \n"
                 + "JOIN builds b ON (bp.build_id = b.id) \n"
                 + "JOIN phases ph ON (bp.phase_id = ph.id) \n"
@@ -47,7 +47,8 @@ public class BuildPhaseReadDaoImpl implements BuildPhaseReadDao {
                 + "WHERE p.name = :projectName \n"
                 + "AND v.version_number = :versionNumber \n"
                 + "AND b.number = :buildNumber \n"
-                + "AND ph name = :phaseName";
+                + "AND ph.name = :phaseName \n"
+                + "ORDER BY bp.timestamp DESC LIMIT 1";
 
         MapSqlParameterSource args = new MapSqlParameterSource();
         args.addValue("projectName", projectName);
@@ -57,10 +58,11 @@ public class BuildPhaseReadDaoImpl implements BuildPhaseReadDao {
 
         logger.debug(String.format("Quering for last build state - %s args - %s", sql, args));
         try {
-            return namedParameterJdbcTemplate.queryForObject(sql, args, PhaseState.class);
+            String state = namedParameterJdbcTemplate.queryForObject(sql, args, String.class);
+            return PhaseState.valueOf(state);
         } catch (DataAccessException e) {
-            logger.debug(String.format("No build state for project $s version %s build %d and phase %s cannot be fond", 
-                    projectName, versionNumber, buildNumber, phaseName));
+            logger.debug(String.format("No build state found for project %s version %s build %d and phase %s.", 
+                    projectName, versionNumber, buildNumber, phaseName), e);
         }
 
         return null;
