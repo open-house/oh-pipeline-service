@@ -5,43 +5,43 @@
         http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
 
     <!-- DAOs -->
-    <bean id="projectReadDao" class="sk.openhouse.pipelineservice.dao.impl.ProjectReadDaoImpl">
+    <bean id="projectReadDao" class="sk.openhouse.automation.pipelineservice.dao.impl.ProjectReadDaoImpl">
         <constructor-arg name="dataSource" ref="dataSource" />
     </bean>
 
-    <bean id="projectWriteDao" class="sk.openhouse.pipelineservice.dao.impl.ProjectWriteDaoImpl">
+    <bean id="projectWriteDao" class="sk.openhouse.automation.pipelineservice.dao.impl.ProjectWriteDaoImpl">
         <constructor-arg name="dataSource" ref="dataSource" />
     </bean>
 
-    <bean id="versionReadDao" class="sk.openhouse.pipelineservice.dao.impl.VersionReadDaoImpl">
+    <bean id="versionReadDao" class="sk.openhouse.automation.pipelineservice.dao.impl.VersionReadDaoImpl">
         <constructor-arg name="dataSource" ref="dataSource" />
     </bean>
 
-    <bean id="versionWriteDao" class="sk.openhouse.pipelineservice.dao.impl.VersionWriteDaoImpl">
+    <bean id="versionWriteDao" class="sk.openhouse.automation.pipelineservice.dao.impl.VersionWriteDaoImpl">
         <constructor-arg name="dataSource" ref="dataSource" />
     </bean>
 
-    <bean id="buildReadDao" class="sk.openhouse.pipelineservice.dao.impl.BuildReadDaoImpl">
+    <bean id="buildReadDao" class="sk.openhouse.automation.pipelineservice.dao.impl.BuildReadDaoImpl">
         <constructor-arg name="dataSource" ref="dataSource" />
     </bean>
 
-    <bean id="buildWriteDao" class="sk.openhouse.pipelineservice.dao.impl.BuildWriteDaoImpl">
+    <bean id="buildWriteDao" class="sk.openhouse.automation.pipelineservice.dao.impl.BuildWriteDaoImpl">
         <constructor-arg name="dataSource" ref="dataSource" />
     </bean>
 
-    <bean id="phaseReadDao" class="sk.openhouse.pipelineservice.dao.impl.PhaseReadDaoImpl">
+    <bean id="phaseReadDao" class="sk.openhouse.automation.pipelineservice.dao.impl.PhaseReadDaoImpl">
         <constructor-arg name="dataSource" ref="dataSource" />
     </bean>
 
-    <bean id="phaseWriteDao" class="sk.openhouse.pipelineservice.dao.impl.PhaseWriteDaoImpl">
+    <bean id="phaseWriteDao" class="sk.openhouse.automation.pipelineservice.dao.impl.PhaseWriteDaoImpl">
         <constructor-arg name="dataSource" ref="dataSource" />
     </bean>
 
-    <bean id="buildPhaseReadDao" class="sk.openhouse.pipelineservice.dao.impl.BuildPhaseReadDaoImpl">
+    <bean id="buildPhaseReadDao" class="sk.openhouse.automation.pipelineservice.dao.impl.BuildPhaseReadDaoImpl">
         <constructor-arg name="dataSource" ref="dataSource" />
     </bean>
 
-    <bean id="buildPhaseWriteDao" class="sk.openhouse.pipelineservice.dao.impl.BuildPhaseWriteDaoImpl">
+    <bean id="buildPhaseWriteDao" class="sk.openhouse.automation.pipelineservice.dao.impl.BuildPhaseWriteDaoImpl">
         <constructor-arg name="dataSource" ref="dataSource" />
     </bean>
 </beans>
