@@ -43,6 +43,12 @@
 
     <dependencies>
         <dependency>
+            <groupId>sk.openhouse.automation</groupId>
+            <artifactId>oh-pipeline-domain</artifactId>
+            <version>0.1-1</version>
+        </dependency>
+
+        <dependency>
             <groupId>com.sun.jersey</groupId>
             <artifactId>jersey-server</artifactId>
             <version>${jersey.version}</version>
