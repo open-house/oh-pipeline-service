@@ -1,7 +1,7 @@
 package sk.openhouse.automation.pipelineservice.dao;
 
-import sk.openhouse.automation.pipelineservice.domain.response.BuildResponse;
-import sk.openhouse.automation.pipelineservice.domain.response.BuildsResponse;
+import sk.openhouse.automation.pipelinedomain.domain.response.BuildResponse;
+import sk.openhouse.automation.pipelinedomain.domain.response.BuildsResponse;
 
 /**
  * Read DAO for builds

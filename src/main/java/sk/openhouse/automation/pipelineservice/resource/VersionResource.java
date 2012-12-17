@@ -13,8 +13,8 @@ import javax.xml.bind.JAXBException;
 
 import org.springframework.stereotype.Component;
 
-import sk.openhouse.automation.pipelineservice.domain.request.VersionRequest;
-import sk.openhouse.automation.pipelineservice.domain.response.VersionResponse;
+import sk.openhouse.automation.pipelinedomain.domain.request.VersionRequest;
+import sk.openhouse.automation.pipelinedomain.domain.response.VersionResponse;
 import sk.openhouse.automation.pipelineservice.service.VersionService;
 import sk.openhouse.automation.pipelineservice.util.XmlUtil;
 

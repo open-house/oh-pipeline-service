@@ -1,6 +1,6 @@
 package sk.openhouse.automation.pipelineservice.dao;
 
-import sk.openhouse.automation.pipelineservice.domain.request.BuildRequest;
+import sk.openhouse.automation.pipelinedomain.domain.request.BuildRequest;
 
 /**
  * Write DAO for project build write access

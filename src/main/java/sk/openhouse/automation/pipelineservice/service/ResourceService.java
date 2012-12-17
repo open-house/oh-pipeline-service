@@ -1,6 +1,6 @@
 package sk.openhouse.automation.pipelineservice.service;
 
-import sk.openhouse.automation.pipelineservice.domain.response.ResourceResponse;
+import sk.openhouse.automation.pipelinedomain.domain.response.ResourceResponse;
 
 /**
  * Service for generating resources

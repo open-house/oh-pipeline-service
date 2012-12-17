@@ -1,6 +1,6 @@
 package sk.openhouse.automation.pipelineservice.dao;
 
-import sk.openhouse.automation.pipelineservice.domain.request.PhaseRequest;
+import sk.openhouse.automation.pipelinedomain.domain.request.PhaseRequest;
 
 /**
  * Phase write DAO for project phases

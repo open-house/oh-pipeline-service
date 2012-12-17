@@ -5,11 +5,11 @@ import java.util.List;
 
 import sk.openhouse.automation.pipelineservice.dao.ProjectReadDao;
 import sk.openhouse.automation.pipelineservice.dao.ProjectWriteDao;
-import sk.openhouse.automation.pipelineservice.domain.request.ProjectRequest;
-import sk.openhouse.automation.pipelineservice.domain.response.ProjectResponse;
-import sk.openhouse.automation.pipelineservice.domain.response.ProjectsResponse;
-import sk.openhouse.automation.pipelineservice.domain.response.ResourceResponse;
-import sk.openhouse.automation.pipelineservice.domain.response.ResourcesResponse;
+import sk.openhouse.automation.pipelinedomain.domain.request.ProjectRequest;
+import sk.openhouse.automation.pipelinedomain.domain.response.ProjectResponse;
+import sk.openhouse.automation.pipelinedomain.domain.response.ProjectsResponse;
+import sk.openhouse.automation.pipelinedomain.domain.response.ResourceResponse;
+import sk.openhouse.automation.pipelinedomain.domain.response.ResourcesResponse;
 import sk.openhouse.automation.pipelineservice.service.ProjectService;
 import sk.openhouse.automation.pipelineservice.service.ResourceService;
 import sk.openhouse.automation.pipelineservice.service.exception.NotFoundException;

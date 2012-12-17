@@ -1,8 +1,8 @@
 package sk.openhouse.automation.pipelineservice.service;
 
-import sk.openhouse.automation.pipelineservice.domain.request.PhaseRequest;
-import sk.openhouse.automation.pipelineservice.domain.response.PhaseResponse;
-import sk.openhouse.automation.pipelineservice.domain.response.PhasesResponse;
+import sk.openhouse.automation.pipelinedomain.domain.request.PhaseRequest;
+import sk.openhouse.automation.pipelinedomain.domain.response.PhaseResponse;
+import sk.openhouse.automation.pipelinedomain.domain.response.PhasesResponse;
 import sk.openhouse.automation.pipelineservice.service.exception.NotFoundException;
 
 /**

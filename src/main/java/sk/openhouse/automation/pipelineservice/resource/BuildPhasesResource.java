@@ -9,7 +9,7 @@ import javax.xml.bind.JAXBException;
 
 import org.springframework.stereotype.Component;
 
-import sk.openhouse.automation.pipelineservice.domain.response.BuildPhasesResponse;
+import sk.openhouse.automation.pipelinedomain.domain.response.BuildPhasesResponse;
 import sk.openhouse.automation.pipelineservice.service.BuildPhaseService;
 import sk.openhouse.automation.pipelineservice.util.XmlUtil;
 

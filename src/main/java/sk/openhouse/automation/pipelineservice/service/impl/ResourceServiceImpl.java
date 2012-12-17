@@ -5,8 +5,8 @@ import java.net.URISyntaxException;
 
 import org.apache.log4j.Logger;
 
-import sk.openhouse.automation.pipelineservice.domain.response.LinkResponse;
-import sk.openhouse.automation.pipelineservice.domain.response.ResourceResponse;
+import sk.openhouse.automation.pipelinedomain.domain.response.LinkResponse;
+import sk.openhouse.automation.pipelinedomain.domain.response.ResourceResponse;
 import sk.openhouse.automation.pipelineservice.service.ResourceService;
 import sk.openhouse.automation.pipelineservice.util.impl.HttpUtilImpl;
 

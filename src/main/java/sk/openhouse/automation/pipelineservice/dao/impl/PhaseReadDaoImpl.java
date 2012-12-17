@@ -14,8 +14,8 @@ import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 
 import sk.openhouse.automation.pipelineservice.dao.PhaseReadDao;
-import sk.openhouse.automation.pipelineservice.domain.response.PhaseResponse;
-import sk.openhouse.automation.pipelineservice.domain.response.PhasesResponse;
+import sk.openhouse.automation.pipelinedomain.domain.response.PhaseResponse;
+import sk.openhouse.automation.pipelinedomain.domain.response.PhasesResponse;
 
 public class PhaseReadDaoImpl implements PhaseReadDao {
 

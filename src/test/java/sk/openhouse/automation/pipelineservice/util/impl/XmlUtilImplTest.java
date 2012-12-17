@@ -11,9 +11,9 @@ import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
-import sk.openhouse.automation.pipelineservice.domain.response.LinkResponse;
-import sk.openhouse.automation.pipelineservice.domain.response.ResourceResponse;
-import sk.openhouse.automation.pipelineservice.domain.response.ResourcesResponse;
+import sk.openhouse.automation.pipelinedomain.domain.response.LinkResponse;
+import sk.openhouse.automation.pipelinedomain.domain.response.ResourceResponse;
+import sk.openhouse.automation.pipelinedomain.domain.response.ResourcesResponse;
 import sk.openhouse.automation.pipelineservice.util.impl.XmlUtilImpl;
 
 public class XmlUtilImplTest {

@@ -13,8 +13,8 @@ import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 
 import sk.openhouse.automation.pipelineservice.dao.VersionReadDao;
-import sk.openhouse.automation.pipelineservice.domain.response.VersionResponse;
-import sk.openhouse.automation.pipelineservice.domain.response.VersionsResponse;
+import sk.openhouse.automation.pipelinedomain.domain.response.VersionResponse;
+import sk.openhouse.automation.pipelinedomain.domain.response.VersionsResponse;
 
 /**
  * 

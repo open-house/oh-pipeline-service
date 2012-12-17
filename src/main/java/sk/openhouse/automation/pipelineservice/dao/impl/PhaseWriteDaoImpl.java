@@ -7,7 +7,7 @@ import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 
 import sk.openhouse.automation.pipelineservice.dao.PhaseWriteDao;
-import sk.openhouse.automation.pipelineservice.domain.request.PhaseRequest;
+import sk.openhouse.automation.pipelinedomain.domain.request.PhaseRequest;
 
 public class PhaseWriteDaoImpl implements PhaseWriteDao {
 

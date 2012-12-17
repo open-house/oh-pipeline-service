@@ -1,8 +1,8 @@
 package sk.openhouse.automation.pipelineservice.service;
 
-import sk.openhouse.automation.pipelineservice.domain.request.VersionRequest;
-import sk.openhouse.automation.pipelineservice.domain.response.VersionResponse;
-import sk.openhouse.automation.pipelineservice.domain.response.VersionsResponse;
+import sk.openhouse.automation.pipelinedomain.domain.request.VersionRequest;
+import sk.openhouse.automation.pipelinedomain.domain.response.VersionResponse;
+import sk.openhouse.automation.pipelinedomain.domain.response.VersionsResponse;
 import sk.openhouse.automation.pipelineservice.service.exception.NotFoundException;
 
 /**

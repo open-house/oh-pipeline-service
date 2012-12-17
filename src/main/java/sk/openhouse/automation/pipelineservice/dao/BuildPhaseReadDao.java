@@ -1,8 +1,8 @@
 package sk.openhouse.automation.pipelineservice.dao;
 
-import sk.openhouse.automation.pipelineservice.domain.PhaseState;
-import sk.openhouse.automation.pipelineservice.domain.response.BuildPhaseResponse;
-import sk.openhouse.automation.pipelineservice.domain.response.BuildPhasesResponse;
+import sk.openhouse.automation.pipelinedomain.domain.PhaseState;
+import sk.openhouse.automation.pipelinedomain.domain.response.BuildPhaseResponse;
+import sk.openhouse.automation.pipelinedomain.domain.response.BuildPhasesResponse;
 
 /**
  * Read DAO for build phases

@@ -3,8 +3,8 @@ package sk.openhouse.automation.pipelineservice.service.impl;
 import java.util.ArrayList;
 import java.util.List;
 
-import sk.openhouse.automation.pipelineservice.domain.response.ResourceResponse;
-import sk.openhouse.automation.pipelineservice.domain.response.ResourcesResponse;
+import sk.openhouse.automation.pipelinedomain.domain.response.ResourceResponse;
+import sk.openhouse.automation.pipelinedomain.domain.response.ResourcesResponse;
 import sk.openhouse.automation.pipelineservice.service.ResourceService;
 import sk.openhouse.automation.pipelineservice.service.RootResourceService;
 

@@ -8,12 +8,12 @@ import com.sun.jersey.api.NotFoundException;
 import sk.openhouse.automation.pipelineservice.dao.BuildPhaseReadDao;
 import sk.openhouse.automation.pipelineservice.dao.BuildPhaseWriteDao;
 import sk.openhouse.automation.pipelineservice.dao.PhaseReadDao;
-import sk.openhouse.automation.pipelineservice.domain.PhaseState;
-import sk.openhouse.automation.pipelineservice.domain.request.StateRequest;
-import sk.openhouse.automation.pipelineservice.domain.response.BuildPhaseResponse;
-import sk.openhouse.automation.pipelineservice.domain.response.BuildPhasesResponse;
-import sk.openhouse.automation.pipelineservice.domain.response.PhaseResponse;
-import sk.openhouse.automation.pipelineservice.domain.response.PhasesResponse;
+import sk.openhouse.automation.pipelinedomain.domain.PhaseState;
+import sk.openhouse.automation.pipelinedomain.domain.request.StateRequest;
+import sk.openhouse.automation.pipelinedomain.domain.response.BuildPhaseResponse;
+import sk.openhouse.automation.pipelinedomain.domain.response.BuildPhasesResponse;
+import sk.openhouse.automation.pipelinedomain.domain.response.PhaseResponse;
+import sk.openhouse.automation.pipelinedomain.domain.response.PhasesResponse;
 import sk.openhouse.automation.pipelineservice.service.BuildPhaseService;
 import sk.openhouse.automation.pipelineservice.util.HttpUtil;
 

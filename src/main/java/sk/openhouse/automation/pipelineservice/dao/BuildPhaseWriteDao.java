@@ -1,6 +1,6 @@
 package sk.openhouse.automation.pipelineservice.dao;
 
-import sk.openhouse.automation.pipelineservice.domain.PhaseState;
+import sk.openhouse.automation.pipelinedomain.domain.PhaseState;
 
 /**
  * Write DAO for for build phases

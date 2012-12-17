@@ -2,9 +2,9 @@ package sk.openhouse.automation.pipelineservice.service.impl;
 
 import sk.openhouse.automation.pipelineservice.dao.PhaseReadDao;
 import sk.openhouse.automation.pipelineservice.dao.PhaseWriteDao;
-import sk.openhouse.automation.pipelineservice.domain.request.PhaseRequest;
-import sk.openhouse.automation.pipelineservice.domain.response.PhaseResponse;
-import sk.openhouse.automation.pipelineservice.domain.response.PhasesResponse;
+import sk.openhouse.automation.pipelinedomain.domain.request.PhaseRequest;
+import sk.openhouse.automation.pipelinedomain.domain.response.PhaseResponse;
+import sk.openhouse.automation.pipelinedomain.domain.response.PhasesResponse;
 import sk.openhouse.automation.pipelineservice.service.PhaseService;
 import sk.openhouse.automation.pipelineservice.service.exception.BadRequestException;
 import sk.openhouse.automation.pipelineservice.service.exception.NotFoundException;

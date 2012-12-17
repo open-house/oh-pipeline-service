@@ -12,8 +12,8 @@ import javax.xml.bind.JAXBException;
 
 import org.springframework.stereotype.Component;
 
-import sk.openhouse.automation.pipelineservice.domain.request.BuildRequest;
-import sk.openhouse.automation.pipelineservice.domain.response.BuildResponse;
+import sk.openhouse.automation.pipelinedomain.domain.request.BuildRequest;
+import sk.openhouse.automation.pipelinedomain.domain.response.BuildResponse;
 import sk.openhouse.automation.pipelineservice.service.BuildService;
 import sk.openhouse.automation.pipelineservice.util.XmlUtil;
 

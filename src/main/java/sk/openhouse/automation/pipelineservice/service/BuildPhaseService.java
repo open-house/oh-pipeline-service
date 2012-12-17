@@ -1,9 +1,9 @@
 package sk.openhouse.automation.pipelineservice.service;
 
-import sk.openhouse.automation.pipelineservice.domain.request.StateRequest;
-import sk.openhouse.automation.pipelineservice.domain.response.BuildPhaseResponse;
-import sk.openhouse.automation.pipelineservice.domain.response.BuildPhasesResponse;
-import sk.openhouse.automation.pipelineservice.domain.response.PhaseResponse;
+import sk.openhouse.automation.pipelinedomain.domain.request.StateRequest;
+import sk.openhouse.automation.pipelinedomain.domain.response.BuildPhaseResponse;
+import sk.openhouse.automation.pipelinedomain.domain.response.BuildPhasesResponse;
+import sk.openhouse.automation.pipelinedomain.domain.response.PhaseResponse;
 import sk.openhouse.automation.pipelineservice.service.exception.ConflictException;
 
 /**

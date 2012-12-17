@@ -13,8 +13,8 @@ import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 
 import sk.openhouse.automation.pipelineservice.dao.ProjectReadDao;
-import sk.openhouse.automation.pipelineservice.domain.response.ProjectResponse;
-import sk.openhouse.automation.pipelineservice.domain.response.ProjectsResponse;
+import sk.openhouse.automation.pipelinedomain.domain.response.ProjectResponse;
+import sk.openhouse.automation.pipelinedomain.domain.response.ProjectsResponse;
 
 public class ProjectReadDaoImpl implements ProjectReadDao {
 

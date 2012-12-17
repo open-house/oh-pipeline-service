@@ -7,7 +7,7 @@ import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 
 import sk.openhouse.automation.pipelineservice.dao.BuildWriteDao;
-import sk.openhouse.automation.pipelineservice.domain.request.BuildRequest;
+import sk.openhouse.automation.pipelinedomain.domain.request.BuildRequest;
 
 public class BuildWriteDaoImpl implements BuildWriteDao {
 

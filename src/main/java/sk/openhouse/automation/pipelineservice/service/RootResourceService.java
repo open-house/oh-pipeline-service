@@ -1,6 +1,6 @@
 package sk.openhouse.automation.pipelineservice.service;
 
-import sk.openhouse.automation.pipelineservice.domain.response.ResourcesResponse;
+import sk.openhouse.automation.pipelinedomain.domain.response.ResourcesResponse;
 
 /**
  * Service for the main/index page

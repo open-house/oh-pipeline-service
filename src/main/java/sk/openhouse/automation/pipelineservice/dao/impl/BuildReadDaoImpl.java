@@ -16,11 +16,11 @@ import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 
 import sk.openhouse.automation.pipelineservice.dao.BuildReadDao;
-import sk.openhouse.automation.pipelineservice.domain.PhaseState;
-import sk.openhouse.automation.pipelineservice.domain.response.BuildPhaseResponse;
-import sk.openhouse.automation.pipelineservice.domain.response.BuildResponse;
-import sk.openhouse.automation.pipelineservice.domain.response.BuildsResponse;
-import sk.openhouse.automation.pipelineservice.domain.response.StateResponse;
+import sk.openhouse.automation.pipelinedomain.domain.PhaseState;
+import sk.openhouse.automation.pipelinedomain.domain.response.BuildPhaseResponse;
+import sk.openhouse.automation.pipelinedomain.domain.response.BuildResponse;
+import sk.openhouse.automation.pipelinedomain.domain.response.BuildsResponse;
+import sk.openhouse.automation.pipelinedomain.domain.response.StateResponse;
 
 public class BuildReadDaoImpl implements BuildReadDao {
 
