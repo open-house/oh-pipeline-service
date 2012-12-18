@@ -2,9 +2,6 @@ package sk.openhouse.automation.pipelineservice.service.impl;
 
 import java.util.List;
 
-import com.sun.jersey.api.ConflictException;
-import com.sun.jersey.api.NotFoundException;
-
 import sk.openhouse.automation.pipelineservice.dao.BuildPhaseReadDao;
 import sk.openhouse.automation.pipelineservice.dao.BuildPhaseWriteDao;
 import sk.openhouse.automation.pipelineservice.dao.PhaseReadDao;
@@ -15,6 +12,8 @@ import sk.openhouse.automation.pipelinedomain.domain.response.BuildPhasesRespons
 import sk.openhouse.automation.pipelinedomain.domain.response.PhaseResponse;
 import sk.openhouse.automation.pipelinedomain.domain.response.PhasesResponse;
 import sk.openhouse.automation.pipelineservice.service.BuildPhaseService;
+import sk.openhouse.automation.pipelineservice.service.exception.ConflictException;
+import sk.openhouse.automation.pipelineservice.service.exception.NotFoundException;
 import sk.openhouse.automation.pipelineservice.util.HttpUtil;
 
 public class BuildPhaseServiceImpl implements BuildPhaseService {
@@ -56,13 +55,17 @@ public class BuildPhaseServiceImpl implements BuildPhaseService {
             throw new ConflictException(String.format("Build phase is already in %s state.", state));
         }
 
-        /* failed build can only by changed to in progress */
-        if (lastPhaseState.equals(PhaseState.FAIL) && !state.equals(PhaseState.IN_PROGRESS)) {
-            throw new ConflictException("Failed phase can only be moved to in progress.");
+        /* failed state updated to in progress - rerun the phase */
+        if (state.equals(PhaseState.IN_PROGRESS)) {
+            buildPhaseWriteDao.addState(projectName, versionNumber, buildNumber, phaseName, state);
+            PhaseResponse phaseResponse = phaseReadDao.getPhase(projectName, versionNumber, phaseName);
+            runPhase(projectName, versionNumber, buildNumber, phaseResponse);
+            return;
         }
-        buildPhaseWriteDao.addState(projectName, versionNumber, buildNumber, phaseName, stateRequest.getName());
 
-        if (stateRequest.getName().equals(PhaseState.SUCCESS)) {
+        /* success - move to the next phase */
+        if (state.equals(PhaseState.SUCCESS)) {
+            buildPhaseWriteDao.addState(projectName, versionNumber, buildNumber, phaseName, state);
             runNextPhase(projectName, versionNumber, buildNumber, phaseName);
         }
     }
@@ -72,7 +75,13 @@ public class BuildPhaseServiceImpl implements BuildPhaseService {
      */
     @Override
     public BuildPhasesResponse getBuildPhases(String projectName, String versionNumber, int buildNumber) {
-        return buildPhaseReadDao.getBuildPhases(projectName, versionNumber, buildNumber);
+
+        BuildPhasesResponse buildPhasesResponse = buildPhaseReadDao.getBuildPhases(projectName, versionNumber, buildNumber);
+        if (null == buildPhasesResponse) {
+            throw new NotFoundException(String.format("No phases found for project %s version %s and build %d.", 
+                    projectName, versionNumber, buildNumber));
+        }
+        return buildPhasesResponse;
     }
 
     /**
@@ -80,7 +89,13 @@ public class BuildPhaseServiceImpl implements BuildPhaseService {
      */
     @Override
     public BuildPhaseResponse getBuildPhase(String projectName, String versionNumber, int buildNumber, String phaseName) {
-        return buildPhaseReadDao.getBuildPhase(projectName, versionNumber, buildNumber, phaseName);
+
+        BuildPhaseResponse buildPhaseResponse = buildPhaseReadDao.getBuildPhase(projectName, versionNumber, buildNumber, phaseName);
+        if (null == buildPhaseResponse) {
+            throw new NotFoundException(String.format("No phase %s found for project %s version %s and build %d", 
+                    phaseName, projectName, versionNumber, buildNumber));
+        }
+        return buildPhaseResponse;
     }
 
     /**

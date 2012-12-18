@@ -48,7 +48,7 @@ public class BuildPhaseReadDaoImpl implements BuildPhaseReadDao {
                 + "AND v.version_number = :versionNumber \n"
                 + "AND b.number = :buildNumber \n"
                 + "AND ph.name = :phaseName \n"
-                + "ORDER BY bp.timestamp DESC LIMIT 1";
+                + "ORDER BY bp.id DESC LIMIT 1";
 
         MapSqlParameterSource args = new MapSqlParameterSource();
         args.addValue("projectName", projectName);
@@ -88,7 +88,8 @@ public class BuildPhaseReadDaoImpl implements BuildPhaseReadDao {
 
         logger.debug(String.format("Quering for build phases - %s args - %s", sql, args));
         try {
-            return namedParameterJdbcTemplate.query(sql, args, new BuildPhasesExtractor());
+            BuildPhasesResponse response = namedParameterJdbcTemplate.query(sql, args, new BuildPhasesExtractor());
+            return (response.getBuildPhases().isEmpty()) ? null : response;
         } catch (EmptyResultDataAccessException e) {
             logger.debug(String.format("No build phases for build %d project $s and version %s fond", 
                     buildNumber, projectName, versionNumber));
@@ -119,7 +120,7 @@ public class BuildPhaseReadDaoImpl implements BuildPhaseReadDao {
 
         logger.debug(String.format("Quering for build phases - %s args - %s", sql, args));
         List<StateResponse> states = namedParameterJdbcTemplate.query(sql, args, new StateMapper());
-        if (null == states) {
+        if (states.isEmpty()) {
             logger.debug(String.format("No build phase %s for build %d project $s and version %s fond", 
                     phaseName, buildNumber, projectName, versionNumber));
             return null;

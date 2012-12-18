@@ -74,7 +74,9 @@ public class BuildServiceImpl implements BuildService {
 
         /* run first phase */
         PhaseResponse phaseResponse = phaseReadDao.getFirstPhase(projectName, versionNumber);
-        buildPhaseService.runPhase(projectName, versionNumber, buildRequest.getNumber(), phaseResponse);
+        if (null != phaseResponse) {
+            buildPhaseService.runPhase(projectName, versionNumber, buildRequest.getNumber(), phaseResponse);
+        }
     }
 
     /**

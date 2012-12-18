@@ -47,7 +47,7 @@ public class PhaseWriteDaoImpl implements PhaseWriteDao {
     @Override
     public void updatePhase(String projectName, String versionNumber, String phaseName, PhaseRequest phaseRequest) {
 
-        String sql = "UPDATE phases ph SET name = :newPhaseName, uri = :newPhaseUri "
+        String sql = "UPDATE phases ph SET name = :newPhaseName%s "
                 + "WHERE ph.name = :phaseName "
                 + "AND ph.version_id = (SELECT v.id FROM versions v JOIN projects p "
                 + "ON (v.project_id = p.id) " 
@@ -58,7 +58,14 @@ public class PhaseWriteDaoImpl implements PhaseWriteDao {
         args.addValue("versionNumber", versionNumber);
         args.addValue("phaseName", phaseName);
         args.addValue("newPhaseName", phaseRequest.getName());
-        args.addValue("newPhaseUri", phaseRequest.getUri().toString());
+
+        /* uri is optional */
+        if (null != phaseRequest.getUri()) {
+            args.addValue("newPhaseUri", phaseRequest.getUri().toString());
+            sql = String.format(sql, ", uri = :newPhaseUri");
+        } else {
+            sql = String.format(sql, "");
+        }
 
         logger.debug(String.format("Updating phase - %s args - %s", sql, args));
         namedParameterJdbcTemplate.update(sql, args);

@@ -9,6 +9,7 @@ import java.util.List;
 import javax.sql.DataSource;
 
 import org.apache.log4j.Logger;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
@@ -36,14 +37,22 @@ public class PhaseReadDaoImpl implements PhaseReadDao {
         String sql = "SELECT ph.name, ph.uri FROM phases ph \n"
                 + "JOIN versions v ON (ph.version_id = v.id) \n"
                 + "JOIN projects p ON (v.project_id = p.id) \n"
-                + "WHERE v.version_number = :versionNumber \n"
-                + "ORDER BY ph.timestamp LIMIT 1";
+                + "WHERE p.name = :projectName \n"
+                + "AND v.version_number = :versionNumber \n"
+                + "ORDER BY ph.id LIMIT 1";
 
         MapSqlParameterSource args = new MapSqlParameterSource();
         args.addValue("projectName", projectName);
         args.addValue("versionNumber", versionNumber);
 
-        return namedParameterJdbcTemplate.queryForObject(sql, args, new PhaseMapper());
+        try {
+            return namedParameterJdbcTemplate.queryForObject(sql, args, new PhaseMapper());
+        } catch (EmptyResultDataAccessException e) {
+            logger.debug(String.format("No phase found for project %s version %s.", 
+                    projectName, versionNumber), e);
+        }
+
+        return null;
     }
 
     /**
@@ -62,7 +71,14 @@ public class PhaseReadDaoImpl implements PhaseReadDao {
         args.addValue("versionNumber", versionNumber);
         args.addValue("phaseName", phaseName);
 
-        return namedParameterJdbcTemplate.queryForObject(sql, args, new PhaseMapper());
+        try {
+            return namedParameterJdbcTemplate.queryForObject(sql, args, new PhaseMapper());
+        } catch (EmptyResultDataAccessException e) {
+            logger.debug(String.format("No phase %s found for project %s version %s.", 
+                    phaseName, projectName, versionNumber), e);
+        }
+
+        return null;
     }
 
     /**
