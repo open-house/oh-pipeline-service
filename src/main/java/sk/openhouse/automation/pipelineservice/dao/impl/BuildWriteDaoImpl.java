@@ -36,7 +36,7 @@ public class BuildWriteDaoImpl implements BuildWriteDao {
         args.addValue("versionNumber", versionNumber);
         args.addValue("buildNumber", buildRequest.getNumber());
 
-        logger.debug(String.format("Adding build - %s args - %s", sql, args));
+        logger.debug(String.format("Adding build - %s args - %s", sql, args.getValues()));
         namedParameterJdbcTemplate.update(sql, args);
     }
 
@@ -58,7 +58,7 @@ public class BuildWriteDaoImpl implements BuildWriteDao {
         args.addValue("buildNumber", buildNumber);
         args.addValue("newBuildNumber", buildRequest.getNumber());
 
-        logger.debug(String.format("Updating build - %s args - %s", sql, args));
+        logger.debug(String.format("Updating build - %s args - %s", sql, args.getValues()));
         namedParameterJdbcTemplate.update(sql, args);
     }
 
@@ -79,7 +79,7 @@ public class BuildWriteDaoImpl implements BuildWriteDao {
         args.addValue("versionNumber", versionNumber);
         args.addValue("buildNumber", buildNumber);
 
-        logger.debug(String.format("Deleting build - %s args - %s", sql, args));
+        logger.debug(String.format("Deleting build - %s args - %s", sql, args.getValues()));
         namedParameterJdbcTemplate.update(sql, args);
     }
 }

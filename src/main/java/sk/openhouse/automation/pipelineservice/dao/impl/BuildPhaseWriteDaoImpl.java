@@ -40,7 +40,7 @@ public class BuildPhaseWriteDaoImpl implements BuildPhaseWriteDao {
         args.addValue("phaseName", phaseName);
         args.addValue("phaseState", PhaseState.IN_PROGRESS.name());
 
-        logger.debug(String.format("Adding build phase - %s args - %s", sql, args));
+        logger.debug(String.format("Adding build phase - %s args - %s", sql, args.getValues()));
         namedParameterJdbcTemplate.update(sql, args);
     }
 
@@ -65,7 +65,7 @@ public class BuildPhaseWriteDaoImpl implements BuildPhaseWriteDao {
         args.addValue("phaseName", phaseName);
         args.addValue("phaseState", phaseState.name());
 
-        logger.debug(String.format("Adding build phase - %s args - %s", sql, args));
+        logger.debug(String.format("Adding build phase - %s args - %s", sql, args.getValues()));
         namedParameterJdbcTemplate.update(sql, args);
     }
 }

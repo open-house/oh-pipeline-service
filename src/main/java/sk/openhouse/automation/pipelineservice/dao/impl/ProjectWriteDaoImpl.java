@@ -30,7 +30,7 @@ public class ProjectWriteDaoImpl implements ProjectWriteDao {
         MapSqlParameterSource args = new MapSqlParameterSource();
         args.addValue("projectName", project.getName());
 
-        logger.debug(String.format("Adding project - %s args - %s", sql, args));
+        logger.debug(String.format("Adding project - %s args - %s", sql, args.getValues()));
         namedParameterJdbcTemplate.update(sql, args);
     }
 
@@ -46,7 +46,7 @@ public class ProjectWriteDaoImpl implements ProjectWriteDao {
         args.addValue("projectName", projectName);
         args.addValue("newName", project.getName());
 
-        logger.debug(String.format("Updating project - %s args - %s", sql, args));
+        logger.debug(String.format("Updating project - %s args - %s", sql, args.getValues()));
         namedParameterJdbcTemplate.update(sql, args);
     }
 
@@ -61,7 +61,7 @@ public class ProjectWriteDaoImpl implements ProjectWriteDao {
         MapSqlParameterSource args = new MapSqlParameterSource();
         args.addValue("projectName", projectName);
 
-        logger.debug(String.format("Deleting project - %s args - %s", sql, args));
+        logger.debug(String.format("Deleting project - %s args - %s", sql, args.getValues()));
         namedParameterJdbcTemplate.update(sql, args);
     }
 }

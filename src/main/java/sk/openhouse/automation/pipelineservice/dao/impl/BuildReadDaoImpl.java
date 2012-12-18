@@ -51,7 +51,7 @@ public class BuildReadDaoImpl implements BuildReadDao {
         args.addValue("projectName", projectName);
         args.addValue("versionNumber", versionNumber);
 
-        logger.debug(String.format("Quering for builds - %s args - %s", sql, args));
+        logger.debug(String.format("Quering for builds - %s args - %s", sql, args.getValues()));
         return namedParameterJdbcTemplate.query(sql, args, new BuildsExtractor());
     }
 
@@ -76,7 +76,7 @@ public class BuildReadDaoImpl implements BuildReadDao {
         args.addValue("versionNumber", versionNumber);
         args.addValue("buildNumber", buildNumber);
 
-        logger.debug(String.format("Quering for builds - %s args - %s", sql, args));
+        logger.debug(String.format("Quering for builds - %s args - %s", sql, args.getValues()));
         try {
             return namedParameterJdbcTemplate.query(sql, args, new BuildExtractor());
         } catch (EmptyResultDataAccessException e) {

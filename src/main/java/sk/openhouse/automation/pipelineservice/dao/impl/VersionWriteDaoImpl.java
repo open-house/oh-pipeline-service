@@ -33,7 +33,7 @@ public class VersionWriteDaoImpl implements VersionWriteDao {
         args.addValue("projectName", projectName);
         args.addValue("versionNumber", versionRequest.getVersionNumber());
 
-        logger.debug(String.format("Adding version - %s args - %s", sql, args));
+        logger.debug(String.format("Adding version - %s args - %s", sql, args.getValues()));
         namedParameterJdbcTemplate.update(sql, args);
     }
 
@@ -52,7 +52,7 @@ public class VersionWriteDaoImpl implements VersionWriteDao {
         args.addValue("versionNumber", versionNumber);
         args.addValue("newVersionNumber", versionRequest.getVersionNumber());
 
-        logger.debug(String.format("Updating version - %s args - %s", sql, args));
+        logger.debug(String.format("Updating version - %s args - %s", sql, args.getValues()));
         namedParameterJdbcTemplate.update(sql, args);
     }
 
@@ -70,7 +70,7 @@ public class VersionWriteDaoImpl implements VersionWriteDao {
         args.addValue("projectName", projectName);
         args.addValue("versionNumber", versionNumber);
 
-        logger.debug(String.format("Deleting version - %s args - %s", sql, args));
+        logger.debug(String.format("Deleting version - %s args - %s", sql, args.getValues()));
         namedParameterJdbcTemplate.update(sql, args);
     }
 }

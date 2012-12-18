@@ -56,7 +56,7 @@ public class BuildPhaseReadDaoImpl implements BuildPhaseReadDao {
         args.addValue("buildNumber", buildNumber);
         args.addValue("phaseName", phaseName);
 
-        logger.debug(String.format("Quering for last build state - %s args - %s", sql, args));
+        logger.debug(String.format("Quering for last build state - %s args - %s", sql, args.getValues()));
         try {
             String state = namedParameterJdbcTemplate.queryForObject(sql, args, String.class);
             return PhaseState.valueOf(state);
@@ -86,7 +86,7 @@ public class BuildPhaseReadDaoImpl implements BuildPhaseReadDao {
         args.addValue("versionNumber", versionNumber);
         args.addValue("buildNumber", buildNumber);
 
-        logger.debug(String.format("Quering for build phases - %s args - %s", sql, args));
+        logger.debug(String.format("Quering for build phases - %s args - %s", sql, args.getValues()));
         try {
             BuildPhasesResponse response = namedParameterJdbcTemplate.query(sql, args, new BuildPhasesExtractor());
             return (response.getBuildPhases().isEmpty()) ? null : response;
@@ -118,7 +118,7 @@ public class BuildPhaseReadDaoImpl implements BuildPhaseReadDao {
         args.addValue("buildNumber", buildNumber);
         args.addValue("phaseName", phaseName);
 
-        logger.debug(String.format("Quering for build phases - %s args - %s", sql, args));
+        logger.debug(String.format("Quering for build phases - %s args - %s", sql, args.getValues()));
         List<StateResponse> states = namedParameterJdbcTemplate.query(sql, args, new StateMapper());
         if (states.isEmpty()) {
             logger.debug(String.format("No build phase %s for build %d project $s and version %s fond", 

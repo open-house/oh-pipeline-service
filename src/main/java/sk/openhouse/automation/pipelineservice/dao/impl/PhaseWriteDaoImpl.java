@@ -37,7 +37,7 @@ public class PhaseWriteDaoImpl implements PhaseWriteDao {
         args.addValue("phaseName", phaseRequest.getName());
         args.addValue("phaseUri", phaseRequest.getUri().toString());
 
-        logger.debug(String.format("Adding phase - %s args - %s", sql, args));
+        logger.debug(String.format("Adding phase - %s args - %s", sql, args.getValues()));
         namedParameterJdbcTemplate.update(sql, args);
     }
 
@@ -67,7 +67,7 @@ public class PhaseWriteDaoImpl implements PhaseWriteDao {
             sql = String.format(sql, "");
         }
 
-        logger.debug(String.format("Updating phase - %s args - %s", sql, args));
+        logger.debug(String.format("Updating phase - %s args - %s", sql, args.getValues()));
         namedParameterJdbcTemplate.update(sql, args);
     }
 
@@ -88,7 +88,7 @@ public class PhaseWriteDaoImpl implements PhaseWriteDao {
         args.addValue("versionNumber", versionNumber);
         args.addValue("phaseName", phaseName);
 
-        logger.debug(String.format("Deleting phase - %s args - %s", sql, args));
+        logger.debug(String.format("Deleting phase - %s args - %s", sql, args.getValues()));
         namedParameterJdbcTemplate.update(sql, args);
     }
 }

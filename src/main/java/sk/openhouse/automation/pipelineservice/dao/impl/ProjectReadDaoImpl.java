@@ -37,7 +37,7 @@ public class ProjectReadDaoImpl implements ProjectReadDao {
         MapSqlParameterSource args = new MapSqlParameterSource();
         args.addValue("name", name);
 
-        logger.debug(String.format("Quering for project - %s args - %s", sql, name));
+        logger.debug(String.format("Quering for project - %s args - %s", sql, args.getValues()));
         try {
             return namedParameterJdbcTemplate.queryForObject(sql, args, new ProjectMapper());
         } catch (EmptyResultDataAccessException e) {

@@ -45,6 +45,7 @@ public class PhaseReadDaoImpl implements PhaseReadDao {
         args.addValue("projectName", projectName);
         args.addValue("versionNumber", versionNumber);
 
+        logger.debug(String.format("Getting phase - %s args - %s", sql, args.getValues()));
         try {
             return namedParameterJdbcTemplate.queryForObject(sql, args, new PhaseMapper());
         } catch (EmptyResultDataAccessException e) {
@@ -71,6 +72,7 @@ public class PhaseReadDaoImpl implements PhaseReadDao {
         args.addValue("versionNumber", versionNumber);
         args.addValue("phaseName", phaseName);
 
+        logger.debug(String.format("Getting phase - %s args - %s", sql, args.getValues()));
         try {
             return namedParameterJdbcTemplate.queryForObject(sql, args, new PhaseMapper());
         } catch (EmptyResultDataAccessException e) {
@@ -96,6 +98,7 @@ public class PhaseReadDaoImpl implements PhaseReadDao {
         args.addValue("projectName", projectName);
         args.addValue("versionNumber", versionNumber);
 
+        logger.debug(String.format("Getting phases - %s args - %s", sql, args.getValues()));
         List<PhaseResponse> phases = namedParameterJdbcTemplate.query(sql, args, new PhaseMapper());
         if (null == phases) {
             phases = new ArrayList<PhaseResponse>();

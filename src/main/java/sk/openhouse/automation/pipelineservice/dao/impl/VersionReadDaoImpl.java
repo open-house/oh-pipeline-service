@@ -45,7 +45,7 @@ public class VersionReadDaoImpl implements VersionReadDao {
         args.addValue("projectName", projectName);
         args.addValue("versionNumber", versionNumber);
 
-        logger.debug(String.format("Quering for versions - %s args - [%s,%s]", sql, projectName, versionNumber));
+        logger.debug(String.format("Quering for versions - %s args - %s", sql, args.getValues()));
         try {
             return namedParameterJdbcTemplate.queryForObject(sql, args, new VersionMapper());
         } catch (EmptyResultDataAccessException e) {
@@ -68,7 +68,7 @@ public class VersionReadDaoImpl implements VersionReadDao {
         MapSqlParameterSource args = new MapSqlParameterSource();
         args.addValue("projectName", projectName);
 
-        logger.debug(String.format("Quering for versions - %s args - [%s]", sql, projectName));
+        logger.debug(String.format("Quering for versions - %s args - %s", sql, args.getValues()));
         List<VersionResponse> versions = namedParameterJdbcTemplate.query(sql, args, new VersionMapper());
 
         VersionsResponse versionsResponse = new VersionsResponse();
