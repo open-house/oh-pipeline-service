@@ -104,8 +104,6 @@ public class BuildPhaseServiceImpl implements BuildPhaseService {
     @Override
     public void runPhase(String projectName, String versionNumber, int buildNumber, PhaseResponse phaseResponse) {
 
-        buildPhaseWriteDao.addPhase(projectName, versionNumber, buildNumber, phaseResponse.getName());
-
         /* call uri for the first phase */
         if (!httpUtil.sendPostRequest(phaseResponse.getUri())) {
             buildPhaseWriteDao.addState(projectName, versionNumber, buildNumber, 
@@ -135,6 +133,7 @@ public class BuildPhaseServiceImpl implements BuildPhaseService {
         }
 
         PhaseResponse nextPhase = phaseResponses.get(index);
+        buildPhaseWriteDao.addPhase(projectName, versionNumber, buildNumber, nextPhase.getName());
         runPhase(projectName, versionNumber, buildNumber, nextPhase);
     }
 }
