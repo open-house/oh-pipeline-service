@@ -55,9 +55,10 @@ public class BuildPhaseServiceImpl implements BuildPhaseService {
             throw new ConflictException(String.format("Build phase is already in %s state.", state));
         }
 
+        buildPhaseWriteDao.addState(projectName, versionNumber, buildNumber, phaseName, state);
+
         /* failed state updated to in progress - rerun the phase */
         if (state.equals(PhaseState.IN_PROGRESS)) {
-            buildPhaseWriteDao.addState(projectName, versionNumber, buildNumber, phaseName, state);
             PhaseResponse phaseResponse = phaseReadDao.getPhase(projectName, versionNumber, phaseName);
             runPhase(projectName, versionNumber, buildNumber, phaseResponse);
             return;
@@ -65,7 +66,6 @@ public class BuildPhaseServiceImpl implements BuildPhaseService {
 
         /* success - move to the next phase */
         if (state.equals(PhaseState.SUCCESS)) {
-            buildPhaseWriteDao.addState(projectName, versionNumber, buildNumber, phaseName, state);
             runNextPhase(projectName, versionNumber, buildNumber, phaseName);
         }
     }

@@ -12,6 +12,9 @@ import sk.openhouse.automation.pipelineservice.util.XmlUtil;
 
 public class XmlUtilImpl implements XmlUtil {
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String marshall(Class<?> cls, Object object) throws JAXBException {
 
@@ -25,6 +28,9 @@ public class XmlUtilImpl implements XmlUtil {
         return response.toString();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Object unmarshall(Class<?> cls, String xml) throws JAXBException {
 
