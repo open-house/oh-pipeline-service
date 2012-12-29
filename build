@@ -23,60 +23,35 @@ build(){
     mv $BKP_POM $POM
 }
 
-BUILD_NUMBER=$1
+VERSION="0.1-$1"
+PACKAGE=oh-pipeline-service
 TOPDIR=debian
-DEB_DIR=DEBIAN
 
-if [ ! -f ./$DEB_DIR/control ]
-then
-    echo "control file $DEB_DIR/control not found"
-    exit 1
-fi
-
-mkdir -p ./$TOPDIR/$DEB_DIR
-
-# create control file from template - replace build number
-sed -e "s/\${BUILD_NUMBER}/$BUILD_NUMBER/g" ./$DEB_DIR/control > ./$TOPDIR/$DEB_DIR/control
-
-# get Package, Version and Architecture from control file
-PACKAGE=$(awk /^Package:/'{print $2}' ./$TOPDIR/$DEB_DIR/control)
-VERSION=$(awk /^Version:/'{print $2}' ./$TOPDIR/$DEB_DIR/control)
-ARCHITECTURE=$(awk /^Architecture:/'{print $2}' ./$TOPDIR/$DEB_DIR/control)
-
-for f in ./$DEB_DIR/*
-do
-    # control fle has been already copied (from where we got package etc.)
-    if [ "$(basename $f)" != "control" ]
-    then
-        sed -e "s/\${PACKAGE}/$PACKAGE/g" \
-            -e "s/\${VERSION}/$VERSION/g" \
-            -e "s/\${ARCHITECTURE}/$ARCHITECTURE/g" ./$f > ./$TOPDIR/$f
-        chmod 775 ./$TOPDIR/$f
-    fi
-done
-
-# build
+# mvn build
 build $VERSION
 
+# clean old deb directory
+rm -rf ./$TOPDIR
+
 # create deb tree
-CATALINA_BASE_DIR=./$TOPDIR/var/app/$PACKAGE
-mkdir -p $CATALINA_BASE_DIR
-mkdir $CATALINA_BASE_DIR/conf $CATALINA_BASE_DIR/webapps $CATALINA_BASE_DIR/work
+APP_LOG_DIR=./$TOPDIR/var/log/$PACKAGE
+APP_CONF_DIR=./$TOPDIR/etc/default
+TOMCAT_CONF_DIR=./$TOPDIR/etc/$PACKAGE
+TOMCAT_WEB_DIR=./$TOPDIR/opt/$PACKAGE/webapps
+TOMACT_WORK_DIR=./$TOPDIR/var/cache/$PACKAGE
+
+mkdir -p $APP_LOG_DIR
+mkdir -p $APP_CONF_DIR
+mkdir -p $TOMCAT_CONF_DIR/Standalone
+mkdir -p $TOMCAT_WEB_DIR
+mkdir -p $TOMACT_WORK_DIR
 
 # set dir mode
 find ./$TOPDIR -type d | xargs chmod 755
 
-cp ./src/main/tomcat/conf/server.xml $CATALINA_BASE_DIR/conf
-cp -r ./target/${PACKAGE}-${VERSION}/* $CATALINA_BASE_DIR/webapps
+cp ./src/main/tomcat/conf/server.xml $TOMCAT_CONF_DIR
+cp -r ./target/${PACKAGE}-${VERSION}/* $TOMCAT_WEB_DIR
+cp ./src/main/conf/${PACKAGE} $APP_CONF_DIR
 
-# remove existing deb packages if any
-rm -f ./*.deb
-
-# build package
-fakeroot dpkg-deb --build ./debian > /dev/null
-
-# clean up build root (topdir)
-rm -rf ./$TOPDIR
-
-mv debian.deb ${PACKAGE}_${VERSION}_${ARCHITECTURE}.deb
-
+# create deb package
+oh-deb-build $VERSION
