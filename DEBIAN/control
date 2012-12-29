@@ -1,5 +1,5 @@
 Package: oh-pipeline-service
-Version: 0.1-${BUILD_NUMBER}
+Version: ${VERSION}
 Section: httpd
 Priority: optional
 Architecture: all

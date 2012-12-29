@@ -15,7 +15,7 @@
     See the License for the specific language governing permissions and
     limitations under the License.
 -->
-<Server port="8005" shutdown="SHUTDOWN">
+<Server port="8025" shutdown="SHUTDOWN">
     <!-- Initialize Jasper prior to webapps are loaded. Documentation at /docs/jasper-howto.html -->
     <Listener className="org.apache.catalina.core.JasperListener" />
     <!-- Prevent memory leaks due to use of particular java/javax APIs -->
