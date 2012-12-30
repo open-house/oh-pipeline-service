@@ -3,6 +3,7 @@ package sk.openhouse.automation.pipelineservice.dao.impl;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -112,6 +113,8 @@ public class BuildReadDaoImpl implements BuildReadDao {
             for (Map.Entry<Integer, List<Map<String, String>>> keyValue : buildRows.entrySet()) {
                 buildResponses.add(getBuildResponse(keyValue.getValue()));
             }
+
+            Collections.sort(buildResponses);
 
             BuildsResponse buildsResponse = new BuildsResponse();
             buildsResponse.setBuilds(buildResponses);
