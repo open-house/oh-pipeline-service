@@ -10,7 +10,7 @@ import sk.openhouse.automation.pipelineservice.service.RootResourceService;
 
 public class RootResourceServiceImpl implements RootResourceService {
 
-    private ResourceService resourceService;
+    private final ResourceService resourceService;
 
     public RootResourceServiceImpl(ResourceService resourceService) {
         this.resourceService = resourceService;

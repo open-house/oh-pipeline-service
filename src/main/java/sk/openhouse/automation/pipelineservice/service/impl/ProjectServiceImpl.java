@@ -16,9 +16,9 @@ import sk.openhouse.automation.pipelineservice.service.exception.NotFoundExcepti
 
 public class ProjectServiceImpl implements ProjectService {
 
-    private ResourceService resourceService;
-    private ProjectReadDao projectReadDao;
-    private ProjectWriteDao projectWriteDao;
+    private final ResourceService resourceService;
+    private final ProjectReadDao projectReadDao;
+    private final ProjectWriteDao projectWriteDao;
 
     public ProjectServiceImpl(ResourceService resourceService, ProjectReadDao projectReadDao, ProjectWriteDao projectWriteDao) {
         this.resourceService = resourceService;

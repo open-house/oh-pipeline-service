@@ -19,7 +19,7 @@ public class ResourceServiceImpl implements ResourceService {
     private static final String PHASES_URI_PART = "phases";
     private static final String BUILDS_URI_PART = "builds";
 
-    private URI rootURI;
+    private final URI rootURI;
 
     /**
      * @param rootURI application's root URI

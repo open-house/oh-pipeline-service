@@ -18,10 +18,10 @@ import sk.openhouse.automation.pipelineservice.util.HttpUtil;
 
 public class BuildPhaseServiceImpl implements BuildPhaseService {
 
-    private BuildPhaseReadDao buildPhaseReadDao;
-    private BuildPhaseWriteDao buildPhaseWriteDao;
-    private PhaseReadDao phaseReadDao;
-    private HttpUtil httpUtil;
+    private final BuildPhaseReadDao buildPhaseReadDao;
+    private final BuildPhaseWriteDao buildPhaseWriteDao;
+    private final PhaseReadDao phaseReadDao;
+    private final HttpUtil httpUtil;
 
     public BuildPhaseServiceImpl(BuildPhaseReadDao buildPhaseReadDao, BuildPhaseWriteDao buildPhaseWriteDao,
             PhaseReadDao phaseReadDao, HttpUtil httpUtil) {

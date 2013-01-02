@@ -16,9 +16,9 @@ import sk.openhouse.automation.pipelineservice.service.exception.NotFoundExcepti
 
 public class VersionServiceImpl implements VersionService {
 
-    private ResourceService resourceService;
-    private VersionReadDao versionReadDao;
-    private VersionWriteDao versionWriteDao;
+    private final ResourceService resourceService;
+    private final VersionReadDao versionReadDao;
+    private final VersionWriteDao versionWriteDao;
 
     public VersionServiceImpl(ResourceService resourceService, VersionReadDao versionReadDao, VersionWriteDao versionWriteDao) {
         this.resourceService = resourceService;

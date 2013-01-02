@@ -19,11 +19,11 @@ import sk.openhouse.automation.pipelineservice.service.exception.NotFoundExcepti
 
 public class BuildServiceImpl implements BuildService {
 
-    private ResourceService resourceService;
-    private BuildReadDao buildReadDao;
-    private BuildWriteDao buildWriteDao;
-    private PhaseService phaseService;
-    private BuildPhaseService buildPhaseService;
+    private final ResourceService resourceService;
+    private final BuildReadDao buildReadDao;
+    private final BuildWriteDao buildWriteDao;
+    private final PhaseService phaseService;
+    private final BuildPhaseService buildPhaseService;
 
     public BuildServiceImpl(ResourceService resourceService, BuildReadDao buildReadDao, BuildWriteDao buildWriteDao,
             PhaseService phaseService, BuildPhaseService buildPhaseService) {

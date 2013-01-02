@@ -11,8 +11,8 @@ import sk.openhouse.automation.pipelineservice.service.exception.NotFoundExcepti
 
 public class PhaseServiceImpl implements PhaseService {
 
-    private PhaseReadDao phaseReadDao;
-    private PhaseWriteDao phaseWriteDao;
+    private final PhaseReadDao phaseReadDao;
+    private final PhaseWriteDao phaseWriteDao;
 
     public PhaseServiceImpl(PhaseReadDao phaseReadDao, PhaseWriteDao phaseWriteDao) {
         this.phaseReadDao = phaseReadDao;
