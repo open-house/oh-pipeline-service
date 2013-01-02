@@ -17,8 +17,8 @@ import sk.openhouse.automation.pipelineservice.util.XmlUtil;
 @Path(ResourceUtil.VERSIONS_PATH)
 public class VersionsResource {
 
-    private VersionService versionService;
-    private XmlUtil xmlUtil;
+    private final VersionService versionService;
+    private final XmlUtil xmlUtil;
 
     public VersionsResource(VersionService versionService, XmlUtil xmlUtil) {
         this.versionService = versionService;

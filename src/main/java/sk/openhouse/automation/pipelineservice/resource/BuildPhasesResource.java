@@ -17,8 +17,8 @@ import sk.openhouse.automation.pipelineservice.util.XmlUtil;
 @Path(ResourceUtil.BUILD_PHASES_PATH)
 public class BuildPhasesResource {
 
-    private BuildPhaseService buildPhaseService;
-    private XmlUtil xmlUtil;
+    private final BuildPhaseService buildPhaseService;
+    private final XmlUtil xmlUtil;
 
     public BuildPhasesResource(BuildPhaseService buildPhaseService, XmlUtil xmlUtil) {
         this.buildPhaseService = buildPhaseService;

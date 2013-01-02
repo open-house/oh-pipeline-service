@@ -21,9 +21,8 @@ import sk.openhouse.automation.pipelineservice.util.XmlUtil;
 @Path(ResourceUtil.ROOT_PATH)
 public class RootResource {
 
-    private XmlUtil xmlUtil;
-
-    private RootResourceService rootResourceService;
+    private final XmlUtil xmlUtil;
+    private final RootResourceService rootResourceService;
 
     public RootResource(RootResourceService rootResourceService, XmlUtil xmlUtil) {
         this.rootResourceService = rootResourceService;

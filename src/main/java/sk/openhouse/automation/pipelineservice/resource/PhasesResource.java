@@ -17,8 +17,8 @@ import sk.openhouse.automation.pipelineservice.util.XmlUtil;
 @Path(ResourceUtil.PHASES_PATH)
 public class PhasesResource {
 
-    private PhaseService phaseService;
-    private XmlUtil xmlUtil;
+    private final PhaseService phaseService;
+    private final XmlUtil xmlUtil;
 
     public PhasesResource(PhaseService phaseService, XmlUtil xmlUtil) {
         this.phaseService = phaseService;

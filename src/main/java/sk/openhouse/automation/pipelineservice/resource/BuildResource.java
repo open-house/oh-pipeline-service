@@ -21,8 +21,8 @@ import sk.openhouse.automation.pipelineservice.util.XmlUtil;
 @Path(ResourceUtil.BUILD_PATH)
 public class BuildResource {
 
-    private BuildService buildService;
-    private XmlUtil xmlUtil;
+    private final BuildService buildService;
+    private final XmlUtil xmlUtil;
 
     public BuildResource(BuildService buildService, XmlUtil xmlUtil) {
         this.buildService = buildService;
