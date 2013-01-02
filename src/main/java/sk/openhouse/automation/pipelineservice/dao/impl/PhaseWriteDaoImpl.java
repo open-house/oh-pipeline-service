@@ -13,7 +13,7 @@ public class PhaseWriteDaoImpl implements PhaseWriteDao {
 
     private static final Logger logger = Logger.getLogger(PhaseWriteDaoImpl.class);
 
-    private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
+    private final NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
     public PhaseWriteDaoImpl(DataSource dataSource) {
         this.namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(dataSource);
