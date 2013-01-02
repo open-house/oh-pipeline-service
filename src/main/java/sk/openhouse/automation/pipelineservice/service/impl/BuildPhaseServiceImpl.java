@@ -4,7 +4,6 @@ import java.util.List;
 
 import sk.openhouse.automation.pipelineservice.dao.BuildPhaseReadDao;
 import sk.openhouse.automation.pipelineservice.dao.BuildPhaseWriteDao;
-import sk.openhouse.automation.pipelineservice.dao.PhaseReadDao;
 import sk.openhouse.automation.pipelinedomain.domain.PhaseState;
 import sk.openhouse.automation.pipelinedomain.domain.request.StateRequest;
 import sk.openhouse.automation.pipelinedomain.domain.response.BuildPhaseResponse;
@@ -12,6 +11,7 @@ import sk.openhouse.automation.pipelinedomain.domain.response.BuildPhasesRespons
 import sk.openhouse.automation.pipelinedomain.domain.response.PhaseResponse;
 import sk.openhouse.automation.pipelinedomain.domain.response.PhasesResponse;
 import sk.openhouse.automation.pipelineservice.service.BuildPhaseService;
+import sk.openhouse.automation.pipelineservice.service.PhaseService;
 import sk.openhouse.automation.pipelineservice.service.exception.ConflictException;
 import sk.openhouse.automation.pipelineservice.service.exception.NotFoundException;
 import sk.openhouse.automation.pipelineservice.util.HttpUtil;
@@ -20,15 +20,15 @@ public class BuildPhaseServiceImpl implements BuildPhaseService {
 
     private final BuildPhaseReadDao buildPhaseReadDao;
     private final BuildPhaseWriteDao buildPhaseWriteDao;
-    private final PhaseReadDao phaseReadDao;
+    private final PhaseService phaseService;
     private final HttpUtil httpUtil;
 
     public BuildPhaseServiceImpl(BuildPhaseReadDao buildPhaseReadDao, BuildPhaseWriteDao buildPhaseWriteDao,
-            PhaseReadDao phaseReadDao, HttpUtil httpUtil) {
+            PhaseService phaseService, HttpUtil httpUtil) {
 
         this.buildPhaseReadDao = buildPhaseReadDao;
         this.buildPhaseWriteDao = buildPhaseWriteDao;
-        this.phaseReadDao = phaseReadDao;
+        this.phaseService = phaseService;
         this.httpUtil = httpUtil;
     }
 
@@ -59,7 +59,7 @@ public class BuildPhaseServiceImpl implements BuildPhaseService {
 
         /* failed state updated to in progress - rerun the phase */
         if (state.equals(PhaseState.IN_PROGRESS)) {
-            PhaseResponse phaseResponse = phaseReadDao.getPhase(projectName, versionNumber, phaseName);
+            PhaseResponse phaseResponse = phaseService.getPhase(projectName, versionNumber, phaseName);
             runPhase(projectName, versionNumber, buildNumber, phaseResponse);
             return;
         }
@@ -104,7 +104,23 @@ public class BuildPhaseServiceImpl implements BuildPhaseService {
     @Override
     public void runPhase(String projectName, String versionNumber, int buildNumber, PhaseResponse phaseResponse) {
 
-        /* call uri for the first phase */
+        /* set to IN_PROGRESS */
+        buildPhaseWriteDao.addState(projectName, versionNumber, buildNumber, 
+                phaseResponse.getName(), PhaseState.IN_PROGRESS);
+
+        sendPhaseRequest(projectName, versionNumber, buildNumber, phaseResponse);
+    }
+
+    /**
+     * Sends request to uri specified for the phase, if the request fails, FAIL state will be added to that phase
+     * 
+     * @param projectName name of the project for which the phase should run
+     * @param versionNumber version number of the project for which the phase should run
+     * @param buildNumber build number of the project for which the phase should run
+     * @param phaseResponse specific phase that holds the uri
+     */
+    private void sendPhaseRequest(String projectName, String versionNumber, int buildNumber, PhaseResponse phaseResponse) {
+
         if (!httpUtil.sendPostRequest(phaseResponse.getUri())) {
             buildPhaseWriteDao.addState(projectName, versionNumber, buildNumber, 
                     phaseResponse.getName(), PhaseState.FAIL);
@@ -118,7 +134,7 @@ public class BuildPhaseServiceImpl implements BuildPhaseService {
      */
     private void runNextPhase(String projectName, String versionNumber, int buildNumber, String phaseName) {
 
-        PhasesResponse phasesResponse = phaseReadDao.getPhases(projectName, versionNumber);
+        PhasesResponse phasesResponse = phaseService.getPhases(projectName, versionNumber);
         List<PhaseResponse> phaseResponses = phasesResponse.getPhases();
 
         PhaseResponse currentPhase = new PhaseResponse();
@@ -134,6 +150,8 @@ public class BuildPhaseServiceImpl implements BuildPhaseService {
 
         PhaseResponse nextPhase = phaseResponses.get(index);
         buildPhaseWriteDao.addPhase(projectName, versionNumber, buildNumber, nextPhase.getName());
-        runPhase(projectName, versionNumber, buildNumber, nextPhase);
+
+        /* state already set to IN_PROGRESS, no need to run 'runPhase' */
+        sendPhaseRequest(projectName, versionNumber, buildNumber, nextPhase);
     }
 }
