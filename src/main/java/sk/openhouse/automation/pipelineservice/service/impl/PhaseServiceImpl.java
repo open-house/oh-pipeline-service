@@ -23,6 +23,21 @@ public class PhaseServiceImpl implements PhaseService {
      * {@inheritDoc}
      */
     @Override
+    public PhaseResponse getFirstPhase(String projectName, String versionNumber) {
+
+        PhaseResponse phase = phaseReadDao.getFirstPhase(projectName, versionNumber);
+        if (null == phase) {
+            throw new NotFoundException(String.format("No phases found for project %s and version %s.",
+                    projectName, versionNumber));
+        }
+
+        return phase;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public PhaseResponse getPhase(String projectName, String versionNumber, String phaseName) {
 
         PhaseResponse phase = phaseReadDao.getPhase(projectName, versionNumber, phaseName);

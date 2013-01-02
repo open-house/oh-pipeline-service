@@ -15,6 +15,14 @@ public interface PhaseService {
     /**
      * @param projectName
      * @param versionNumber
+     * @return first phase
+     * @throws NotFoundException if no phase is found
+     */
+    public PhaseResponse getFirstPhase(String projectName, String versionNumber) throws NotFoundException;
+
+    /**
+     * @param projectName
+     * @param versionNumber
      * @param phaseName
      * @return specific phase
      * @throws NotFoundException if the phase cannot be found

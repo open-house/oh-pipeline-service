@@ -5,7 +5,6 @@ import java.util.List;
 
 import sk.openhouse.automation.pipelineservice.dao.BuildReadDao;
 import sk.openhouse.automation.pipelineservice.dao.BuildWriteDao;
-import sk.openhouse.automation.pipelineservice.dao.PhaseReadDao;
 import sk.openhouse.automation.pipelinedomain.domain.request.BuildRequest;
 import sk.openhouse.automation.pipelinedomain.domain.response.BuildResponse;
 import sk.openhouse.automation.pipelinedomain.domain.response.BuildsResponse;
@@ -14,6 +13,7 @@ import sk.openhouse.automation.pipelinedomain.domain.response.ResourceResponse;
 import sk.openhouse.automation.pipelinedomain.domain.response.ResourcesResponse;
 import sk.openhouse.automation.pipelineservice.service.BuildPhaseService;
 import sk.openhouse.automation.pipelineservice.service.BuildService;
+import sk.openhouse.automation.pipelineservice.service.PhaseService;
 import sk.openhouse.automation.pipelineservice.service.ResourceService;
 import sk.openhouse.automation.pipelineservice.service.exception.NotFoundException;
 
@@ -22,16 +22,16 @@ public class BuildServiceImpl implements BuildService {
     private ResourceService resourceService;
     private BuildReadDao buildReadDao;
     private BuildWriteDao buildWriteDao;
-    private PhaseReadDao phaseReadDao;
+    private PhaseService phaseService;
     private BuildPhaseService buildPhaseService;
 
     public BuildServiceImpl(ResourceService resourceService, BuildReadDao buildReadDao, BuildWriteDao buildWriteDao,
-            PhaseReadDao phaseReadDao, BuildPhaseService buildPhaseService) {
+            PhaseService phaseService, BuildPhaseService buildPhaseService) {
 
         this.resourceService = resourceService;
         this.buildReadDao = buildReadDao;
         this.buildWriteDao = buildWriteDao;
-        this.phaseReadDao = phaseReadDao;
+        this.phaseService = phaseService;
         this.buildPhaseService = buildPhaseService;
     }
 
@@ -73,10 +73,15 @@ public class BuildServiceImpl implements BuildService {
         buildWriteDao.addBuild(projectName, versionNumber, buildRequest);
 
         /* run first phase */
-        PhaseResponse phaseResponse = phaseReadDao.getFirstPhase(projectName, versionNumber);
-        if (null != phaseResponse) {
-            buildPhaseService.runPhase(projectName, versionNumber, buildRequest.getNumber(), phaseResponse);
+        PhaseResponse phaseResponse;
+        try {
+            phaseResponse = phaseService.getFirstPhase(projectName, versionNumber);
+        } catch(NotFoundException e) {
+            /* no phases found */
+            return;
         }
+
+        buildPhaseService.runPhase(projectName, versionNumber, buildRequest.getNumber(), phaseResponse);
     }
 
     /**
