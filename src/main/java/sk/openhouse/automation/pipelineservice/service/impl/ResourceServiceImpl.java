@@ -14,7 +14,7 @@ public class ResourceServiceImpl implements ResourceService {
 
     private static final Logger logger = Logger.getLogger(HttpUtilImpl.class);
 
-    private static final String PROJECTS_URI_PART = "projects";
+    private static final String PROJECTS_URI_PART = "/projects";
     private static final String VERSIONS_URI_PART = "versions";
     private static final String PHASES_URI_PART = "phases";
     private static final String BUILDS_URI_PART = "builds";
@@ -54,7 +54,7 @@ public class ResourceServiceImpl implements ResourceService {
      */
     @Override
     public String getProjectsURIString() {
-        return PROJECTS_URI_PART;
+        return getRootURIString() + PROJECTS_URI_PART;
     }
 
     /**
@@ -62,7 +62,7 @@ public class ResourceServiceImpl implements ResourceService {
      */
     @Override
     public String getProjectURIString(String projectName) {
-        return String.format("%s/%s", PROJECTS_URI_PART, projectName);
+        return String.format("%s/%s", getProjectsURIString(), projectName);
     }
 
     /**
@@ -70,7 +70,7 @@ public class ResourceServiceImpl implements ResourceService {
      */
     @Override
     public String getVersionsURIString(String projectName) {
-        return String.format("%s/%s/%s", PROJECTS_URI_PART, projectName, VERSIONS_URI_PART);
+        return String.format("%s/%s/%s", getProjectsURIString(), projectName, VERSIONS_URI_PART);
     }
 
     /**
@@ -78,7 +78,7 @@ public class ResourceServiceImpl implements ResourceService {
      */
     @Override
     public String getPhasesURIString(String projectName, String versionNumber) {
-        return String.format("%s/%s/%s/%s/%s", PROJECTS_URI_PART, projectName, 
+        return String.format("%s/%s/%s/%s/%s", getProjectsURIString(), projectName, 
                 VERSIONS_URI_PART, versionNumber, PHASES_URI_PART);
     }
 
@@ -87,7 +87,7 @@ public class ResourceServiceImpl implements ResourceService {
      */
     @Override
     public String getVersionURIString(String projectName, String versionNumber) {
-        return String.format("%s/%s/%s/%s", PROJECTS_URI_PART, projectName, VERSIONS_URI_PART, versionNumber);
+        return String.format("%s/%s/%s/%s", getProjectsURIString(), projectName, VERSIONS_URI_PART, versionNumber);
     }
 
     /**
@@ -97,7 +97,7 @@ public class ResourceServiceImpl implements ResourceService {
     public String getBuildsURIString(String projectName, String versionNumber) {
 
         return String.format("%s/%s/%s/%s/%s", 
-                PROJECTS_URI_PART, projectName, VERSIONS_URI_PART, versionNumber, BUILDS_URI_PART);
+                getProjectsURIString(), projectName, VERSIONS_URI_PART, versionNumber, BUILDS_URI_PART);
     }
 
     /**
@@ -107,7 +107,7 @@ public class ResourceServiceImpl implements ResourceService {
     public String getBuildURIString(String projectName, String versionNumber, int buildNumber) {
 
         return String.format("%s/%s/%s/%s/%s/%d", 
-                PROJECTS_URI_PART, projectName, VERSIONS_URI_PART, versionNumber, BUILDS_URI_PART, buildNumber);
+                getProjectsURIString(), projectName, VERSIONS_URI_PART, versionNumber, BUILDS_URI_PART, buildNumber);
     }
 
     /**

@@ -21,8 +21,7 @@ public class RootResourceServiceImpl implements RootResourceService {
 
         List<ResourceResponse> resources = new ArrayList<ResourceResponse>();
         ResourceResponse projectsResource = resourceService.getResource(resourceService.getProjectsURIString(), 
-                "List of all projects in pipeline service", 
-                "GET", "some-schema.xsd");
+                "List of all projects in pipeline service", "GET");
         resources.add(projectsResource);
 
         ResourcesResponse rootResources = new ResourcesResponse();
