@@ -8,7 +8,7 @@ import javax.xml.bind.JAXBException;
 
 import org.springframework.stereotype.Component;
 
-import sk.openhouse.automation.pipelinedomain.domain.response.ResourcesResponse;
+import sk.openhouse.automation.pipelinedomain.domain.response.LinksResponse;
 import sk.openhouse.automation.pipelineservice.service.RootResourceService;
 import sk.openhouse.automation.pipelineservice.util.XmlUtil;
 
@@ -32,6 +32,6 @@ public class RootResource {
     @GET
     @Produces(MediaType.APPLICATION_XML)
     public String getResources() throws JAXBException {
-        return xmlUtil.marshall(ResourcesResponse.class, rootResourceService.getRootResources());
+        return xmlUtil.marshall(LinksResponse.class, rootResourceService.getRootLinks());
     }
 }

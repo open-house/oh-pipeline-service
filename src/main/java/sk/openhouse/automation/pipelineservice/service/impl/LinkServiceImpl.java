@@ -6,11 +6,10 @@ import java.net.URISyntaxException;
 import org.apache.log4j.Logger;
 
 import sk.openhouse.automation.pipelinedomain.domain.response.LinkResponse;
-import sk.openhouse.automation.pipelinedomain.domain.response.ResourceResponse;
-import sk.openhouse.automation.pipelineservice.service.ResourceService;
+import sk.openhouse.automation.pipelineservice.service.LinkService;
 import sk.openhouse.automation.pipelineservice.util.impl.HttpUtilImpl;
 
-public class ResourceServiceImpl implements ResourceService {
+public class LinkServiceImpl implements LinkService {
 
     private static final Logger logger = Logger.getLogger(HttpUtilImpl.class);
 
@@ -23,7 +22,7 @@ public class ResourceServiceImpl implements ResourceService {
      * @throws IllegalArgumentException if the uri is invalid
      * @throws NullPointerException if the argument is null
      */
-    public ResourceServiceImpl(String rootUri) {
+    public LinkServiceImpl(String rootUri) {
 
         if (rootUri.endsWith("/")) {
             rootUri = rootUri.substring(0, rootUri.length() - 1);
@@ -42,7 +41,7 @@ public class ResourceServiceImpl implements ResourceService {
      * {@inheritDoc}
      */
     @Override
-    public String getProjectsURIString() {
+    public String getProjectsUriString() {
         return rootUri + PROJECTS_URI_PART;
     }
 
@@ -50,16 +49,16 @@ public class ResourceServiceImpl implements ResourceService {
      * {@inheritDoc}
      */
     @Override
-    public ResourceResponse getResource(String uriString, String description) {
-        return getResource(uriString, description, "GET", null);
+    public LinkResponse getLink(String uriString, String description) {
+        return getLink(uriString, description, "GET", null);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public ResourceResponse getResource(String uriString, String description, String method) {
-        return getResource(uriString, description, method, null);
+    public LinkResponse getLink(String uriString, String description, String method) {
+        return getLink(uriString, description, method, null);
     }
 
     /**
@@ -67,7 +66,7 @@ public class ResourceServiceImpl implements ResourceService {
      * @throws URISyntaxException 
      */
     @Override
-    public ResourceResponse getResource(String uriString, String description, String method, String schemaURIString) {
+    public LinkResponse getLink(String uriString, String description, String method, String schemaURIString) {
 
         LinkResponse linkResponse = new LinkResponse();
         linkResponse.setMethod(method);
@@ -86,9 +85,7 @@ public class ResourceServiceImpl implements ResourceService {
             }
         }
 
-        ResourceResponse resourceResponse = new ResourceResponse();
-        resourceResponse.setLink(linkResponse);
-        resourceResponse.setDescription(description);
-        return resourceResponse;
+        linkResponse.setDescription(description);
+        return linkResponse;
     }
 }

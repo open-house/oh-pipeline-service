@@ -12,7 +12,7 @@
 
     <!-- services -->
     <bean name="rootResourceService" class="sk.openhouse.automation.pipelineservice.service.impl.RootResourceServiceImpl">
-        <constructor-arg name="resourceService" ref="resourceService" />
+        <constructor-arg name="linkService" ref="linkService" />
     </bean>
 
     <bean name="projectService" class="sk.openhouse.automation.pipelineservice.service.impl.ProjectServiceImpl">

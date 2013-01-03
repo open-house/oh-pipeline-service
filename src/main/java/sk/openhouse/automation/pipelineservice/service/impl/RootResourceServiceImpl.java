@@ -3,29 +3,29 @@ package sk.openhouse.automation.pipelineservice.service.impl;
 import java.util.ArrayList;
 import java.util.List;
 
-import sk.openhouse.automation.pipelinedomain.domain.response.ResourceResponse;
-import sk.openhouse.automation.pipelinedomain.domain.response.ResourcesResponse;
-import sk.openhouse.automation.pipelineservice.service.ResourceService;
+import sk.openhouse.automation.pipelinedomain.domain.response.LinkResponse;
+import sk.openhouse.automation.pipelinedomain.domain.response.LinksResponse;
+import sk.openhouse.automation.pipelineservice.service.LinkService;
 import sk.openhouse.automation.pipelineservice.service.RootResourceService;
 
 public class RootResourceServiceImpl implements RootResourceService {
 
-    private final ResourceService resourceService;
+    private final LinkService linkService;
 
-    public RootResourceServiceImpl(ResourceService resourceService) {
-        this.resourceService = resourceService;
+    public RootResourceServiceImpl(LinkService linkService) {
+        this.linkService = linkService;
     }
 
     @Override
-    public ResourcesResponse getRootResources() {
+    public LinksResponse getRootLinks() {
 
-        List<ResourceResponse> resources = new ArrayList<ResourceResponse>();
-        ResourceResponse projectsResource = resourceService.getResource(resourceService.getProjectsURIString(), 
+        List<LinkResponse> links = new ArrayList<LinkResponse>();
+        LinkResponse projectsLink = linkService.getLink(linkService.getProjectsUriString(), 
                 "List of all projects in pipeline service", "GET");
-        resources.add(projectsResource);
+        links.add(projectsLink);
 
-        ResourcesResponse rootResources = new ResourcesResponse();
-        rootResources.setResources(resources);
-        return rootResources;
+        LinksResponse rootLinks = new LinksResponse();
+        rootLinks.setLinks(links);
+        return rootLinks;
     }
 }

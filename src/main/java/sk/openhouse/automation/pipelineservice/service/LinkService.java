@@ -1,31 +1,31 @@
 package sk.openhouse.automation.pipelineservice.service;
 
-import sk.openhouse.automation.pipelinedomain.domain.response.ResourceResponse;
+import sk.openhouse.automation.pipelinedomain.domain.response.LinkResponse;
 
 /**
  * Service for generating resources
  * 
  * @author pete
  */
-public interface ResourceService {
+public interface LinkService {
 
     /**
      * @return URI for all projects
      */
-    String getProjectsURIString();
+    String getProjectsUriString();
 
     /**
-     * Constructs and returns resource response with method set to GET
+     * Constructs and returns link response with method set to GET
      * 
      * @param uriString
      * @param description
      * @return
      * @throws IllegalArgumentException if the supplied uri string is invalid
      */
-    ResourceResponse getResource(String uriString, String description) throws IllegalArgumentException;
+    LinkResponse getLink(String uriString, String description) throws IllegalArgumentException;
 
     /**
-     * Constructs and returns resource response
+     * Constructs and returns link response
      * 
      * @param uriString
      * @param description
@@ -33,10 +33,10 @@ public interface ResourceService {
      * @return
      * @throws IllegalArgumentException if the supplied uri string is invalid
      */
-    ResourceResponse getResource(String uriString, String description, String method) throws IllegalArgumentException;
+    LinkResponse getLink(String uriString, String description, String method) throws IllegalArgumentException;
 
     /**
-     * Constructs and returns resource response
+     * Constructs and returns link response
      * 
      * @param uriString
      * @param description
@@ -45,6 +45,6 @@ public interface ResourceService {
      * @return
      * @throws IllegalArgumentException if the supplied uri (or schema uri) string is invalid
      */
-    ResourceResponse getResource(String uriString, String description, String method, String schemaURIString)
+    LinkResponse getLink(String uriString, String description, String method, String schemaURIString)
             throws IllegalArgumentException;
 }

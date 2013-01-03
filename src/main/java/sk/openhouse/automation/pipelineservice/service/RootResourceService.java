@@ -1,6 +1,6 @@
 package sk.openhouse.automation.pipelineservice.service;
 
-import sk.openhouse.automation.pipelinedomain.domain.response.ResourcesResponse;
+import sk.openhouse.automation.pipelinedomain.domain.response.LinksResponse;
 
 /**
  * Service for the main/index page
@@ -12,5 +12,5 @@ public interface RootResourceService {
     /**
      * @return resources that appear on the index page
      */
-    ResourcesResponse getRootResources();
+    LinksResponse getRootLinks();
 }
