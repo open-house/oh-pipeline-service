@@ -23,8 +23,9 @@ public interface VersionService {
     /**
      * @param projectName
      * @return all versions of the specified project
+     * @throws NotFoundException if the project cannot be found
      */
-    VersionsResponse getVersions(String projectName);
+    VersionsResponse getVersions(String projectName) throws NotFoundException;
 
     /**
      * Add new (or overrides existing) project version

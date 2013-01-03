@@ -15,6 +15,7 @@ import sk.openhouse.automation.pipelineservice.service.BuildPhaseService;
 import sk.openhouse.automation.pipelineservice.service.BuildService;
 import sk.openhouse.automation.pipelineservice.service.PhaseService;
 import sk.openhouse.automation.pipelineservice.service.ResourceService;
+import sk.openhouse.automation.pipelineservice.service.VersionService;
 import sk.openhouse.automation.pipelineservice.service.exception.NotFoundException;
 
 public class BuildServiceImpl implements BuildService {
@@ -22,15 +23,17 @@ public class BuildServiceImpl implements BuildService {
     private final ResourceService resourceService;
     private final BuildReadDao buildReadDao;
     private final BuildWriteDao buildWriteDao;
+    private final VersionService versionService;
     private final PhaseService phaseService;
     private final BuildPhaseService buildPhaseService;
 
     public BuildServiceImpl(ResourceService resourceService, BuildReadDao buildReadDao, BuildWriteDao buildWriteDao,
-            PhaseService phaseService, BuildPhaseService buildPhaseService) {
+            VersionService versionService, PhaseService phaseService, BuildPhaseService buildPhaseService) {
 
         this.resourceService = resourceService;
         this.buildReadDao = buildReadDao;
         this.buildWriteDao = buildWriteDao;
+        this.versionService = versionService;
         this.phaseService = phaseService;
         this.buildPhaseService = buildPhaseService;
     }
@@ -42,6 +45,11 @@ public class BuildServiceImpl implements BuildService {
     public BuildsResponse getBuilds(String projectName, String versionNumber) {
 
         BuildsResponse buildsResponse = buildReadDao.getBuilds(projectName, versionNumber);
+        if (buildsResponse.getBuilds().isEmpty()) {
+            /* check if version exists - service will throw NotFoundException if it doesn't */
+            versionService.getVersion(projectName, versionNumber);
+        }
+
         for (BuildResponse buildResponse : buildsResponse.getBuilds()) {
             buildResponse.setResources(getBuildResources(projectName, versionNumber, buildResponse.getNumber()));
         }

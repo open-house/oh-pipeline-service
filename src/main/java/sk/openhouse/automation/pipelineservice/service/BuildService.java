@@ -18,8 +18,9 @@ public interface BuildService {
      * @param projectName
      * @param versionNumber
      * @return
+     * @throws NotFoundException if the versionNumber or the projectName cannot be found
      */
-    BuildsResponse getBuilds(String projectName, String versionNumber);
+    BuildsResponse getBuilds(String projectName, String versionNumber) throws NotFoundException;
 
     /**
      * Returns specific build for product and version

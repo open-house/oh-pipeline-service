@@ -33,8 +33,9 @@ public interface PhaseService {
      * @param projectName
      * @param versionNumber
      * @return phases for specified project version
+     * @throws NotFoundException if the versionNumber or the projectName is not found
      */
-    PhasesResponse getPhases(String projectName, String versionNumber);
+    PhasesResponse getPhases(String projectName, String versionNumber) throws NotFoundException;
 
     /**
      * Adds new or overrides existing (if this phase already exists) project phase

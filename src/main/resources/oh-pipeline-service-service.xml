@@ -32,6 +32,7 @@
         <constructor-arg name="resourceService" ref="resourceService" />
         <constructor-arg name="buildReadDao" ref="buildReadDao" />
         <constructor-arg name="buildWriteDao" ref="buildWriteDao" />
+        <constructor-arg name="versionService" ref="versionService" />
         <constructor-arg name="phaseService" ref="phaseService" />
         <constructor-arg name="buildPhaseService" ref="buildPhaseService" />
     </bean>
