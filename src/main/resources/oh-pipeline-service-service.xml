@@ -16,20 +16,17 @@
     </bean>
 
     <bean name="projectService" class="sk.openhouse.automation.pipelineservice.service.impl.ProjectServiceImpl">
-        <constructor-arg name="resourceService" ref="resourceService" />
         <constructor-arg name="projectReadDao" ref="projectReadDao" />
         <constructor-arg name="projectWriteDao" ref="projectWriteDao" />
     </bean>
 
     <bean name="versionService" class="sk.openhouse.automation.pipelineservice.service.impl.VersionServiceImpl">
-        <constructor-arg name="resourceService" ref="resourceService" />
         <constructor-arg name="versionReadDao" ref="versionReadDao" />
         <constructor-arg name="versionWriteDao" ref="versionWriteDao" />
         <constructor-arg name="projectService" ref="projectService" />
     </bean>
 
     <bean name="buildService" class="sk.openhouse.automation.pipelineservice.service.impl.BuildServiceImpl">
-        <constructor-arg name="resourceService" ref="resourceService" />
         <constructor-arg name="buildReadDao" ref="buildReadDao" />
         <constructor-arg name="buildWriteDao" ref="buildWriteDao" />
         <constructor-arg name="versionService" ref="versionService" />

@@ -70,7 +70,7 @@
     <bean name="xmlUtil" class="sk.openhouse.automation.pipelineservice.util.impl.XmlUtilImpl" />
 
     <bean name="resourceService" class="sk.openhouse.automation.pipelineservice.service.impl.ResourceServiceImpl">
-        <constructor-arg name="rootURI" value="${httpUtil.rootURI}" />
+        <constructor-arg name="rootUri" value="${httpUtil.rootUri}" />
     </bean>
 
     <bean name="httpUtil" class="sk.openhouse.automation.pipelineservice.util.impl.HttpUtilImpl">
