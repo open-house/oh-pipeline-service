@@ -51,9 +51,6 @@ final class ResourceUtil {
     /** Project Version Build Phase Path */
     static final String BUILD_PHASE_PATH = BUILD_PHASES_PATH + "/{" + PHASE_PARAM + ": " + NAME_PATTERN + "}";
 
-    /** Project Version Build Phase States Path */
-    static final String BUILD_STATES_PATH = BUILD_PHASE_PATH + "/states";
-
     /** Project Version Phases Path */
     static final String PHASES_PATH = VERSION_PATH + "/phases";
 
