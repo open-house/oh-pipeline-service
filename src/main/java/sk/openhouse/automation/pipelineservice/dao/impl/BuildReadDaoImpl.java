@@ -60,6 +60,31 @@ public class BuildReadDaoImpl implements BuildReadDao {
      * {@inheritDoc}
      */
     @Override
+    public BuildsResponse getBuilds(String projectName, String versionNumber, int limit) {
+
+        String sql = "SELECT b.number, ph.name as phase_name, bp.state \n"
+                + "FROM builds b \n"
+                + "LEFT JOIN build_phases bp ON (bp.build_id = b.id) \n"
+                + "LEFT JOIN phases ph ON (bp.phase_id = ph.id) \n"
+                + "JOIN versions v ON (b.version_id = v.id) \n"
+                + "JOIN projects p ON (v.project_id = p.id) \n"
+                + "WHERE p.name = :projectName \n"
+                + "AND v.version_number = :versionNumber \n"
+                + "LIMIT :limit";
+
+        MapSqlParameterSource args = new MapSqlParameterSource();
+        args.addValue("projectName", projectName);
+        args.addValue("versionNumber", versionNumber);
+        args.addValue("limit", limit);
+
+        logger.debug(String.format("Quering for builds - %s args - %s", sql, args.getValues()));
+        return namedParameterJdbcTemplate.query(sql, args, new BuildsExtractor());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public BuildResponse getBuild(String projectName, String versionNumber, int buildNumber) {
 
         String sql = "SELECT b.number, ph.name as phase_name, bp.state \n"

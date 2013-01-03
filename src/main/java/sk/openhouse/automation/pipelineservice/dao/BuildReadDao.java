@@ -20,6 +20,14 @@ public interface BuildReadDao {
     /**
      * @param projectName
      * @param versionNumber
+     * @param limit max returned rows
+     * @return
+     */
+    BuildsResponse getBuilds(String projectName, String versionNumber, int limit);
+
+    /**
+     * @param projectName
+     * @param versionNumber
      * @param buildNumber
      * @return specific build for selected product and version or null if the build cannot be found
      */

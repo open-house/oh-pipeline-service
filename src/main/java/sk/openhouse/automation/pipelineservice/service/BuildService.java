@@ -23,6 +23,17 @@ public interface BuildService {
     BuildsResponse getBuilds(String projectName, String versionNumber) throws NotFoundException;
 
     /**
+     * Returns all builds for specified project and version
+     * 
+     * @param projectName
+     * @param versionNumber
+     * @param limit max returned builds
+     * @return
+     * @throws NotFoundException if the versionNumber or the projectName cannot be found
+     */
+    BuildsResponse getBuilds(String projectName, String versionNumber, int limit) throws NotFoundException;
+
+    /**
      * Returns specific build for product and version
      * 
      * @param projectName

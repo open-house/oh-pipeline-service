@@ -4,6 +4,7 @@ import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.xml.bind.JAXBException;
 
@@ -28,9 +29,30 @@ public class BuildsResource {
     @GET
     @Produces(MediaType.APPLICATION_XML)
     public String getBuild(@PathParam(ResourceUtil.PROJECT_PARAM) String projectName, 
-            @PathParam(ResourceUtil.VERSION_PARAM) String versionNumber) throws JAXBException {
+            @PathParam(ResourceUtil.VERSION_PARAM) String versionNumber, 
+            @QueryParam("limit") String limit) throws JAXBException {
 
-        BuildsResponse builds = buildService.getBuilds(projectName, versionNumber);
+        Integer limitQuery = parseLimit(limit);
+        BuildsResponse builds = (null == limitQuery) 
+                ? buildService.getBuilds(projectName, versionNumber)
+                : buildService.getBuilds(projectName, versionNumber, limitQuery);
+
         return xmlUtil.marshall(BuildsResponse.class, builds);
+    }
+
+    /**
+     * @param limit query string to be converted to integer
+     * @return int if the string can be parsed or null otherwise
+     */
+    private Integer parseLimit(String limit) {
+
+        int parsedLimit;
+        try {
+            parsedLimit = Integer.parseInt(limit);
+        } catch (NumberFormatException e) {
+            return null;
+        }
+
+        return (parsedLimit > 0) ? parsedLimit : null;
     }
 }

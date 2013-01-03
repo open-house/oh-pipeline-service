@@ -45,14 +45,18 @@ public class BuildServiceImpl implements BuildService {
     public BuildsResponse getBuilds(String projectName, String versionNumber) {
 
         BuildsResponse buildsResponse = buildReadDao.getBuilds(projectName, versionNumber);
-        if (buildsResponse.getBuilds().isEmpty()) {
-            /* check if version exists - service will throw NotFoundException if it doesn't */
-            versionService.getVersion(projectName, versionNumber);
-        }
+        setResources(buildsResponse, projectName, versionNumber);
+        return buildsResponse;
+    }
 
-        for (BuildResponse buildResponse : buildsResponse.getBuilds()) {
-            buildResponse.setResources(getBuildResources(projectName, versionNumber, buildResponse.getNumber()));
-        }
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public BuildsResponse getBuilds(String projectName, String versionNumber, int limit) {
+
+        BuildsResponse buildsResponse = buildReadDao.getBuilds(projectName, versionNumber, limit);
+        setResources(buildsResponse, projectName, versionNumber);
         return buildsResponse;
     }
 
@@ -106,6 +110,25 @@ public class BuildServiceImpl implements BuildService {
     @Override
     public void deleteBuild(String projectName, String versionNumber, int buildNumber) {
         buildWriteDao.deleteBuild(projectName, versionNumber, buildNumber);
+    }
+
+    /**
+     * Sets resources on supplied builds and checks if project and version exists if builds are empty
+     * 
+     * @param buildsResponse
+     * @param projectName
+     * @param versionNumber
+     */
+    private void setResources(BuildsResponse buildsResponse, String projectName, String versionNumber) {
+
+        if (buildsResponse.getBuilds().isEmpty()) {
+            /* check if version exists - service will throw NotFoundException if it doesn't */
+            versionService.getVersion(projectName, versionNumber);
+        }
+
+        for (BuildResponse buildResponse : buildsResponse.getBuilds()) {
+            buildResponse.setResources(getBuildResources(projectName, versionNumber, buildResponse.getNumber()));
+        }
     }
 
     private ResourcesResponse getBuildResources(String projectName, String versionNumber, int buildNumber) {
