@@ -6,6 +6,7 @@ import sk.openhouse.automation.pipelinedomain.domain.request.PhaseRequest;
 import sk.openhouse.automation.pipelinedomain.domain.response.PhaseResponse;
 import sk.openhouse.automation.pipelinedomain.domain.response.PhasesResponse;
 import sk.openhouse.automation.pipelineservice.service.PhaseService;
+import sk.openhouse.automation.pipelineservice.service.VersionService;
 import sk.openhouse.automation.pipelineservice.service.exception.BadRequestException;
 import sk.openhouse.automation.pipelineservice.service.exception.NotFoundException;
 
@@ -13,10 +14,13 @@ public class PhaseServiceImpl implements PhaseService {
 
     private final PhaseReadDao phaseReadDao;
     private final PhaseWriteDao phaseWriteDao;
+    private final VersionService versionService;
 
-    public PhaseServiceImpl(PhaseReadDao phaseReadDao, PhaseWriteDao phaseWriteDao) {
+    public PhaseServiceImpl(PhaseReadDao phaseReadDao, PhaseWriteDao phaseWriteDao, VersionService versionService) {
+
         this.phaseReadDao = phaseReadDao;
         this.phaseWriteDao = phaseWriteDao;
+        this.versionService = versionService;
     }
 
     /**
@@ -54,7 +58,13 @@ public class PhaseServiceImpl implements PhaseService {
      */
     @Override
     public PhasesResponse getPhases(String projectName, String versionNumber) {
-        return phaseReadDao.getPhases(projectName, versionNumber);
+
+        PhasesResponse phasesResponse = phaseReadDao.getPhases(projectName, versionNumber);
+        if (phasesResponse.getPhases().isEmpty()) {
+            /* check if version exists - service will throw NotFoundException if it doesn't */
+            versionService.getVersion(projectName, versionNumber);
+        }
+        return phasesResponse;
     }
 
     /**

@@ -54,8 +54,8 @@ public class VersionServiceImpl implements VersionService {
     public VersionsResponse getVersions(String projectName) {
 
         VersionsResponse versionsResponse = versionReadDao.getVersions(projectName);
-        /* check if project exists - service will throw NotFoundException if it doesn't */
         if (versionsResponse.getVersions().isEmpty()) {
+            /* check if project exists - service will throw NotFoundException if it doesn't */
             projectService.getProject(projectName);
         }
 
