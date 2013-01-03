@@ -25,6 +25,7 @@
         <constructor-arg name="resourceService" ref="resourceService" />
         <constructor-arg name="versionReadDao" ref="versionReadDao" />
         <constructor-arg name="versionWriteDao" ref="versionWriteDao" />
+        <constructor-arg name="projectService" ref="projectService" />
     </bean>
 
     <bean name="buildService" class="sk.openhouse.automation.pipelineservice.service.impl.BuildServiceImpl">

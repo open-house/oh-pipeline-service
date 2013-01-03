@@ -41,7 +41,7 @@ public class ProjectReadDaoImpl implements ProjectReadDao {
         try {
             return namedParameterJdbcTemplate.queryForObject(sql, args, new ProjectMapper());
         } catch (EmptyResultDataAccessException e) {
-            logger.debug(String.format("Project $s found", name));
+            logger.debug(String.format("Project %s not found", name));
         }
 
         return null;

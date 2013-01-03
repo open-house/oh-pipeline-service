@@ -10,6 +10,7 @@ import sk.openhouse.automation.pipelinedomain.domain.response.ResourceResponse;
 import sk.openhouse.automation.pipelinedomain.domain.response.ResourcesResponse;
 import sk.openhouse.automation.pipelinedomain.domain.response.VersionResponse;
 import sk.openhouse.automation.pipelinedomain.domain.response.VersionsResponse;
+import sk.openhouse.automation.pipelineservice.service.ProjectService;
 import sk.openhouse.automation.pipelineservice.service.ResourceService;
 import sk.openhouse.automation.pipelineservice.service.VersionService;
 import sk.openhouse.automation.pipelineservice.service.exception.NotFoundException;
@@ -19,11 +20,15 @@ public class VersionServiceImpl implements VersionService {
     private final ResourceService resourceService;
     private final VersionReadDao versionReadDao;
     private final VersionWriteDao versionWriteDao;
+    private final ProjectService projectService;
 
-    public VersionServiceImpl(ResourceService resourceService, VersionReadDao versionReadDao, VersionWriteDao versionWriteDao) {
+    public VersionServiceImpl(ResourceService resourceService, VersionReadDao versionReadDao,
+            VersionWriteDao versionWriteDao, ProjectService projectService) {
+
         this.resourceService = resourceService;
         this.versionReadDao = versionReadDao;
         this.versionWriteDao = versionWriteDao;
+        this.projectService = projectService;
     }
 
     /**
@@ -49,6 +54,11 @@ public class VersionServiceImpl implements VersionService {
     public VersionsResponse getVersions(String projectName) {
 
         VersionsResponse versionsResponse = versionReadDao.getVersions(projectName);
+        /* check if project exists - service will throw NotFoundException if it doesn't */
+        if (versionsResponse.getVersions().isEmpty()) {
+            projectService.getProject(projectName);
+        }
+
         for (VersionResponse versionResponse : versionsResponse.getVersions()) {
             versionResponse.setResources(getVersionResources(projectName, versionResponse.getVersionNumber()));
         }
