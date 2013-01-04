@@ -15,6 +15,17 @@ public interface LinkService {
     String getProjectsUriString();
 
     /**
+     * @return URI template for (adding) a single project
+     */
+    String getProjectUriTemplate();
+
+    /**
+     * @param projectName for which the URI will be constructed
+     * @return URI for the specified project
+     */
+    String getProjectUriString(String projectName);
+
+    /**
      * Constructs and returns link response with method set to GET
      * 
      * @param uriString

@@ -6,6 +6,7 @@ import java.net.URISyntaxException;
 import org.apache.log4j.Logger;
 
 import sk.openhouse.automation.pipelinedomain.domain.response.LinkResponse;
+import sk.openhouse.automation.pipelineservice.resource.ResourceUtil;
 import sk.openhouse.automation.pipelineservice.service.LinkService;
 import sk.openhouse.automation.pipelineservice.util.impl.HttpUtilImpl;
 
@@ -42,7 +43,23 @@ public class LinkServiceImpl implements LinkService {
      */
     @Override
     public String getProjectsUriString() {
-        return rootUri + PROJECTS_URI_PART;
+        return String.format("%s/%s", rootUri, PROJECTS_URI_PART);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String getProjectUriTemplate() {
+        return String.format("%s/%s", rootUri, ResourceUtil.PROJECT_PATH);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String getProjectUriString(String projectName) {
+        return String.format("%s/%s", getProjectsUriString(), projectName);
     }
 
     /**
