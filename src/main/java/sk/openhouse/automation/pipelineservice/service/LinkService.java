@@ -26,6 +26,12 @@ public interface LinkService {
     String getProjectUriString(String projectName);
 
     /**
+     * @param projectName for which the versions URI will be constructed
+     * @return URI for the specified project versions
+     */
+    String getVersionstUriString(String projectName);
+
+    /**
      * Constructs and returns link response with method set to GET
      * 
      * @param uriString

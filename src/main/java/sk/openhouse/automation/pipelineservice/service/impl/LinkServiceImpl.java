@@ -14,7 +14,8 @@ public class LinkServiceImpl implements LinkService {
 
     private static final Logger logger = Logger.getLogger(HttpUtilImpl.class);
 
-    private static final String PROJECTS_URI_PART = "/projects";
+    private static final String PROJECTS_URI_PART = "projects";
+    private static final String VERSIONS_URI_PART = "versions";
 
     private final String rootUri;
 
@@ -60,6 +61,14 @@ public class LinkServiceImpl implements LinkService {
     @Override
     public String getProjectUriString(String projectName) {
         return String.format("%s/%s", getProjectsUriString(), projectName);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String getVersionstUriString(String projectName) {
+        return String.format("%s/%s/%s/%s", rootUri, PROJECTS_URI_PART, projectName, VERSIONS_URI_PART);
     }
 
     /**
