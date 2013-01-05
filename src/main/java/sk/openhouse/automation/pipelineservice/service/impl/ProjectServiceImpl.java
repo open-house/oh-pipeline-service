@@ -81,10 +81,6 @@ public class ProjectServiceImpl implements ProjectService {
 
         /* GET - specific project */
         links.add(linkService.getLink(projectUri, "project details"));
-        /* POST - update */
-        links.add(linkService.getLink(projectUri, "updates existing project", "POST", "TODO"));
-        /* DELETE */
-        links.add(linkService.getLink(projectUri, "deletes project", "DELETE"));
 
         LinksResponse linksResponse = new LinksResponse();
         linksResponse.setLinks(links);
@@ -93,8 +89,15 @@ public class ProjectServiceImpl implements ProjectService {
 
     private LinksResponse getProjectLinks(ProjectResponse project) {
 
+        String projectUri = linkService.getProjectUriString(project.getName());
         List<LinkResponse> links = new ArrayList<LinkResponse>();
+        /* versions */
         links.add(linkService.getLink(linkService.getVersionstUriString(project.getName()), "project versions"));
+
+        /* POST - update */
+        links.add(linkService.getLink(projectUri, "updates existing project", "POST", "TODO"));
+        /* DELETE */
+        links.add(linkService.getLink(projectUri, "deletes project", "DELETE"));
 
         LinksResponse linksResponse = new LinksResponse();
         linksResponse.setLinks(links);

@@ -32,6 +32,12 @@ public interface LinkService {
     String getVersionstUriString(String projectName);
 
     /**
+     * @param projectName for which the phases URI will be constructed
+     * @return URI for the specified project phases
+     */
+    String getPhasesUriString(String projectName);
+
+    /**
      * Constructs and returns link response with method set to GET
      * 
      * @param uriString
