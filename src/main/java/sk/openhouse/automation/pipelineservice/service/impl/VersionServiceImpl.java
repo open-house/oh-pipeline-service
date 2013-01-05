@@ -42,6 +42,8 @@ public class VersionServiceImpl implements VersionService {
             throw new NotFoundException(String.format("Version %s for project %s cannot be found.",
                     versionNumber, projectName));
         }
+
+        versionResponse.setLinks(getVersionLinks(projectName, versionNumber));
         return versionResponse;
     }
 
@@ -98,6 +100,25 @@ public class VersionServiceImpl implements VersionService {
 
         /* GET - specific project */
         links.add(linkService.getLink(versionUri, "version details"));
+
+        LinksResponse linksResponse = new LinksResponse();
+        linksResponse.setLinks(links);
+        return linksResponse;
+    }
+
+    private LinksResponse getVersionLinks(String projectName, String versionNumber) {
+
+        String versionUri = linkService.getVersionUriString(projectName, versionNumber);
+        List<LinkResponse> links = new ArrayList<LinkResponse>();
+        /* phases */
+        links.add(linkService.getLink(linkService.getPhasesUriString(projectName, versionNumber), "project phases"));
+        /* builds */
+        links.add(linkService.getLink(linkService.getBuildsUriString(projectName, versionNumber), "project builds"));
+
+        /* POST - update */
+        links.add(linkService.getLink(versionUri, "updates existing version", "POST", "TODO"));
+        /* DELETE */
+        links.add(linkService.getLink(versionUri, "deletes version", "DELETE"));
 
         LinksResponse linksResponse = new LinksResponse();
         linksResponse.setLinks(links);

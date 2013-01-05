@@ -17,6 +17,7 @@ public class LinkServiceImpl implements LinkService {
     private static final String PROJECTS_URI_PART = "projects";
     private static final String VERSIONS_URI_PART = "versions";
     private static final String PHASES_URI_PART = "phases";
+    private static final String BUILDS_URI_PART = "builds";
 
     private final String rootUri;
 
@@ -91,12 +92,21 @@ public class LinkServiceImpl implements LinkService {
         return String.format("%s/%s/%s/%s/%s", rootUri, PROJECTS_URI_PART, projectName, 
                 VERSIONS_URI_PART, versionNumber);
     }
+
     /**
      * {@inheritDoc}
      */
     @Override
-    public String getPhasesUriString(String projectName) {
-        return String.format("%s/%s/%s/%s", rootUri, PROJECTS_URI_PART, projectName, PHASES_URI_PART);
+    public String getPhasesUriString(String projectName, String versionNumber) {
+        return String.format("%s/%s", getVersionUriString(projectName, versionNumber), PHASES_URI_PART);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String getBuildsUriString(String projectName, String versionNumber) {
+        return String.format("%s/%s", getVersionUriString(projectName, versionNumber), BUILDS_URI_PART);
     }
 
     /**

@@ -45,10 +45,19 @@ public interface LinkService {
     String getVersionUriString(String projectName, String versionNumber);
 
     /**
-     * @param projectName for which the phases URI will be constructed
-     * @return URI for the specified project phases
+     * @param projectName
+     * @param versionNumber
+     * @return URI for the specified project version
      */
-    String getPhasesUriString(String projectName);
+    String getPhasesUriString(String projectName, String versionNumber);
+
+    /**
+     * 
+     * @param projectName
+     * @param versionNumber
+     * @return URI for the specified project version
+     */
+    String getBuildsUriString(String projectName, String versionNumber);
 
     /**
      * Constructs and returns link response with method set to GET

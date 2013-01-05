@@ -49,7 +49,7 @@ public class ProjectServiceImpl implements ProjectService {
             throw new NotFoundException(String.format("Project %s cannot be found.", projectName));
         }
 
-        projectResponse.setLinks(getProjectLinks(projectResponse));
+        projectResponse.setLinks(getProjectLinks(projectName));
         return projectResponse;
     }
 
@@ -87,12 +87,12 @@ public class ProjectServiceImpl implements ProjectService {
         return linksResponse;
     }
 
-    private LinksResponse getProjectLinks(ProjectResponse project) {
+    private LinksResponse getProjectLinks(String projectName) {
 
-        String projectUri = linkService.getProjectUriString(project.getName());
+        String projectUri = linkService.getProjectUriString(projectName);
         List<LinkResponse> links = new ArrayList<LinkResponse>();
         /* versions */
-        links.add(linkService.getLink(linkService.getVersionstUriString(project.getName()), "project versions"));
+        links.add(linkService.getLink(linkService.getVersionstUriString(projectName), "project versions"));
 
         /* POST - update */
         links.add(linkService.getLink(projectUri, "updates existing project", "POST", "TODO"));
