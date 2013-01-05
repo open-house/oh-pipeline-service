@@ -76,6 +76,25 @@ public class LinkServiceImpl implements LinkService {
      * {@inheritDoc}
      */
     @Override
+    public String getVersionUriTemplate(String projectName) {
+
+        return String.format("%s/{%s: %s}", getVersionstUriString(projectName), 
+                ResourceUtil.VERSION_PARAM, ResourceUtil.VERSION_NUMBER_PATTERN);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String getVersionUriString(String projectName, String versionNumber) {
+
+        return String.format("%s/%s/%s/%s/%s", rootUri, PROJECTS_URI_PART, projectName, 
+                VERSIONS_URI_PART, versionNumber);
+    }
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public String getPhasesUriString(String projectName) {
         return String.format("%s/%s/%s/%s", rootUri, PROJECTS_URI_PART, projectName, PHASES_URI_PART);
     }
