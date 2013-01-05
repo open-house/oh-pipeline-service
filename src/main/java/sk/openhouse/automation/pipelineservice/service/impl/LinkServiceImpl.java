@@ -52,7 +52,7 @@ public class LinkServiceImpl implements LinkService {
      */
     @Override
     public String getProjectUriTemplate() {
-        return String.format("%s/%s", rootUri, ResourceUtil.PROJECT_PATH);
+        return String.format("%s%s", rootUri, ResourceUtil.PROJECT_PATH);
     }
 
     /**
