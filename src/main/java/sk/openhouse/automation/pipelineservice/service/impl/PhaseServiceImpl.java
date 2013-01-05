@@ -1,10 +1,16 @@
 package sk.openhouse.automation.pipelineservice.service.impl;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import sk.openhouse.automation.pipelineservice.dao.PhaseReadDao;
 import sk.openhouse.automation.pipelineservice.dao.PhaseWriteDao;
 import sk.openhouse.automation.pipelinedomain.domain.request.PhaseRequest;
+import sk.openhouse.automation.pipelinedomain.domain.response.LinkResponse;
+import sk.openhouse.automation.pipelinedomain.domain.response.LinksResponse;
 import sk.openhouse.automation.pipelinedomain.domain.response.PhaseResponse;
 import sk.openhouse.automation.pipelinedomain.domain.response.PhasesResponse;
+import sk.openhouse.automation.pipelineservice.service.LinkService;
 import sk.openhouse.automation.pipelineservice.service.PhaseService;
 import sk.openhouse.automation.pipelineservice.service.VersionService;
 import sk.openhouse.automation.pipelineservice.service.exception.BadRequestException;
@@ -12,12 +18,14 @@ import sk.openhouse.automation.pipelineservice.service.exception.NotFoundExcepti
 
 public class PhaseServiceImpl implements PhaseService {
 
+    private final LinkService linkService;
     private final PhaseReadDao phaseReadDao;
     private final PhaseWriteDao phaseWriteDao;
     private final VersionService versionService;
 
-    public PhaseServiceImpl(PhaseReadDao phaseReadDao, PhaseWriteDao phaseWriteDao, VersionService versionService) {
+    public PhaseServiceImpl(LinkService linkService, PhaseReadDao phaseReadDao, PhaseWriteDao phaseWriteDao, VersionService versionService) {
 
+        this.linkService = linkService;
         this.phaseReadDao = phaseReadDao;
         this.phaseWriteDao = phaseWriteDao;
         this.versionService = versionService;
@@ -44,13 +52,14 @@ public class PhaseServiceImpl implements PhaseService {
     @Override
     public PhaseResponse getPhase(String projectName, String versionNumber, String phaseName) {
 
-        PhaseResponse phase = phaseReadDao.getPhase(projectName, versionNumber, phaseName);
-        if (null == phase) {
+        PhaseResponse phaseResponse = phaseReadDao.getPhase(projectName, versionNumber, phaseName);
+        if (null == phaseResponse) {
             throw new NotFoundException(String.format("Phase %s for project %s and version %s cannot be found.",
                     phaseName, projectName, versionNumber));
         }
 
-        return phase;
+        phaseResponse.setLinks(getPhaseLinks(projectName, versionNumber, phaseName));
+        return phaseResponse;
     }
 
     /**
@@ -63,6 +72,13 @@ public class PhaseServiceImpl implements PhaseService {
         if (phasesResponse.getPhases().isEmpty()) {
             /* check if version exists - service will throw NotFoundException if it doesn't */
             versionService.getVersion(projectName, versionNumber);
+        }
+
+        phasesResponse.setHref(linkService.getPhaseUriTemplate(projectName, versionNumber));
+        phasesResponse.setMethod("PUT");
+        phasesResponse.setDescription("adds new project phase");
+        for (PhaseResponse phase : phasesResponse.getPhases()) {
+            phase.setLinks(getPhasesLinks(projectName, versionNumber, phase));
         }
         return phasesResponse;
     }
@@ -104,5 +120,33 @@ public class PhaseServiceImpl implements PhaseService {
     @Override
     public void deletePhase(String projectName, String versionNumber, String phaseName) {
         phaseWriteDao.deletePhase(projectName, versionNumber, phaseName);
+    }
+
+    private LinksResponse getPhasesLinks(String projectName, String versionNumber, PhaseResponse phase) {
+
+        String phaseUri = linkService.getPhaseUriString(projectName, versionNumber, phase.getName());
+        List<LinkResponse> links = new ArrayList<LinkResponse>();
+
+        /* GET - specific project */
+        links.add(linkService.getLink(phaseUri, "phase details"));
+
+        LinksResponse linksResponse = new LinksResponse();
+        linksResponse.setLinks(links);
+        return linksResponse;
+    }
+
+    private LinksResponse getPhaseLinks(String projectName, String versionNumber, String phaseName) {
+
+        String phaseUri = linkService.getPhaseUriString(projectName, versionNumber, phaseName);
+        List<LinkResponse> links = new ArrayList<LinkResponse>();
+
+        /* POST - update */
+        links.add(linkService.getLink(phaseUri, "updates existing phase", "POST", "TODO"));
+        /* DELETE */
+        links.add(linkService.getLink(phaseUri, "deletes phase", "DELETE"));
+
+        LinksResponse linksResponse = new LinksResponse();
+        linksResponse.setLinks(links);
+        return linksResponse;
     }
 }

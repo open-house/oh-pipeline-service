@@ -69,7 +69,7 @@ public class LinkServiceImpl implements LinkService {
      * {@inheritDoc}
      */
     @Override
-    public String getVersionstUriString(String projectName) {
+    public String getVersionsUriString(String projectName) {
         return String.format("%s/%s/%s/%s", rootUri, PROJECTS_URI_PART, projectName, VERSIONS_URI_PART);
     }
 
@@ -79,7 +79,7 @@ public class LinkServiceImpl implements LinkService {
     @Override
     public String getVersionUriTemplate(String projectName) {
 
-        return String.format("%s/{%s: %s}", getVersionstUriString(projectName), 
+        return String.format("%s/{%s: %s}", getVersionsUriString(projectName), 
                 ResourceUtil.VERSION_PARAM, ResourceUtil.VERSION_NUMBER_PATTERN);
     }
 
@@ -99,6 +99,24 @@ public class LinkServiceImpl implements LinkService {
     @Override
     public String getPhasesUriString(String projectName, String versionNumber) {
         return String.format("%s/%s", getVersionUriString(projectName, versionNumber), PHASES_URI_PART);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String getPhaseUriString(String projectName, String versionNumber, String phaseName) {
+        return String.format("%s/%s", getPhasesUriString(projectName, versionNumber), phaseName);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String getPhaseUriTemplate(String projectName, String versionNumber) {
+
+        return String.format("%s/{%s: %s}", getPhasesUriString(projectName, versionNumber), 
+                ResourceUtil.PHASE_PARAM, ResourceUtil.NAME_PATTERN);
     }
 
     /**

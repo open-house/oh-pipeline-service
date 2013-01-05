@@ -44,6 +44,7 @@
     </bean>
 
     <bean name="phaseService" class="sk.openhouse.automation.pipelineservice.service.impl.PhaseServiceImpl">
+        <constructor-arg name="linkService" ref="linkService" />
         <constructor-arg name="phaseReadDao" ref="phaseReadDao" />
         <constructor-arg name="phaseWriteDao" ref="phaseWriteDao" />
         <constructor-arg name="versionService" ref="versionService" />

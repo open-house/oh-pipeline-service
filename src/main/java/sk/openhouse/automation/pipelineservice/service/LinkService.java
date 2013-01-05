@@ -29,7 +29,7 @@ public interface LinkService {
      * @param projectName for which the versions URI will be constructed
      * @return URI for the specified project versions
      */
-    String getVersionstUriString(String projectName);
+    String getVersionsUriString(String projectName);
 
     /**
      * @param projectName
@@ -53,6 +53,21 @@ public interface LinkService {
 
     /**
      * 
+     * @param projectName
+     * @param versionNumber
+     * @param phaseName
+     * @return URI for the specified project phase
+     */
+    String getPhaseUriString(String projectName, String versionNumber, String phaseName);
+
+    /**
+     * @param projectName
+     * @param versionNumber
+     * @return URI template for a phase
+     */
+    String getPhaseUriTemplate(String projectName, String versionNumber);
+
+    /**
      * @param projectName
      * @param versionNumber
      * @return URI for the specified project version

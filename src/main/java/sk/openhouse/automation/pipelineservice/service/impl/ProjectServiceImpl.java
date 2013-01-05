@@ -92,7 +92,7 @@ public class ProjectServiceImpl implements ProjectService {
         String projectUri = linkService.getProjectUriString(projectName);
         List<LinkResponse> links = new ArrayList<LinkResponse>();
         /* versions */
-        links.add(linkService.getLink(linkService.getVersionstUriString(projectName), "project versions"));
+        links.add(linkService.getLink(linkService.getVersionsUriString(projectName), "project versions"));
 
         /* POST - update */
         links.add(linkService.getLink(projectUri, "updates existing project", "POST", "TODO"));
