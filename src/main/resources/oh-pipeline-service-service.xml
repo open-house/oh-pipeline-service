@@ -29,6 +29,7 @@
     </bean>
 
     <bean name="buildService" class="sk.openhouse.automation.pipelineservice.service.impl.BuildServiceImpl">
+        <constructor-arg name="linkService" ref="linkService" />
         <constructor-arg name="buildReadDao" ref="buildReadDao" />
         <constructor-arg name="buildWriteDao" ref="buildWriteDao" />
         <constructor-arg name="versionService" ref="versionService" />

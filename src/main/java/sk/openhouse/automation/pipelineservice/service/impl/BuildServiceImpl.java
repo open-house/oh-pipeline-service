@@ -1,28 +1,36 @@
 package sk.openhouse.automation.pipelineservice.service.impl;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import sk.openhouse.automation.pipelineservice.dao.BuildReadDao;
 import sk.openhouse.automation.pipelineservice.dao.BuildWriteDao;
 import sk.openhouse.automation.pipelinedomain.domain.request.BuildRequest;
 import sk.openhouse.automation.pipelinedomain.domain.response.BuildResponse;
 import sk.openhouse.automation.pipelinedomain.domain.response.BuildsResponse;
+import sk.openhouse.automation.pipelinedomain.domain.response.LinkResponse;
+import sk.openhouse.automation.pipelinedomain.domain.response.LinksResponse;
 import sk.openhouse.automation.pipelinedomain.domain.response.PhaseResponse;
 import sk.openhouse.automation.pipelineservice.service.BuildPhaseService;
 import sk.openhouse.automation.pipelineservice.service.BuildService;
+import sk.openhouse.automation.pipelineservice.service.LinkService;
 import sk.openhouse.automation.pipelineservice.service.PhaseService;
 import sk.openhouse.automation.pipelineservice.service.VersionService;
 import sk.openhouse.automation.pipelineservice.service.exception.NotFoundException;
 
 public class BuildServiceImpl implements BuildService {
 
+    private final LinkService linkService;
     private final BuildReadDao buildReadDao;
     private final BuildWriteDao buildWriteDao;
     private final VersionService versionService;
     private final PhaseService phaseService;
     private final BuildPhaseService buildPhaseService;
 
-    public BuildServiceImpl(BuildReadDao buildReadDao, BuildWriteDao buildWriteDao,
+    public BuildServiceImpl(LinkService linkService, BuildReadDao buildReadDao, BuildWriteDao buildWriteDao,
             VersionService versionService, PhaseService phaseService, BuildPhaseService buildPhaseService) {
 
+        this.linkService = linkService;
         this.buildReadDao = buildReadDao;
         this.buildWriteDao = buildWriteDao;
         this.versionService = versionService;
@@ -103,7 +111,7 @@ public class BuildServiceImpl implements BuildService {
     }
 
     /**
-     * Validates if builds for specified project and version exist
+     * Validates if builds for specified project and version exist and sets links
      * 
      * @param buildsResponse
      * @param projectName
@@ -115,5 +123,26 @@ public class BuildServiceImpl implements BuildService {
             /* check if version exists - service will throw NotFoundException if it doesn't */
             versionService.getVersion(projectName, versionNumber);
         }
+
+        buildsResponse.setHref(linkService.getBuildUriTemplate(projectName, versionNumber));
+        buildsResponse.setMethod("PUT");
+        buildsResponse.setDescription("adds new build");
+
+        for (BuildResponse build : buildsResponse.getBuilds()) {
+            build.setLinks(getBuildsLinks(projectName, versionNumber, build));
+        }
+    }
+
+    private LinksResponse getBuildsLinks(String projectName, String versionNumber, BuildResponse build) {
+
+        String buildUri = linkService.getBuildUriString(projectName, versionNumber, build.getNumber());
+        List<LinkResponse> links = new ArrayList<LinkResponse>();
+
+        /* GET - specific project */
+        links.add(linkService.getLink(buildUri, "build details"));
+
+        LinksResponse linksResponse = new LinksResponse();
+        linksResponse.setLinks(links);
+        return linksResponse;
     }
 }

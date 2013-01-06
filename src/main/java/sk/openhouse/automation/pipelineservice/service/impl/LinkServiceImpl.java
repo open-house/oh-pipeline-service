@@ -70,7 +70,7 @@ public class LinkServiceImpl implements LinkService {
      */
     @Override
     public String getVersionsUriString(String projectName) {
-        return String.format("%s/%s/%s/%s", rootUri, PROJECTS_URI_PART, projectName, VERSIONS_URI_PART);
+        return String.format("%s/%s", getProjectUriString(projectName), VERSIONS_URI_PART);
     }
 
     /**
@@ -88,9 +88,7 @@ public class LinkServiceImpl implements LinkService {
      */
     @Override
     public String getVersionUriString(String projectName, String versionNumber) {
-
-        return String.format("%s/%s/%s/%s/%s", rootUri, PROJECTS_URI_PART, projectName, 
-                VERSIONS_URI_PART, versionNumber);
+        return String.format("%s/%s", getVersionsUriString(projectName), versionNumber);
     }
 
     /**
@@ -125,6 +123,24 @@ public class LinkServiceImpl implements LinkService {
     @Override
     public String getBuildsUriString(String projectName, String versionNumber) {
         return String.format("%s/%s", getVersionUriString(projectName, versionNumber), BUILDS_URI_PART);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String getBuildUriString(String projectName, String versionNumber, int buildNumber) {
+        return String.format("%s/%d", getBuildsUriString(projectName, versionNumber), buildNumber);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String getBuildUriTemplate(String projectName, String versionNumber) {
+
+        return String.format("%s/{%s: %s}", getBuildsUriString(projectName, versionNumber), 
+                ResourceUtil.BUILD_PARAM, ResourceUtil.NAME_PATTERN);
     }
 
     /**

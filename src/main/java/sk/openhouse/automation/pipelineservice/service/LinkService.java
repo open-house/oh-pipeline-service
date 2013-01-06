@@ -75,6 +75,21 @@ public interface LinkService {
     String getBuildsUriString(String projectName, String versionNumber);
 
     /**
+     * @param projectName
+     * @param versionNumber
+     * @param buildNumber
+     * @return URI for the specified project build
+     */
+    String getBuildUriString(String projectName, String versionNumber, int buildNumber);
+
+    /**
+     * @param projectName
+     * @param versionNumber
+     * @return URI template to add new build
+     */
+    String getBuildUriTemplate(String projectName, String versionNumber);
+
+    /**
      * Constructs and returns link response with method set to GET
      * 
      * @param uriString
