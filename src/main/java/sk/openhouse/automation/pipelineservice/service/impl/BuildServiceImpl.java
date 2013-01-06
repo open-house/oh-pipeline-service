@@ -71,6 +71,8 @@ public class BuildServiceImpl implements BuildService {
             throw new NotFoundException(String.format("Build %d for project %s and version %s cannot be found.", 
                     buildNumber, projectName, versionNumber));
         }
+
+        buildResponse.setLinks(getBuildLinks(projectName, versionNumber, buildResponse));
         return buildResponse;
     }
 
@@ -140,6 +142,24 @@ public class BuildServiceImpl implements BuildService {
 
         /* GET - specific project */
         links.add(linkService.getLink(buildUri, "build details"));
+
+        LinksResponse linksResponse = new LinksResponse();
+        linksResponse.setLinks(links);
+        return linksResponse;
+    }
+
+    private LinksResponse getBuildLinks(String projectName, String versionNumber, BuildResponse build) {
+
+        String buildUri = linkService.getBuildUriString(projectName, versionNumber, build.getNumber());
+        List<LinkResponse> links = new ArrayList<LinkResponse>();
+        /* phases */
+        links.add(linkService.getLink(linkService.getBuildPhasesUriString(projectName, versionNumber, build.getNumber()), 
+                "build phases and their states"));
+
+        /* POST - update */
+        links.add(linkService.getLink(buildUri, "updates existing bulid", "POST", "TODO"));
+        /* DELETE */
+        links.add(linkService.getLink(buildUri, "deletes build", "DELETE"));
 
         LinksResponse linksResponse = new LinksResponse();
         linksResponse.setLinks(links);

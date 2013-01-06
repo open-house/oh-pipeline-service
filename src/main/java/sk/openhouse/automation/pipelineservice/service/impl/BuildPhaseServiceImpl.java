@@ -1,16 +1,21 @@
 package sk.openhouse.automation.pipelineservice.service.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import sk.openhouse.automation.pipelineservice.dao.BuildPhaseReadDao;
 import sk.openhouse.automation.pipelineservice.dao.BuildPhaseWriteDao;
+import sk.openhouse.automation.pipelineservice.dao.BuildReadDao;
 import sk.openhouse.automation.pipelinedomain.domain.PhaseState;
 import sk.openhouse.automation.pipelinedomain.domain.request.StateRequest;
 import sk.openhouse.automation.pipelinedomain.domain.response.BuildPhaseResponse;
 import sk.openhouse.automation.pipelinedomain.domain.response.BuildPhasesResponse;
+import sk.openhouse.automation.pipelinedomain.domain.response.LinkResponse;
+import sk.openhouse.automation.pipelinedomain.domain.response.LinksResponse;
 import sk.openhouse.automation.pipelinedomain.domain.response.PhaseResponse;
 import sk.openhouse.automation.pipelinedomain.domain.response.PhasesResponse;
 import sk.openhouse.automation.pipelineservice.service.BuildPhaseService;
+import sk.openhouse.automation.pipelineservice.service.LinkService;
 import sk.openhouse.automation.pipelineservice.service.PhaseService;
 import sk.openhouse.automation.pipelineservice.service.exception.ConflictException;
 import sk.openhouse.automation.pipelineservice.service.exception.NotFoundException;
@@ -18,16 +23,21 @@ import sk.openhouse.automation.pipelineservice.util.HttpUtil;
 
 public class BuildPhaseServiceImpl implements BuildPhaseService {
 
+    private final LinkService linkService;
     private final BuildPhaseReadDao buildPhaseReadDao;
     private final BuildPhaseWriteDao buildPhaseWriteDao;
+    private final BuildReadDao buildReadDao;
     private final PhaseService phaseService;
     private final HttpUtil httpUtil;
 
-    public BuildPhaseServiceImpl(BuildPhaseReadDao buildPhaseReadDao, BuildPhaseWriteDao buildPhaseWriteDao,
-            PhaseService phaseService, HttpUtil httpUtil) {
+    public BuildPhaseServiceImpl(LinkService linkService, BuildPhaseReadDao buildPhaseReadDao, 
+            BuildPhaseWriteDao buildPhaseWriteDao, BuildReadDao buildReadDao, PhaseService phaseService, 
+            HttpUtil httpUtil) {
 
+        this.linkService = linkService;
         this.buildPhaseReadDao = buildPhaseReadDao;
         this.buildPhaseWriteDao = buildPhaseWriteDao;
+        this.buildReadDao = buildReadDao;
         this.phaseService = phaseService;
         this.httpUtil = httpUtil;
     }
@@ -77,9 +87,16 @@ public class BuildPhaseServiceImpl implements BuildPhaseService {
     public BuildPhasesResponse getBuildPhases(String projectName, String versionNumber, int buildNumber) {
 
         BuildPhasesResponse buildPhasesResponse = buildPhaseReadDao.getBuildPhases(projectName, versionNumber, buildNumber);
-        if (null == buildPhasesResponse) {
-            throw new NotFoundException(String.format("No phases found for project %s version %s and build %d.", 
-                    projectName, versionNumber, buildNumber));
+        if (buildPhasesResponse.getBuildPhases().isEmpty()) {
+            /* check if phases exist - service will throw NotFoundException if it doesn't */
+            if(null == buildReadDao.getBuild(projectName, versionNumber, buildNumber)) {
+                throw new NotFoundException(String.format("Build %d for project %s and version %s cannot be found",
+                        buildNumber, projectName, versionNumber));
+            }
+        }
+
+        for (BuildPhaseResponse buildPhase : buildPhasesResponse.getBuildPhases()) {
+            buildPhase.setLinks(getBuildPhasesLinks(projectName, versionNumber, buildNumber, buildPhase.getName()));
         }
         return buildPhasesResponse;
     }
@@ -95,6 +112,8 @@ public class BuildPhaseServiceImpl implements BuildPhaseService {
             throw new NotFoundException(String.format("No phase %s found for project %s version %s and build %d", 
                     phaseName, projectName, versionNumber, buildNumber));
         }
+
+        buildPhaseResponse.setLinks(getBuildPhaseLinks(projectName, versionNumber, buildNumber, phaseName));
         return buildPhaseResponse;
     }
 
@@ -153,5 +172,31 @@ public class BuildPhaseServiceImpl implements BuildPhaseService {
 
         /* state already set to IN_PROGRESS, no need to run 'runPhase' */
         sendPhaseRequest(projectName, versionNumber, buildNumber, nextPhase);
+    }
+
+    private LinksResponse getBuildPhasesLinks(String projectName, String versionNumber, int buildNumber, String phaseName) {
+
+        String buildPhaseUri = linkService.getBuildPhaseUriString(projectName, versionNumber, buildNumber, phaseName);
+        List<LinkResponse> links = new ArrayList<LinkResponse>();
+
+        /* GET - specific project */
+        links.add(linkService.getLink(buildPhaseUri, "build phase details"));
+
+        LinksResponse linksResponse = new LinksResponse();
+        linksResponse.setLinks(links);
+        return linksResponse;
+    }
+
+    private LinksResponse getBuildPhaseLinks(String projectName, String versionNumber, int buildNumber, String phaseName) {
+
+        String buildPhaseUri = linkService.getBuildPhaseUriString(projectName, versionNumber, buildNumber, phaseName);
+        List<LinkResponse> links = new ArrayList<LinkResponse>();
+
+        /* POST - add new state */
+        links.add(linkService.getLink(buildPhaseUri, "add new phase state", "POST", "TODO"));
+
+        LinksResponse linksResponse = new LinksResponse();
+        linksResponse.setLinks(links);
+        return linksResponse;
     }
 }

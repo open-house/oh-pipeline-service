@@ -147,6 +147,22 @@ public class LinkServiceImpl implements LinkService {
      * {@inheritDoc}
      */
     @Override
+    public String getBuildPhasesUriString(String projectName, String versionNumber, int buildNumber) {
+        return String.format("%s/%s", getBuildUriString(projectName, versionNumber, buildNumber), PHASES_URI_PART);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String getBuildPhaseUriString(String projectName, String versionNumber, int buildNumber, String phaseName) {
+        return String.format("%s/%s", getBuildPhasesUriString(projectName, versionNumber, buildNumber), phaseName);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public LinkResponse getLink(String uriString, String description) {
         return getLink(uriString, description, "GET", null);
     }

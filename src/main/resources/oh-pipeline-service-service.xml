@@ -38,8 +38,10 @@
     </bean>
 
     <bean name="buildPhaseService" class="sk.openhouse.automation.pipelineservice.service.impl.BuildPhaseServiceImpl">
+        <constructor-arg name="linkService" ref="linkService" />
         <constructor-arg name="buildPhaseReadDao" ref="buildPhaseReadDao" />
         <constructor-arg name="buildPhaseWriteDao" ref="buildPhaseWriteDao" />
+        <constructor-arg name="buildReadDao" ref="buildReadDao" />
         <constructor-arg name="phaseService" ref="phaseService" />
         <constructor-arg name="httpUtil" ref="httpUtil" />
     </bean>

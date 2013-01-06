@@ -90,6 +90,23 @@ public interface LinkService {
     String getBuildUriTemplate(String projectName, String versionNumber);
 
     /**
+     * @param projectName
+     * @param versionNumber
+     * @param buildNumber
+     * @return URI for the specified build phases
+     */
+    String getBuildPhasesUriString(String projectName, String versionNumber, int buildNumber);
+
+    /**
+     * @param projectName
+     * @param versionNumber
+     * @param buildNumber
+     * @param phaseName
+     * @return URI for the specific build phase
+     */
+    String getBuildPhaseUriString(String projectName, String versionNumber, int buildNumber, String phaseName);
+
+    /**
      * Constructs and returns link response with method set to GET
      * 
      * @param uriString
