@@ -3,6 +3,8 @@ package sk.openhouse.automation.pipelineservice.service.impl;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.dao.DuplicateKeyException;
+
 import sk.openhouse.automation.pipelineservice.dao.ProjectReadDao;
 import sk.openhouse.automation.pipelineservice.dao.ProjectWriteDao;
 import sk.openhouse.automation.pipelinedomain.domain.request.ProjectRequest;
@@ -12,6 +14,7 @@ import sk.openhouse.automation.pipelinedomain.domain.response.ProjectResponse;
 import sk.openhouse.automation.pipelinedomain.domain.response.ProjectsResponse;
 import sk.openhouse.automation.pipelineservice.service.LinkService;
 import sk.openhouse.automation.pipelineservice.service.ProjectService;
+import sk.openhouse.automation.pipelineservice.service.exception.ConflictException;
 import sk.openhouse.automation.pipelineservice.service.exception.NotFoundException;
 
 public class ProjectServiceImpl implements ProjectService {
@@ -27,6 +30,9 @@ public class ProjectServiceImpl implements ProjectService {
         this.projectWriteDao = projectWriteDao;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ProjectsResponse getProjects() {
 
@@ -41,6 +47,9 @@ public class ProjectServiceImpl implements ProjectService {
         return projectsResponse;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ProjectResponse getProject(String projectName) {
 
@@ -53,16 +62,30 @@ public class ProjectServiceImpl implements ProjectService {
         return projectResponse;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void addProject(ProjectRequest project) {
-        projectWriteDao.addProject(project);
+
+        try {
+            projectWriteDao.addProject(project);
+        } catch (DuplicateKeyException e) {
+            throw new ConflictException(String.format("Project %s already exists.", project.getName()));
+        }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void updateProject(String projectName, ProjectRequest project) {
         projectWriteDao.updateProject(projectName, project);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void deleteProject(String projectName) {
         projectWriteDao.deleteProject(projectName);

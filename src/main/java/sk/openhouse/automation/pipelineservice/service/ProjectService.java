@@ -3,6 +3,7 @@ package sk.openhouse.automation.pipelineservice.service;
 import sk.openhouse.automation.pipelinedomain.domain.request.ProjectRequest;
 import sk.openhouse.automation.pipelinedomain.domain.response.ProjectResponse;
 import sk.openhouse.automation.pipelinedomain.domain.response.ProjectsResponse;
+import sk.openhouse.automation.pipelineservice.service.exception.ConflictException;
 import sk.openhouse.automation.pipelineservice.service.exception.NotFoundException;
 
 /**
@@ -19,15 +20,16 @@ public interface ProjectService {
 
     /**
      * @param name unique product name
-     * @return projetct details
+     * @return project details
      * @throws NotFoundException if the project cannot be found
      */
     ProjectResponse getProject(String name) throws NotFoundException;
 
     /**
      * @param project adds new project, project name has to be unique
+     * @throws ConflictException if the project already exists
      */
-    void addProject(ProjectRequest project);
+    void addProject(ProjectRequest project) throws ConflictException;
 
     /**
      * Updates existing project

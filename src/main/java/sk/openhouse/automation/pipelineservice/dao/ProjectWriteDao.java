@@ -1,5 +1,7 @@
 package sk.openhouse.automation.pipelineservice.dao;
 
+import org.springframework.dao.DuplicateKeyException;
+
 import sk.openhouse.automation.pipelinedomain.domain.request.ProjectRequest;
 
 /**
@@ -11,8 +13,9 @@ public interface ProjectWriteDao {
 
     /**
      * @param project adds new project (project name has to be unique)
+     * @throws DuplicateKeyException if the project already exists
      */
-    void addProject(ProjectRequest project);
+    void addProject(ProjectRequest project) throws DuplicateKeyException;
 
     /**
      * Updates existing project
