@@ -3,6 +3,7 @@ package sk.openhouse.automation.pipelineservice.service;
 import sk.openhouse.automation.pipelinedomain.domain.request.PhaseRequest;
 import sk.openhouse.automation.pipelinedomain.domain.response.PhaseResponse;
 import sk.openhouse.automation.pipelinedomain.domain.response.PhasesResponse;
+import sk.openhouse.automation.pipelineservice.service.exception.ConflictException;
 import sk.openhouse.automation.pipelineservice.service.exception.NotFoundException;
 
 /**
@@ -38,14 +39,16 @@ public interface PhaseService {
     PhasesResponse getPhases(String projectName, String versionNumber) throws NotFoundException;
 
     /**
-     * Adds new or overrides existing (if this phase already exists) project phase
+     * Adds new project phase
      * 
      * @param projectName
      * @param versionNumber
      * @param phaseName
      * @param phaseRequest
+     * @throws ConflictException if the build already exists
      */
-    void addPhase(String projectName, String versionNumber, String phaseName, PhaseRequest phaseRequest);
+    void addPhase(String projectName, String versionNumber, String phaseName, PhaseRequest phaseRequest)
+            throws ConflictException;
 
     /**
      * Updates existing phase

@@ -54,7 +54,7 @@ public interface BuildService {
      * @param buildRequest
      * @throws ConflictException if the build already exists
      */
-    void addBuild(String projectName, String versionNumber, BuildRequest buildRequest);
+    void addBuild(String projectName, String versionNumber, BuildRequest buildRequest) throws ConflictException;
 
     /**
      * Updates existing project build

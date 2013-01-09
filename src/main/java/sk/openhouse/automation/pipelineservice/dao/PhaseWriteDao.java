@@ -1,5 +1,7 @@
 package sk.openhouse.automation.pipelineservice.dao;
 
+import org.springframework.dao.DuplicateKeyException;
+
 import sk.openhouse.automation.pipelinedomain.domain.request.PhaseRequest;
 
 /**
@@ -10,13 +12,14 @@ import sk.openhouse.automation.pipelinedomain.domain.request.PhaseRequest;
 public interface PhaseWriteDao {
 
     /**
-     * Adds new or overrides existing (if this phase already exists) project phase
+     * Adds new project phase
      * 
      * @param projectName name of the project
      * @param versionNumber version number of the project
      * @param phaseRequest
+     * @throws DuplicateKeyException if the build number already exists
      */
-    void addPhase(String projectName, String versionNumber, PhaseRequest phaseRequest);
+    void addPhase(String projectName, String versionNumber, PhaseRequest phaseRequest) throws DuplicateKeyException;
 
     /**
      * Updates existing phase

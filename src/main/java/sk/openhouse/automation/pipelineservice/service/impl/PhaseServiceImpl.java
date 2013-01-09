@@ -3,6 +3,8 @@ package sk.openhouse.automation.pipelineservice.service.impl;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.dao.DuplicateKeyException;
+
 import sk.openhouse.automation.pipelineservice.dao.PhaseReadDao;
 import sk.openhouse.automation.pipelineservice.dao.PhaseWriteDao;
 import sk.openhouse.automation.pipelinedomain.domain.request.PhaseRequest;
@@ -14,6 +16,7 @@ import sk.openhouse.automation.pipelineservice.service.LinkService;
 import sk.openhouse.automation.pipelineservice.service.PhaseService;
 import sk.openhouse.automation.pipelineservice.service.VersionService;
 import sk.openhouse.automation.pipelineservice.service.exception.BadRequestException;
+import sk.openhouse.automation.pipelineservice.service.exception.ConflictException;
 import sk.openhouse.automation.pipelineservice.service.exception.NotFoundException;
 
 public class PhaseServiceImpl implements PhaseService {
@@ -99,7 +102,13 @@ public class PhaseServiceImpl implements PhaseService {
                     + " Either remove name element from the request, or use the same name as in the url.";
             throw new BadRequestException(String.format(messageTemplate, phaseRequestName, phaseName));
         }
-        phaseWriteDao.addPhase(projectName, versionNumber, phaseRequest);
+
+        try {
+            phaseWriteDao.addPhase(projectName, versionNumber, phaseRequest);
+        } catch (DuplicateKeyException e) {
+            throw new ConflictException(String.format("Phase %s for the project %s and version %s already exists.",
+                    phaseRequest.getName(), projectName, versionNumber));
+        }
     }
 
     /**
