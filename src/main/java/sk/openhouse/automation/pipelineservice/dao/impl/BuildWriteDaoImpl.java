@@ -9,6 +9,10 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import sk.openhouse.automation.pipelineservice.dao.BuildWriteDao;
 import sk.openhouse.automation.pipelinedomain.domain.request.BuildRequest;
 
+/**
+ * 
+ * @author pete
+ */
 public class BuildWriteDaoImpl implements BuildWriteDao {
 
     private static final Logger logger = Logger.getLogger(BuildWriteDaoImpl.class);

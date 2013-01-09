@@ -5,14 +5,14 @@ import org.springframework.dao.DuplicateKeyException;
 import sk.openhouse.automation.pipelinedomain.domain.request.ProjectRequest;
 
 /**
- * Write DAO for project write access
+ * Write DAO for project(s).
  * 
  * @author pete
  */
 public interface ProjectWriteDao {
 
     /**
-     * @param project adds new project (project name has to be unique)
+     * @param project to be added (project name has to be unique)
      * @throws DuplicateKeyException if the project already exists
      */
     void addProject(ProjectRequest project) throws DuplicateKeyException;
@@ -20,7 +20,7 @@ public interface ProjectWriteDao {
     /**
      * Updates existing project
      * 
-     * @param projectName name of the project that will be udpated
+     * @param projectName name of the project to be updated
      * @param project data to be updated
      */
     void updateProject(String projectName, ProjectRequest project);
@@ -28,7 +28,7 @@ public interface ProjectWriteDao {
     /**
      * Deletes specified project
      * 
-     * @param projectName
+     * @param projectName name of the project to be deleted
      */
     void deleteProject(String projectName);
 }

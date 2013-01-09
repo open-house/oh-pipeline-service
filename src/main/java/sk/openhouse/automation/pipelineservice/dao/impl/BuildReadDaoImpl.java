@@ -23,6 +23,10 @@ import sk.openhouse.automation.pipelinedomain.domain.response.BuildResponse;
 import sk.openhouse.automation.pipelinedomain.domain.response.BuildsResponse;
 import sk.openhouse.automation.pipelinedomain.domain.response.StateResponse;
 
+/**
+ * 
+ * @author pete
+ */
 public class BuildReadDaoImpl implements BuildReadDao {
 
     private static final Logger logger = Logger.getLogger(VersionReadDaoImpl.class);

@@ -17,26 +17,26 @@ public interface PhaseWriteDao {
      * @param projectName name of the project
      * @param versionNumber version number of the project
      * @param phaseRequest
-     * @throws DuplicateKeyException if the build number already exists
+     * @throws DuplicateKeyException if the phase name already exists
      */
     void addPhase(String projectName, String versionNumber, PhaseRequest phaseRequest) throws DuplicateKeyException;
 
     /**
      * Updates existing phase
      * 
-     * @param projectName
-     * @param versionNumber
-     * @param phaseName
-     * @param buildRequest
+     * @param projectName name of the project
+     * @param versionNumber version number of the project
+     * @param phaseName name of the phase that will be updated
+     * @param buildRequest new data to update the phase
      */
     void updatePhase(String projectName, String versionNumber, String phaseName, PhaseRequest phaseRequest);
 
     /**
      * Deletes project phase
      * 
-     * @param projectName
-     * @param versionNumber
-     * @param phaseName
+     * @param projectName name of the project
+     * @param versionNumber version number of the project
+     * @param phaseName name of the to be deleted
      */
     void deletePhase(String projectName, String versionNumber, String phaseName);
 }

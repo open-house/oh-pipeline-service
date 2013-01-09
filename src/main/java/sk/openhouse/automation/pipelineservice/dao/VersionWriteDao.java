@@ -14,26 +14,26 @@ public interface VersionWriteDao {
     /**
      * Adds new project version
      * 
-     * @param projectName
-     * @param versionRequest
-     * @throws DuplicateKeyException if the build number already exists
+     * @param projectName name of the project
+     * @param versionRequest version to be added
+     * @throws DuplicateKeyException if the version (number) already exists
      */
     void addVersion(String projectName, VersionRequest versionRequest) throws DuplicateKeyException;
 
     /**
      * Updates existing project version number
      * 
-     * @param projectName
-     * @param versionNumber
-     * @param versionRequest
+     * @param projectName name of the project
+     * @param versionNumber version number of the project to be updated
+     * @param versionRequest new data to replace the existing ones
      */
     void updateVersion(String projectName, String versionNumber, VersionRequest versionRequest);
 
     /**
      * Deletes project version
      * 
-     * @param projectName
-     * @param versionNumber
+     * @param projectName name of the project
+     * @param versionNumber version number of the project to be updated
      */
     void deleteVersion(String projectName, String versionNumber);
 }

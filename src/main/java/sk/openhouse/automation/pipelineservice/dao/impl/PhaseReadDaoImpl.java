@@ -18,6 +18,10 @@ import sk.openhouse.automation.pipelineservice.dao.PhaseReadDao;
 import sk.openhouse.automation.pipelinedomain.domain.response.PhaseResponse;
 import sk.openhouse.automation.pipelinedomain.domain.response.PhasesResponse;
 
+/**
+ * 
+ * @author pete
+ */
 public class PhaseReadDaoImpl implements PhaseReadDao {
 
     private static final Logger logger = Logger.getLogger(PhaseReadDaoImpl.class);

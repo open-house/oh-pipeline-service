@@ -21,6 +21,10 @@ import sk.openhouse.automation.pipelinedomain.domain.response.BuildPhasesRespons
 import sk.openhouse.automation.pipelinedomain.domain.response.StateResponse;
 import sk.openhouse.automation.pipelinedomain.domain.response.StatesResponse;
 
+/**
+ * 
+ * @author pete
+ */
 public class BuildPhaseReadDaoImpl implements BuildPhaseReadDao {
 
     private static final Logger logger = Logger.getLogger(BuildPhaseReadDaoImpl.class);
@@ -67,6 +71,9 @@ public class BuildPhaseReadDaoImpl implements BuildPhaseReadDao {
         return null;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public BuildPhasesResponse getBuildPhases(String projectName, String versionNumber, int buildNumber) {
 
@@ -89,6 +96,9 @@ public class BuildPhaseReadDaoImpl implements BuildPhaseReadDao {
         return namedParameterJdbcTemplate.query(sql, args, new BuildPhasesExtractor());
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public BuildPhaseResponse getBuildPhase(String projectName, String versionNumber, int buildNumber, String phaseName) {
 

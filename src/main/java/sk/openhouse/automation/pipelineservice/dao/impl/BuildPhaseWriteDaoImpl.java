@@ -9,6 +9,10 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import sk.openhouse.automation.pipelineservice.dao.BuildPhaseWriteDao;
 import sk.openhouse.automation.pipelinedomain.domain.PhaseState;
 
+/**
+ * 
+ * @author pete
+ */
 public class BuildPhaseWriteDaoImpl implements BuildPhaseWriteDao {
 
     private static final Logger logger = Logger.getLogger(BuildPhaseWriteDaoImpl.class);
@@ -19,6 +23,9 @@ public class BuildPhaseWriteDaoImpl implements BuildPhaseWriteDao {
         this.namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(dataSource);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void addPhase(String projectName, String versionNumber, int buildNumber, String phaseName) {
 
@@ -44,6 +51,9 @@ public class BuildPhaseWriteDaoImpl implements BuildPhaseWriteDao {
         namedParameterJdbcTemplate.update(sql, args);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void addState(String projectName, String versionNumber, int buildNumber, String phaseName, PhaseState phaseState) {
 

@@ -9,6 +9,10 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import sk.openhouse.automation.pipelineservice.dao.VersionWriteDao;
 import sk.openhouse.automation.pipelinedomain.domain.request.VersionRequest;
 
+/**
+ * 
+ * @author pete
+ */
 public class VersionWriteDaoImpl implements VersionWriteDao {
 
     private static final Logger logger = Logger.getLogger(VersionWriteDaoImpl.class);

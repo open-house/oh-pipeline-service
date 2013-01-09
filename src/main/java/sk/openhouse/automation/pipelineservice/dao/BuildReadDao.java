@@ -13,7 +13,7 @@ public interface BuildReadDao {
     /**
      * @param projectName name of the project
      * @param versionNumber version number of the project
-     * @return
+     * @return all builds for the specified project version
      */
     BuildsResponse getBuilds(String projectName, String versionNumber);
 
@@ -21,7 +21,7 @@ public interface BuildReadDao {
      * @param projectName name of the project
      * @param versionNumber version number of the project
      * @param limit max returned rows
-     * @return
+     * @return specified number of builds for the project version
      */
     BuildsResponse getBuilds(String projectName, String versionNumber, int limit);
 

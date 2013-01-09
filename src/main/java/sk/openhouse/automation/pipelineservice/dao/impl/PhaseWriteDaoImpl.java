@@ -9,6 +9,10 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import sk.openhouse.automation.pipelineservice.dao.PhaseWriteDao;
 import sk.openhouse.automation.pipelinedomain.domain.request.PhaseRequest;
 
+/**
+ * 
+ * @author pete
+ */
 public class PhaseWriteDaoImpl implements PhaseWriteDao {
 
     private static final Logger logger = Logger.getLogger(PhaseWriteDaoImpl.class);

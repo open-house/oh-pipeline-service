@@ -5,7 +5,7 @@ import sk.openhouse.automation.pipelinedomain.domain.response.ProjectResponse;
 import sk.openhouse.automation.pipelinedomain.domain.response.ProjectsResponse;
 
 /**
- * Read DAO for project
+ * Read DAO for project(s).
  * 
  * @author pete
  */
@@ -18,7 +18,7 @@ public interface ProjectReadDao {
     ProjectResponse getProject(String name);
 
     /**
-     * @return all projects (with no resources set)
+     * @return all projects
      */
     ProjectsResponse getProjects();
 }

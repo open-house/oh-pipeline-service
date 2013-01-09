@@ -16,6 +16,10 @@ import sk.openhouse.automation.pipelineservice.dao.ProjectReadDao;
 import sk.openhouse.automation.pipelinedomain.domain.response.ProjectResponse;
 import sk.openhouse.automation.pipelinedomain.domain.response.ProjectsResponse;
 
+/**
+ * 
+ * @author pete
+ */
 public class ProjectReadDaoImpl implements ProjectReadDao {
 
     private static final Logger logger = Logger.getLogger(ProjectReadDaoImpl.class);
