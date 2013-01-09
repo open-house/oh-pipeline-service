@@ -8,6 +8,11 @@ import org.springframework.stereotype.Component;
 
 import sk.openhouse.automation.pipelineservice.service.exception.ConflictException;
 
+/**
+ * Maps ConflictException to HTTP conflict response
+ * 
+ * @author pete
+ */
 @Component
 @Provider
 public class ConflictMapper implements ExceptionMapper<ConflictException> {

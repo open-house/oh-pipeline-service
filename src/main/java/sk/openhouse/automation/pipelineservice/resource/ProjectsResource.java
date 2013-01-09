@@ -12,6 +12,10 @@ import sk.openhouse.automation.pipelinedomain.domain.response.ProjectsResponse;
 import sk.openhouse.automation.pipelineservice.service.ProjectService;
 import sk.openhouse.automation.pipelineservice.util.XmlUtil;
 
+/**
+ * 
+ * @author pete
+ */
 @Component
 @Path(ResourceUtil.PROJECTS_PATH)
 public class ProjectsResource {

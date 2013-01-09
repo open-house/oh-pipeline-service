@@ -17,6 +17,10 @@ import sk.openhouse.automation.pipelinedomain.domain.response.BuildResponse;
 import sk.openhouse.automation.pipelineservice.service.BuildService;
 import sk.openhouse.automation.pipelineservice.util.XmlUtil;
 
+/**
+ * 
+ * @author pete
+ */
 @Component
 @Path(ResourceUtil.BUILD_PATH)
 public class BuildResource {

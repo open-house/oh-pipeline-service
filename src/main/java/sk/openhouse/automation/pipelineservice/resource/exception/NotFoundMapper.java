@@ -8,6 +8,11 @@ import org.springframework.stereotype.Component;
 
 import sk.openhouse.automation.pipelineservice.service.exception.NotFoundException;
 
+/**
+ * Maps NotFoundException to HTTP not found response
+ * 
+ * @author pete
+ */
 @Component
 @Provider
 public class NotFoundMapper implements ExceptionMapper<NotFoundException> {

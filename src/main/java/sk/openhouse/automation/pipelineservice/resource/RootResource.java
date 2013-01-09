@@ -13,7 +13,6 @@ import sk.openhouse.automation.pipelineservice.service.RootResourceService;
 import sk.openhouse.automation.pipelineservice.util.XmlUtil;
 
 /**
- * Main root resource
  *
  * @author pete
  */

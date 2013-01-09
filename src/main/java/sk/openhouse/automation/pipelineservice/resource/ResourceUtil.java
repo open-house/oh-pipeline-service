@@ -1,7 +1,7 @@
 package sk.openhouse.automation.pipelineservice.resource;
 
 /**
- * Path templates (for endpoints/resources) used in javax.ws.rs.Path annotation
+ * Path templates (for end points/resources) used in javax.ws.rs.Path annotation
  * 
  * @author pete
  */

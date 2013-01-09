@@ -16,6 +16,10 @@ import sk.openhouse.automation.pipelinedomain.domain.response.BuildPhaseResponse
 import sk.openhouse.automation.pipelineservice.service.BuildPhaseService;
 import sk.openhouse.automation.pipelineservice.util.XmlUtil;
 
+/**
+ * 
+ * @author pete
+ */
 @Component
 @Path(ResourceUtil.BUILD_PHASE_PATH)
 public class BuildPhaseResource {

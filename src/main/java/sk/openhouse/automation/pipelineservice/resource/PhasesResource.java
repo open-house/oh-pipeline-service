@@ -13,6 +13,10 @@ import sk.openhouse.automation.pipelinedomain.domain.response.PhasesResponse;
 import sk.openhouse.automation.pipelineservice.service.PhaseService;
 import sk.openhouse.automation.pipelineservice.util.XmlUtil;
 
+/**
+ * 
+ * @author pete
+ */
 @Component
 @Path(ResourceUtil.PHASES_PATH)
 public class PhasesResource {

@@ -18,6 +18,10 @@ import sk.openhouse.automation.pipelinedomain.domain.response.VersionResponse;
 import sk.openhouse.automation.pipelineservice.service.VersionService;
 import sk.openhouse.automation.pipelineservice.util.XmlUtil;
 
+/**
+ * 
+ * @author pete
+ */
 @Component
 @Path(ResourceUtil.VERSION_PATH)
 public class VersionResource {
