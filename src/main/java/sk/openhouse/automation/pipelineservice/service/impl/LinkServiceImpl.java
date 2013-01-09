@@ -10,6 +10,10 @@ import sk.openhouse.automation.pipelineservice.resource.ResourceUtil;
 import sk.openhouse.automation.pipelineservice.service.LinkService;
 import sk.openhouse.automation.pipelineservice.util.impl.HttpUtilImpl;
 
+/**
+ * 
+ * @author pete
+ */
 public class LinkServiceImpl implements LinkService {
 
     private static final Logger logger = Logger.getLogger(HttpUtilImpl.class);

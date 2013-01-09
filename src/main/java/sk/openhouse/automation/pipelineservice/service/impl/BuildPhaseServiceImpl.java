@@ -21,6 +21,10 @@ import sk.openhouse.automation.pipelineservice.service.exception.ConflictExcepti
 import sk.openhouse.automation.pipelineservice.service.exception.NotFoundException;
 import sk.openhouse.automation.pipelineservice.util.HttpUtil;
 
+/**
+ * 
+ * @author pete
+ */
 public class BuildPhaseServiceImpl implements BuildPhaseService {
 
     private final LinkService linkService;

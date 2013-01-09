@@ -17,6 +17,10 @@ import sk.openhouse.automation.pipelineservice.service.ProjectService;
 import sk.openhouse.automation.pipelineservice.service.exception.ConflictException;
 import sk.openhouse.automation.pipelineservice.service.exception.NotFoundException;
 
+/**
+ * 
+ * @author pete
+ */
 public class ProjectServiceImpl implements ProjectService {
 
     private final LinkService linkService;

@@ -21,6 +21,10 @@ import sk.openhouse.automation.pipelineservice.service.VersionService;
 import sk.openhouse.automation.pipelineservice.service.exception.ConflictException;
 import sk.openhouse.automation.pipelineservice.service.exception.NotFoundException;
 
+/**
+ * 
+ * @author pete
+ */
 public class BuildServiceImpl implements BuildService {
 
     private final LinkService linkService;

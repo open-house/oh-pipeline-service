@@ -8,6 +8,10 @@ import sk.openhouse.automation.pipelinedomain.domain.response.LinksResponse;
 import sk.openhouse.automation.pipelineservice.service.LinkService;
 import sk.openhouse.automation.pipelineservice.service.RootResourceService;
 
+/**
+ * 
+ * @author pete
+ */
 public class RootResourceServiceImpl implements RootResourceService {
 
     private final LinkService linkService;
@@ -16,6 +20,9 @@ public class RootResourceServiceImpl implements RootResourceService {
         this.linkService = linkService;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public LinksResponse getRootLinks() {
 

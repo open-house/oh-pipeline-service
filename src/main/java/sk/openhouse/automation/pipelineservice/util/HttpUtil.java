@@ -3,7 +3,7 @@ package sk.openhouse.automation.pipelineservice.util;
 import java.net.URI;
 
 /**
- * Common http utils
+ * Common HTTP utils
  * 
  * @author pete
  */

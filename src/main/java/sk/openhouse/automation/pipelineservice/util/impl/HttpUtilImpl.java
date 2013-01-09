@@ -11,6 +11,10 @@ import org.apache.log4j.Logger;
 
 import sk.openhouse.automation.pipelineservice.util.HttpUtil;
 
+/**
+ * 
+ * @author pete
+ */
 public class HttpUtilImpl implements HttpUtil {
 
     private static final Logger logger = Logger.getLogger(HttpUtilImpl.class);
@@ -40,7 +44,6 @@ public class HttpUtilImpl implements HttpUtil {
             logger.error(logErrorMessage, e);
         }
 
-        return (null == response || response.getStatusLine().getStatusCode() != 200) 
-                ? false : true;
+        return (null == response || response.getStatusLine().getStatusCode() != 200) ? false : true;
     }
 }

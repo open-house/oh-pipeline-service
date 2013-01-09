@@ -19,6 +19,10 @@ import sk.openhouse.automation.pipelineservice.service.exception.BadRequestExcep
 import sk.openhouse.automation.pipelineservice.service.exception.ConflictException;
 import sk.openhouse.automation.pipelineservice.service.exception.NotFoundException;
 
+/**
+ * 
+ * @author pete
+ */
 public class PhaseServiceImpl implements PhaseService {
 
     private final LinkService linkService;

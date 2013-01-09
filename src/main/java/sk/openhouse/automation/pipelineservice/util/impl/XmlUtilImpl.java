@@ -10,6 +10,10 @@ import javax.xml.bind.Unmarshaller;
 
 import sk.openhouse.automation.pipelineservice.util.XmlUtil;
 
+/**
+ * 
+ * @author pete
+ */
 public class XmlUtilImpl implements XmlUtil {
 
     /**
