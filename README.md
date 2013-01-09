@@ -37,13 +37,13 @@ called when the build goes through the specific phase.
 
 <pre><code>
 # add new phase
-curl -X PUT -H "Content-Type: application/xml" --data "<phase><uri>http://some-url</uri></phase>" http://localhost:8000/projects&lt;project&gt;/versions/&lt;version&gt;/phases/&lt;phase&gt;
+curl -X PUT -H "Content-Type: application/xml" --data "&lt;phase&gt;&lt;uri&gt;http://some-url&lt;/uri&gt;&lt;/phase&lt;" http://localhost:8000/projects/&lt;project&gt;/versions/&lt;version&gt;/phases/&lt;phase&gt;
 </code></pre>
 
 Now you can add new build
 <pre><code>
 # add new phase
-curl -X PUT http://localhost:8000/projects&lt;project&gt;/versions/&lt;version&gt;/builds/&lt;build&gt;
+curl -X PUT http://localhost:8000/projects/&lt;project&gt;/versions/&lt;version&gt;/builds/&lt;build&gt;
 </code></pre>
 
 After this, the state of the first phase will be set to IN_PROGRESS, then the
@@ -53,7 +53,7 @@ service to update the phase with either FAIL or SUCCESS state
 
 <pre><code>
 # add new state (updating phase)
-curl -X POST -H "Content-Type: application/xml" --data "<state><name>SUCCESS</name></state>" http://localhost:8000/projects&lt;project&gt;/versions/&lt;version&gt;/builds/&lt;build&gt;/phases/&lt;phase&gt;
+curl -X POST -H "Content-Type: application/xml" --data "&lt;state&gt;&lt;name&gt;SUCCESS&lt;/name&gt;&lt;/state&gt;" http://localhost:8000/projects/&lt;project&gt;/versions/&lt;version&gt;/builds/&lt;build&gt;/phases/&lt;phase&gt;
 </code></pre>
 
 depending on the state, pipeline will either move to the next phase (SUCCESS)
