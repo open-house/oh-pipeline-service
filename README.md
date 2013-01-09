@@ -37,7 +37,7 @@ called when the build goes through the specific phase.
 
 <pre><code>
 # add new phase
-curl -X PUT -H "Content-Type: application/xml" --data "&lt;phase&gt;&lt;uri&gt;http://some-url&lt;/uri&gt;&lt;/phase&lt;" http://localhost:8000/projects/&lt;project&gt;/versions/&lt;version&gt;/phases/&lt;phase&gt;
+curl -X PUT -H "Content-Type: application/xml" --data "&lt;phase&gt;&lt;uri&gt;http://some-url&lt;/uri&gt;&lt;/phase&gt;" http://localhost:8000/projects/&lt;project&gt;/versions/&lt;version&gt;/phases/&lt;phase&gt;
 </code></pre>
 
 Now you can add new build
