@@ -1,5 +1,7 @@
 package sk.openhouse.automation.pipelineservice.dao;
 
+import org.springframework.dao.DuplicateKeyException;
+
 import sk.openhouse.automation.pipelinedomain.domain.request.VersionRequest;
 
 /**
@@ -10,12 +12,13 @@ import sk.openhouse.automation.pipelinedomain.domain.request.VersionRequest;
 public interface VersionWriteDao {
 
     /**
-     * Adds new or overrides existing (if this version already exists) project version
+     * Adds new project version
      * 
      * @param projectName
      * @param versionRequest
+     * @throws DuplicateKeyException if the build number already exists
      */
-    void addVersion(String projectName, VersionRequest versionRequest);
+    void addVersion(String projectName, VersionRequest versionRequest) throws DuplicateKeyException;
 
     /**
      * Updates existing project version number

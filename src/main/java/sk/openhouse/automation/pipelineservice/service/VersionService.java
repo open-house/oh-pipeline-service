@@ -3,6 +3,7 @@ package sk.openhouse.automation.pipelineservice.service;
 import sk.openhouse.automation.pipelinedomain.domain.request.VersionRequest;
 import sk.openhouse.automation.pipelinedomain.domain.response.VersionResponse;
 import sk.openhouse.automation.pipelinedomain.domain.response.VersionsResponse;
+import sk.openhouse.automation.pipelineservice.service.exception.ConflictException;
 import sk.openhouse.automation.pipelineservice.service.exception.NotFoundException;
 
 /**
@@ -32,8 +33,9 @@ public interface VersionService {
      * 
      * @param projectName
      * @param versionRequest
+     * @throws ConflictException
      */
-    void addVersion(String projectName, VersionRequest versionRequest);
+    void addVersion(String projectName, VersionRequest versionRequest) throws ConflictException;
 
     /**
      * Updates existing project version

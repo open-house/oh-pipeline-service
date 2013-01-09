@@ -3,6 +3,8 @@ package sk.openhouse.automation.pipelineservice.service.impl;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.dao.DuplicateKeyException;
+
 import sk.openhouse.automation.pipelineservice.dao.VersionReadDao;
 import sk.openhouse.automation.pipelineservice.dao.VersionWriteDao;
 import sk.openhouse.automation.pipelinedomain.domain.request.VersionRequest;
@@ -13,6 +15,7 @@ import sk.openhouse.automation.pipelinedomain.domain.response.VersionsResponse;
 import sk.openhouse.automation.pipelineservice.service.LinkService;
 import sk.openhouse.automation.pipelineservice.service.ProjectService;
 import sk.openhouse.automation.pipelineservice.service.VersionService;
+import sk.openhouse.automation.pipelineservice.service.exception.ConflictException;
 import sk.openhouse.automation.pipelineservice.service.exception.NotFoundException;
 
 public class VersionServiceImpl implements VersionService {
@@ -74,7 +77,13 @@ public class VersionServiceImpl implements VersionService {
      */
     @Override
     public void addVersion(String projectName, VersionRequest versionRequest) {
-        versionWriteDao.addVersion(projectName, versionRequest);
+
+        try {
+            versionWriteDao.addVersion(projectName, versionRequest);
+        } catch (DuplicateKeyException e) {
+            throw new ConflictException(String.format("Version %s of the project %s already exists.",
+                    versionRequest.getVersionNumber(), projectName));
+        }
     }
 
     /**
