@@ -3,6 +3,7 @@ package sk.openhouse.automation.pipelineservice.service;
 import sk.openhouse.automation.pipelinedomain.domain.request.BuildRequest;
 import sk.openhouse.automation.pipelinedomain.domain.response.BuildResponse;
 import sk.openhouse.automation.pipelinedomain.domain.response.BuildsResponse;
+import sk.openhouse.automation.pipelineservice.service.exception.ConflictException;
 import sk.openhouse.automation.pipelineservice.service.exception.NotFoundException;
 
 /**
@@ -46,11 +47,12 @@ public interface BuildService {
 
 
     /**
-     * Add new (or overrides existing) project build
+     * Adds new build
      * 
      * @param projectName
      * @param versionNumber
      * @param buildRequest
+     * @throws ConflictException if the build already exists
      */
     void addBuild(String projectName, String versionNumber, BuildRequest buildRequest);
 

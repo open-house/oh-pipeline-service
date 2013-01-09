@@ -3,7 +3,7 @@ package sk.openhouse.automation.pipelineservice.dao;
 import sk.openhouse.automation.pipelinedomain.domain.request.PhaseRequest;
 
 /**
- * Phase write DAO for project phases
+ * Write DAO for phase(s). Phase is linked to a project and its version.
  * 
  * @author pete
  */
@@ -12,8 +12,8 @@ public interface PhaseWriteDao {
     /**
      * Adds new or overrides existing (if this phase already exists) project phase
      * 
-     * @param projectName
-     * @param versionNumber
+     * @param projectName name of the project
+     * @param versionNumber version number of the project
      * @param phaseRequest
      */
     void addPhase(String projectName, String versionNumber, PhaseRequest phaseRequest);

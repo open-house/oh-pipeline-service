@@ -3,6 +3,8 @@ package sk.openhouse.automation.pipelineservice.service.impl;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.dao.DuplicateKeyException;
+
 import sk.openhouse.automation.pipelineservice.dao.BuildReadDao;
 import sk.openhouse.automation.pipelineservice.dao.BuildWriteDao;
 import sk.openhouse.automation.pipelinedomain.domain.request.BuildRequest;
@@ -16,6 +18,7 @@ import sk.openhouse.automation.pipelineservice.service.BuildService;
 import sk.openhouse.automation.pipelineservice.service.LinkService;
 import sk.openhouse.automation.pipelineservice.service.PhaseService;
 import sk.openhouse.automation.pipelineservice.service.VersionService;
+import sk.openhouse.automation.pipelineservice.service.exception.ConflictException;
 import sk.openhouse.automation.pipelineservice.service.exception.NotFoundException;
 
 public class BuildServiceImpl implements BuildService {
@@ -82,7 +85,12 @@ public class BuildServiceImpl implements BuildService {
     @Override
     public void addBuild(String projectName, String versionNumber, BuildRequest buildRequest) {
 
-        buildWriteDao.addBuild(projectName, versionNumber, buildRequest);
+        try {
+            buildWriteDao.addBuild(projectName, versionNumber, buildRequest);
+        } catch (DuplicateKeyException e) {
+            throw new ConflictException(String.format("Build %d for the project %s and version %s already exists.",
+                    buildRequest.getNumber(), projectName, versionNumber));
+        }
 
         /* run first phase */
         PhaseResponse phaseResponse;
