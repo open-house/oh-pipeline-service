@@ -2,6 +2,8 @@ package sk.openhouse.automation.pipelineservice.util;
 
 import java.net.URI;
 
+import javax.ws.rs.core.MultivaluedMap;
+
 /**
  * Common HTTP utils
  * 
@@ -10,10 +12,11 @@ import java.net.URI;
 public interface HttpUtil {
 
     /**
-     * Sends Post request to specified url
+     * Sends HTTP request to specified URL
      * 
      * @param requestUri
-     * @return true if request was successfull and returned 200 response code
+     * @param params query parameters to be sent
+     * @return true if request was successful and returned code is less than 300
      */
-    boolean sendPostRequest(URI requestUri);
+    boolean sendRequest(URI requestUri, MultivaluedMap<String, String> params);
 }

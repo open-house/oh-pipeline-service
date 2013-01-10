@@ -1,13 +1,14 @@
 package sk.openhouse.automation.pipelineservice.util.impl;
 
-import java.io.IOException;
 import java.net.URI;
 
-import org.apache.http.HttpResponse;
-import org.apache.http.client.ClientProtocolException;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpPost;
+import javax.ws.rs.core.MultivaluedMap;
+
 import org.apache.log4j.Logger;
+
+import com.sun.jersey.api.client.Client;
+import com.sun.jersey.api.client.ClientHandlerException;
+import com.sun.jersey.api.client.UniformInterfaceException;
 
 import sk.openhouse.automation.pipelineservice.util.HttpUtil;
 
@@ -19,31 +20,33 @@ public class HttpUtilImpl implements HttpUtil {
 
     private static final Logger logger = Logger.getLogger(HttpUtilImpl.class);
 
-    private final HttpClient httpClient;
+    private final Client client;
 
     /**
-     * @param httpClient
+     * @param client
      */
-    public HttpUtilImpl(HttpClient httpClient) {
-        this.httpClient = httpClient;
+    public HttpUtilImpl(Client client) {
+        this.client = client;
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public boolean sendPostRequest(URI requestUri) {
+    public boolean sendRequest(URI requestUri, MultivaluedMap<String, String> params) {
 
-        HttpResponse response = null;
-        String logErrorMessage = String.format("Error sending request to %s", requestUri.toString());
         try {
-            response = httpClient.execute(new HttpPost(requestUri));
-        } catch (ClientProtocolException e) {
-            logger.error(logErrorMessage, e);
-        } catch (IOException e) {
-            logger.error(logErrorMessage, e);
+            client.resource(requestUri).queryParams(params).get(String.class);
+        } catch(UniformInterfaceException e) {
+            logger.error(String.format("Request to %s with params %s was not successful.",
+                    requestUri.toString(), params.toString()));
+            return false;
+        } catch(ClientHandlerException e) {
+            logger.error(String.format("Client failed to process request/response to %s with params %s",
+                    requestUri.toString(), params.toString()));
+            return false;
         }
 
-        return (null == response || response.getStatusLine().getStatusCode() != 200) ? false : true;
+        return true;
     }
 }

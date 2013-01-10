@@ -74,10 +74,10 @@
     </bean>
 
     <bean name="httpUtil" class="sk.openhouse.automation.pipelineservice.util.impl.HttpUtilImpl">
-        <constructor-arg name="httpClient" ref="httpClient" />
+        <constructor-arg name="client" ref="client" />
     </bean>
 
-    <bean id="httpClient" class="org.apache.http.impl.client.DefaultHttpClient"/>
+    <bean id="client" class="com.sun.jersey.api.client.Client" factory-method="create" />
 
     <!-- imports -->
     <import resource="oh-pipeline-service-datasource.xml" />

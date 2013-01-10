@@ -3,6 +3,10 @@ package sk.openhouse.automation.pipelineservice.service.impl;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.ws.rs.core.MultivaluedMap;
+
+import com.sun.jersey.core.util.MultivaluedMapImpl;
+
 import sk.openhouse.automation.pipelineservice.dao.BuildPhaseReadDao;
 import sk.openhouse.automation.pipelineservice.dao.BuildPhaseWriteDao;
 import sk.openhouse.automation.pipelineservice.dao.BuildReadDao;
@@ -134,16 +138,22 @@ public class BuildPhaseServiceImpl implements BuildPhaseService {
     }
 
     /**
-     * Sends request to uri specified for the phase, if the request fails, FAIL state will be added to that phase
+     * Sends request to URI specified for the phase, if the request fails, FAIL state will be added to that phase
      * 
      * @param projectName name of the project for which the phase should run
      * @param versionNumber version number of the project for which the phase should run
      * @param buildNumber build number of the project for which the phase should run
-     * @param phaseResponse specific phase that holds the uri
+     * @param phaseResponse specific phase that holds the URI
      */
     private void sendPhaseRequest(String projectName, String versionNumber, int buildNumber, PhaseResponse phaseResponse) {
 
-        if (!httpUtil.sendPostRequest(phaseResponse.getUri())) {
+        MultivaluedMap<String, String> params = new MultivaluedMapImpl();
+        params.putSingle("projectName", projectName);
+        params.putSingle("versionNumber", versionNumber);
+        params.putSingle("buildNumber", Integer.toString(buildNumber));
+        params.putSingle("phaseName", phaseResponse.getName());
+
+        if (!httpUtil.sendRequest(phaseResponse.getUri(), params)) {
             buildPhaseWriteDao.addState(projectName, versionNumber, buildNumber, 
                     phaseResponse.getName(), PhaseState.FAIL);
         }
