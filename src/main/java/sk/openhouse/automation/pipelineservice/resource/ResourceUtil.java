@@ -12,6 +12,9 @@ final public class ResourceUtil {
     public static final String VERSION_NUMBER_PATTERN = "[0-9\\.]+";
     public static final String NUMBER_PATTERN = "[0-9]+";
 
+    /** limit query parameter */
+    public static final String LIMIT_QUERY_PARAM = "limit";
+
     /** project url part */
     public static final String PROJECT_PARAM = "project";
 

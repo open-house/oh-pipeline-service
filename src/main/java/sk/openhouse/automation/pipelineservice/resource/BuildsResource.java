@@ -34,7 +34,7 @@ public class BuildsResource {
     @Produces(MediaType.APPLICATION_XML)
     public String getBuild(@PathParam(ResourceUtil.PROJECT_PARAM) String projectName, 
             @PathParam(ResourceUtil.VERSION_PARAM) String versionNumber, 
-            @QueryParam("limit") String limit) throws JAXBException {
+            @QueryParam(ResourceUtil.LIMIT_QUERY_PARAM) String limit) throws JAXBException {
 
         Integer limitQuery = parseLimit(limit);
         BuildsResponse builds = (null == limitQuery) 
