@@ -66,6 +66,8 @@ public class BuildReadDaoImpl implements BuildReadDao {
     @Override
     public BuildsResponse getBuilds(String projectName, String versionNumber, int limit) {
 
+        // TODO - fix this, limit does not work, we need to limit only builds
+        // this limits returned rows - which is phases and states
         String sql = "SELECT b.number, ph.name as phase_name, bp.state \n"
                 + "FROM builds b \n"
                 + "LEFT JOIN build_phases bp ON (bp.build_id = b.id) \n"
