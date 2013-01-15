@@ -62,3 +62,21 @@ or stops (FAIL)
 Failed phase can be re-run by updating its state to IN_PROGRESS, or skipped
 by updating to SUCCESS.
 
+running application
+-------------------
+
+- create database <code>pipeline_service</code>
+- create database user <code>pipeline_service</code> with the same password
+- run <code>mvn jetty:run</code>
+- application will be running on port 8000 <b>localhost:8000</b>
+
+creating debian package
+-----------------------
+
+run <code>./build &lt;build_number&gt;</code> this will generate debian
+package that can be installed.
+
+Installed application is started (db has to be setup) 
+<code>/etc/init.d/oh-pipeline-service start</code> and runs on the same port
+8000
+
