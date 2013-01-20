@@ -30,6 +30,12 @@ final public class ResourceUtil {
     /** Root Resource Path */
     public static final String ROOT_PATH = "";
 
+    /** Schema Path */
+    public static final String SCHEMA_PATH = ROOT_PATH + "/schema";
+
+    /** Request Schemas */
+    public static final String SCHEMA_REQUEST_PATH = SCHEMA_PATH + "/request";
+
     /** Projects Path */
     public static final String PROJECTS_PATH = ROOT_PATH + "/projects";
 
