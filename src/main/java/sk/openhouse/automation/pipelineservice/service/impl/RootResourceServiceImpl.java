@@ -27,9 +27,10 @@ public class RootResourceServiceImpl implements RootResourceService {
     public LinksResponse getRootLinks() {
 
         List<LinkResponse> links = new ArrayList<LinkResponse>();
-        LinkResponse projectsLink = linkService.getLink(linkService.getProjectsUriString(), 
-                "List of all projects in pipeline service", "GET");
-        links.add(projectsLink);
+        links.add(linkService.getLink(linkService.getProjectsUriString(), 
+                "List of all projects in pipeline service"));
+        links.add(linkService.getLink(linkService.getSchemaUriString(), 
+                "List of all projects in pipeline service"));
 
         LinksResponse rootLinks = new LinksResponse();
         rootLinks.setLinks(links);

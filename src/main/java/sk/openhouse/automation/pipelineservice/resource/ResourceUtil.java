@@ -27,6 +27,9 @@ final public class ResourceUtil {
     /** phase url part */
     public static final String PHASE_PARAM = "phase";
 
+    /** state url part */
+    public static final String STATE_PARAM = "state";
+
     /** Root Resource Path */
     public static final String ROOT_PATH = "";
 

@@ -14,6 +14,9 @@ import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Component;
 
+import sk.openhouse.automation.pipelinedomain.domain.response.LinksResponse;
+import sk.openhouse.automation.pipelineservice.service.SchemaService;
+
 /**
  * @author pete
  *
@@ -30,36 +33,48 @@ public class SchemaRequestResource {
     private static final String BUILD_SCHEMA = getClassPathResource("request/build.xsd");
     private static final String STATE_SCHEMA = getClassPathResource("request/state.xsd");
 
+    private final SchemaService schemaService;
+
+    public SchemaRequestResource(SchemaService schemaService) {
+        this.schemaService = schemaService;
+    }
+
     @GET
-    @Path("project")
+    @Produces(MediaType.APPLICATION_XML)
+    public LinksResponse getSchemaRequest() {
+        return schemaService.getSchemaRequestLinks();
+    }
+
+    @GET
+    @Path(ResourceUtil.PROJECT_PARAM)
     @Produces(MediaType.APPLICATION_XML)
     public String getProjectSchema() {
         return PROJECT_SCHEMA;
     }
 
     @GET
-    @Path("version")
+    @Path(ResourceUtil.VERSION_PARAM)
     @Produces(MediaType.APPLICATION_XML)
     public String getVersionSchema() {
         return VERSION_SCHEMA;
     }
 
     @GET
-    @Path("phase")
+    @Path(ResourceUtil.PHASE_PARAM)
     @Produces(MediaType.APPLICATION_XML)
     public String getPhaseSchema() {
         return PHASE_SCHEMA;
     }
 
     @GET
-    @Path("build")
+    @Path(ResourceUtil.BUILD_PARAM)
     @Produces(MediaType.APPLICATION_XML)
     public String getBuildSchema() {
         return BUILD_SCHEMA;
     }
 
     @GET
-    @Path("state")
+    @Path(ResourceUtil.STATE_PARAM)
     @Produces(MediaType.APPLICATION_XML)
     public String getStateSchema() {
         return STATE_SCHEMA;

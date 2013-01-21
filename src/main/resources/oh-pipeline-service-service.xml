@@ -11,6 +11,10 @@
         http://www.springframework.org/schema/context/spring-context-3.0.xsd">
 
     <!-- services -->
+    <bean name="schemaService" class="sk.openhouse.automation.pipelineservice.service.impl.SchemaServiceImpl">
+        <constructor-arg name="linkService" ref="linkService" />
+    </bean>
+
     <bean name="rootResourceService" class="sk.openhouse.automation.pipelineservice.service.impl.RootResourceServiceImpl">
         <constructor-arg name="linkService" ref="linkService" />
     </bean>

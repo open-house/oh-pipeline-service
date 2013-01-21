@@ -10,6 +10,41 @@ import sk.openhouse.automation.pipelinedomain.domain.response.LinkResponse;
 public interface LinkService {
 
     /**
+     * @return URI for all schemas
+     */
+    String getSchemaUriString();
+
+    /**
+     * @return URI for all request schemas
+     */
+    String getSchemaRequestUriString();
+
+    /**
+     * @return URI for project request schema
+     */
+    String getProjectSchemaRequestUriString();
+
+    /**
+     * @return URI for project version request schema
+     */
+    String getVersionSchemaRequestUriString();
+
+    /**
+     * @return URI for project phase request schema
+     */
+    String getPhaseSchemaRequestUriString();
+
+    /**
+     * @return URI for project build request schema
+     */
+    String getBuildSchemaRequestUriString();
+
+    /**
+     * @return URI for phase state request schema
+     */
+    String getStateSchemaRequestUriString();
+
+    /**
      * @return URI for all projects
      */
     String getProjectsUriString();

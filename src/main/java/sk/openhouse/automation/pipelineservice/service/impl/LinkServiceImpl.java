@@ -49,6 +49,62 @@ public class LinkServiceImpl implements LinkService {
      * {@inheritDoc}
      */
     @Override
+    public String getSchemaUriString() {
+        return String.format("%s%s", rootUri, ResourceUtil.SCHEMA_PATH);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String getSchemaRequestUriString() {
+        return String.format("%s%s", rootUri, ResourceUtil.SCHEMA_REQUEST_PATH);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String getProjectSchemaRequestUriString() {
+        return String.format("%s/%s", getSchemaRequestUriString(), ResourceUtil.PROJECT_PARAM);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String getVersionSchemaRequestUriString() {
+        return String.format("%s/%s", getSchemaRequestUriString(), ResourceUtil.VERSION_PARAM);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String getPhaseSchemaRequestUriString() {
+        return String.format("%s/%s", getSchemaRequestUriString(), ResourceUtil.PHASE_PARAM);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String getBuildSchemaRequestUriString() {
+        return String.format("%s/%s", getSchemaRequestUriString(), ResourceUtil.BUILD_PARAM);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String getStateSchemaRequestUriString() {
+        return String.format("%s/%s", getSchemaRequestUriString(), ResourceUtil.STATE_PARAM);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public String getProjectsUriString() {
         return String.format("%s/%s", rootUri, PROJECTS_URI_PART);
     }

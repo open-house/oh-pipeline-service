@@ -16,6 +16,14 @@
         <constructor-arg name="xmlUtil" ref="xmlUtil" />
     </bean>
 
+    <bean name="schemaResource" class="sk.openhouse.automation.pipelineservice.resource.SchemaResource">
+        <constructor-arg name="schemaService" ref="schemaService" />
+    </bean>
+
+    <bean name="schemaRequestResource" class="sk.openhouse.automation.pipelineservice.resource.SchemaRequestResource">
+        <constructor-arg name="schemaService" ref="schemaService" />
+    </bean>
+
     <bean name="projectsResource" class="sk.openhouse.automation.pipelineservice.resource.ProjectsResource">
         <constructor-arg name="projectService" ref="projectService" />
         <constructor-arg name="xmlUtil" ref="xmlUtil" />
