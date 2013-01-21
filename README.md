@@ -65,10 +65,19 @@ by updating to SUCCESS.
 running application
 -------------------
 
-- create database <code>pipeline_service</code>
-- create database user <code>pipeline_service</code> with the same password
-- run <code>mvn jetty:run</code>
-- application will be running on port 8000 <b>localhost:8000</b>
+Create database <code>pipeline_service</code>
+
+    mysql -u root -p
+    CREATE DATABASE pipeline_service;
+    
+Create database user <code>pipeline_service</code> with the same password
+
+    CREATE USER 'pipeline_service'@'localhost' IDENTIFIED BY PASSWORD 'pipeline_service';
+    GRANT ALL on pipeline_service.* to pipeline_service@localhost;
+    
+Run <code>mvn jetty:run</code>
+
+Rpplication will be running on port 8000 <b>localhost:8000</b>
 
 creating debian package
 -----------------------
