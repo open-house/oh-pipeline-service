@@ -18,6 +18,7 @@ import sk.openhouse.automation.pipelinedomain.domain.response.LinkResponse;
 import sk.openhouse.automation.pipelinedomain.domain.response.LinksResponse;
 import sk.openhouse.automation.pipelinedomain.domain.response.PhaseResponse;
 import sk.openhouse.automation.pipelinedomain.domain.response.PhasesResponse;
+import sk.openhouse.automation.pipelineservice.resource.ResourceUtil;
 import sk.openhouse.automation.pipelineservice.service.BuildPhaseService;
 import sk.openhouse.automation.pipelineservice.service.LinkService;
 import sk.openhouse.automation.pipelineservice.service.PhaseService;
@@ -206,7 +207,8 @@ public class BuildPhaseServiceImpl implements BuildPhaseService {
         List<LinkResponse> links = new ArrayList<LinkResponse>();
 
         /* POST - add new state */
-        links.add(linkService.getLink(buildPhaseUri, "add new phase state", "POST", "TODO"));
+        String stateSchemaLocation = String.format("%s/%s", linkService.getSchemaRequestUriString(), ResourceUtil.STATE_PARAM);
+        links.add(linkService.getLink(buildPhaseUri, "add new phase state", "POST", stateSchemaLocation));
 
         LinksResponse linksResponse = new LinksResponse();
         linksResponse.setLinks(links);

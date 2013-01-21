@@ -13,6 +13,7 @@ import sk.openhouse.automation.pipelinedomain.domain.response.BuildsResponse;
 import sk.openhouse.automation.pipelinedomain.domain.response.LinkResponse;
 import sk.openhouse.automation.pipelinedomain.domain.response.LinksResponse;
 import sk.openhouse.automation.pipelinedomain.domain.response.PhaseResponse;
+import sk.openhouse.automation.pipelineservice.resource.ResourceUtil;
 import sk.openhouse.automation.pipelineservice.service.BuildPhaseService;
 import sk.openhouse.automation.pipelineservice.service.BuildService;
 import sk.openhouse.automation.pipelineservice.service.LinkService;
@@ -169,7 +170,8 @@ public class BuildServiceImpl implements BuildService {
                 "build phases and their states"));
 
         /* POST - update */
-        links.add(linkService.getLink(buildUri, "updates existing bulid", "POST", "TODO"));
+        String buildSchemaLocation = String.format("%s/%s", linkService.getSchemaRequestUriString(), ResourceUtil.BUILD_PARAM);
+        links.add(linkService.getLink(buildUri, "updates existing bulid", "POST", buildSchemaLocation));
         /* DELETE */
         links.add(linkService.getLink(buildUri, "deletes build", "DELETE"));
 

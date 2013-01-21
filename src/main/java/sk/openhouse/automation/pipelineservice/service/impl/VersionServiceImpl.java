@@ -12,6 +12,7 @@ import sk.openhouse.automation.pipelinedomain.domain.response.LinkResponse;
 import sk.openhouse.automation.pipelinedomain.domain.response.LinksResponse;
 import sk.openhouse.automation.pipelinedomain.domain.response.VersionResponse;
 import sk.openhouse.automation.pipelinedomain.domain.response.VersionsResponse;
+import sk.openhouse.automation.pipelineservice.resource.ResourceUtil;
 import sk.openhouse.automation.pipelineservice.service.LinkService;
 import sk.openhouse.automation.pipelineservice.service.ProjectService;
 import sk.openhouse.automation.pipelineservice.service.VersionService;
@@ -129,7 +130,8 @@ public class VersionServiceImpl implements VersionService {
         links.add(linkService.getLink(linkService.getBuildsUriString(projectName, versionNumber), "project builds"));
 
         /* POST - update */
-        links.add(linkService.getLink(versionUri, "updates existing version", "POST", "TODO"));
+        String versionSchemaLocation = String.format("%s/%s", linkService.getSchemaRequestUriString(), ResourceUtil.VERSION_PARAM);
+        links.add(linkService.getLink(versionUri, "updates existing version", "POST", versionSchemaLocation));
         /* DELETE */
         links.add(linkService.getLink(versionUri, "deletes version", "DELETE"));
 

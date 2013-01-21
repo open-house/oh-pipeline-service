@@ -12,6 +12,7 @@ import sk.openhouse.automation.pipelinedomain.domain.response.LinkResponse;
 import sk.openhouse.automation.pipelinedomain.domain.response.LinksResponse;
 import sk.openhouse.automation.pipelinedomain.domain.response.PhaseResponse;
 import sk.openhouse.automation.pipelinedomain.domain.response.PhasesResponse;
+import sk.openhouse.automation.pipelineservice.resource.ResourceUtil;
 import sk.openhouse.automation.pipelineservice.service.LinkService;
 import sk.openhouse.automation.pipelineservice.service.PhaseService;
 import sk.openhouse.automation.pipelineservice.service.VersionService;
@@ -154,7 +155,8 @@ public class PhaseServiceImpl implements PhaseService {
         List<LinkResponse> links = new ArrayList<LinkResponse>();
 
         /* POST - update */
-        links.add(linkService.getLink(phaseUri, "updates existing phase", "POST", "TODO"));
+        String phaseSchemaLocation = String.format("%s/%s", linkService.getSchemaRequestUriString(), ResourceUtil.PHASE_PARAM);
+        links.add(linkService.getLink(phaseUri, "updates existing phase", "POST", phaseSchemaLocation));
         /* DELETE */
         links.add(linkService.getLink(phaseUri, "deletes phase", "DELETE"));
 

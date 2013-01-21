@@ -12,6 +12,7 @@ import sk.openhouse.automation.pipelinedomain.domain.response.LinkResponse;
 import sk.openhouse.automation.pipelinedomain.domain.response.LinksResponse;
 import sk.openhouse.automation.pipelinedomain.domain.response.ProjectResponse;
 import sk.openhouse.automation.pipelinedomain.domain.response.ProjectsResponse;
+import sk.openhouse.automation.pipelineservice.resource.ResourceUtil;
 import sk.openhouse.automation.pipelineservice.service.LinkService;
 import sk.openhouse.automation.pipelineservice.service.ProjectService;
 import sk.openhouse.automation.pipelineservice.service.exception.ConflictException;
@@ -122,7 +123,8 @@ public class ProjectServiceImpl implements ProjectService {
         links.add(linkService.getLink(linkService.getVersionsUriString(projectName), "project versions"));
 
         /* POST - update */
-        links.add(linkService.getLink(projectUri, "updates existing project", "POST", "TODO"));
+        String projectSchemaLocation = String.format("%s/%s", linkService.getSchemaRequestUriString(), ResourceUtil.PROJECT_PARAM);
+        links.add(linkService.getLink(projectUri, "updates existing project", "POST", projectSchemaLocation));
         /* DELETE */
         links.add(linkService.getLink(projectUri, "deletes project", "DELETE"));
 
