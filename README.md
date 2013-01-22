@@ -69,12 +69,12 @@ Create database <code>pipeline_service</code>
 
     mysql -u root -p
     CREATE DATABASE pipeline_service;
-    
+
 Create database user <code>pipeline_service</code> with the same password
 
     CREATE USER 'pipeline_service'@'localhost' IDENTIFIED BY PASSWORD 'pipeline_service';
     GRANT ALL on pipeline_service.* to pipeline_service@localhost;
-    
+
 Run <code>mvn jetty:run</code>
 
 Rpplication will be running on port 8000 <b>localhost:8000</b>
@@ -85,7 +85,30 @@ creating debian package
 run <code>./build &lt;build_number&gt;</code> this will generate debian
 package that can be installed.
 
-Installed application is started (db has to be setup) 
-<code>/etc/init.d/oh-pipeline-service start</code> and runs on the same port
-8000
+Application is installed to <code>/opt/oh-pipeline-service</code>
+and is started (db has to be setup) by 
+<code>/etc/init.d/oh-pipeline-service start</code>. Started app. runs on 
+the port 8000
 
+application configuration
+-------------------------
+
+After package is installed, configuration is located in
+<code>/opt/oh-pipeline-service/webapps/WEB-INF/classes/</code>
+
+<code>log4j.xml</code> - logging configuration
+
+<code>oh-pipeline-service-jdbc.properties</code> - database configuration
+
+<code>oh-pipeline-service.properties</code> - application configuration
+
+tomcat configuration
+--------------------
+
+tomcat configuration is located in
+<code>/etc/default/oh-pipeline-service</code>
+
+To enable monitoring, add this line to the file above:
+<code>CATALINA_OPTS="-Dcom.sun.management.jmxremote -Dcom.sun.management.jmxremote.port=8999 -Dcom.sun.management.jmxremote.ssl=false -Dcom.sun.management.jmxremote.authenticate=false -Djava.rmi.server.hostname=&lt;your_host&gt;"</code>
+
+And you can use jConsole or VisualVM to monitor application.
