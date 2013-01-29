@@ -26,7 +26,7 @@ public class RootResource {
     }
 
     @GET
-    @Produces(MediaType.APPLICATION_XML)
+    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public LinksResponse getResources() throws JAXBException {
         return rootResourceService.getRootLinks();
     }

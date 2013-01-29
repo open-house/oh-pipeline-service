@@ -11,7 +11,7 @@ import sk.openhouse.automation.pipelinedomain.domain.response.LinksResponse;
 import sk.openhouse.automation.pipelineservice.service.SchemaService;
 
 /**
- * 
+ *
  * @author pete
  */
 @Component
@@ -25,7 +25,7 @@ public class SchemaResource {
     }
 
     @GET
-    @Produces(MediaType.APPLICATION_XML)
+    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public LinksResponse getSchemaRequest() {
         return schemaService.getSchemaLinks();
     }

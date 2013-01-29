@@ -28,7 +28,7 @@ public class BuildsResource {
     }
 
     @GET
-    @Produces(MediaType.APPLICATION_XML)
+    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public BuildsResponse getBuild(@PathParam(ResourceUtil.PROJECT_PARAM) String projectName, 
             @PathParam(ResourceUtil.VERSION_PARAM) String versionNumber, 
             @QueryParam(ResourceUtil.LIMIT_QUERY_PARAM) String limit) throws JAXBException {

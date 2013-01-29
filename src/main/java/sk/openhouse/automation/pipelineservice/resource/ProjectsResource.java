@@ -12,7 +12,7 @@ import sk.openhouse.automation.pipelinedomain.domain.response.ProjectsResponse;
 import sk.openhouse.automation.pipelineservice.service.ProjectService;
 
 /**
- * 
+ *
  * @author pete
  */
 @Component
@@ -26,7 +26,7 @@ public class ProjectsResource {
     }
 
     @GET
-    @Produces(MediaType.APPLICATION_XML)
+    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public ProjectsResponse getProjects() throws JAXBException {
         return projectService.getProjects();
     }

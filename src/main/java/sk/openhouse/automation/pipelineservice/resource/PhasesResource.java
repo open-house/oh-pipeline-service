@@ -13,7 +13,7 @@ import sk.openhouse.automation.pipelinedomain.domain.response.PhasesResponse;
 import sk.openhouse.automation.pipelineservice.service.PhaseService;
 
 /**
- * 
+ *
  * @author pete
  */
 @Component
@@ -27,7 +27,7 @@ public class PhasesResource {
     }
 
     @GET
-    @Produces(MediaType.APPLICATION_XML)
+    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public PhasesResponse getVersions(@PathParam(ResourceUtil.PROJECT_PARAM) String projectName, 
             @PathParam(ResourceUtil.VERSION_PARAM) String versionNumber) throws JAXBException {
 

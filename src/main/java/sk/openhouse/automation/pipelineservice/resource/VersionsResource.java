@@ -13,7 +13,7 @@ import sk.openhouse.automation.pipelinedomain.domain.response.VersionsResponse;
 import sk.openhouse.automation.pipelineservice.service.VersionService;
 
 /**
- * 
+ *
  * @author pete
  */
 @Component
@@ -27,7 +27,7 @@ public class VersionsResource {
     }
 
     @GET
-    @Produces(MediaType.APPLICATION_XML)
+    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public VersionsResponse getVersions(@PathParam(ResourceUtil.PROJECT_PARAM) String projectName) throws JAXBException {
         return versionService.getVersions(projectName);
     }

@@ -18,8 +18,8 @@ import sk.openhouse.automation.pipelinedomain.domain.response.LinksResponse;
 import sk.openhouse.automation.pipelineservice.service.SchemaService;
 
 /**
- * @author pete
  *
+ * @author pete
  */
 @Component
 @Path(ResourceUtil.SCHEMA_REQUEST_PATH)
@@ -39,43 +39,44 @@ public class SchemaRequestResource {
         this.schemaService = schemaService;
     }
 
+    // TODO - add JSON schema to the domain and display depending on media type
     @GET
-    @Produces(MediaType.APPLICATION_XML)
+    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public LinksResponse getSchemaRequest() {
         return schemaService.getSchemaRequestLinks();
     }
 
     @GET
     @Path(ResourceUtil.PROJECT_PARAM)
-    @Produces(MediaType.APPLICATION_XML)
+    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public String getProjectSchema() {
         return PROJECT_SCHEMA;
     }
 
     @GET
     @Path(ResourceUtil.VERSION_PARAM)
-    @Produces(MediaType.APPLICATION_XML)
+    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public String getVersionSchema() {
         return VERSION_SCHEMA;
     }
 
     @GET
     @Path(ResourceUtil.PHASE_PARAM)
-    @Produces(MediaType.APPLICATION_XML)
+    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public String getPhaseSchema() {
         return PHASE_SCHEMA;
     }
 
     @GET
     @Path(ResourceUtil.BUILD_PARAM)
-    @Produces(MediaType.APPLICATION_XML)
+    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public String getBuildSchema() {
         return BUILD_SCHEMA;
     }
 
     @GET
     @Path(ResourceUtil.STATE_PARAM)
-    @Produces(MediaType.APPLICATION_XML)
+    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public String getStateSchema() {
         return STATE_SCHEMA;
     }

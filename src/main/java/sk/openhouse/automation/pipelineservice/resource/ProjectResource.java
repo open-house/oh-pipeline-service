@@ -18,7 +18,7 @@ import sk.openhouse.automation.pipelinedomain.domain.response.ProjectResponse;
 import sk.openhouse.automation.pipelineservice.service.ProjectService;
 
 /**
- * 
+ *
  * @author pete
  */
 @Component
@@ -32,7 +32,7 @@ public class ProjectResource {
     }
 
     @GET
-    @Produces(MediaType.APPLICATION_XML)
+    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public ProjectResponse getProject(@PathParam(ResourceUtil.PROJECT_PARAM) String projectName) throws JAXBException {
 
         return projectService.getProject(projectName);
@@ -47,7 +47,7 @@ public class ProjectResource {
     }
 
     @POST
-    @Consumes(MediaType.APPLICATION_XML)
+    @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public void updateProject(@PathParam(ResourceUtil.PROJECT_PARAM) String projectName, ProjectRequest project) {
         projectService.updateProject(projectName, project);
     }
