@@ -11,7 +11,6 @@ import org.springframework.stereotype.Component;
 
 import sk.openhouse.automation.pipelinedomain.domain.response.VersionsResponse;
 import sk.openhouse.automation.pipelineservice.service.VersionService;
-import sk.openhouse.automation.pipelineservice.util.XmlUtil;
 
 /**
  * 
@@ -22,18 +21,14 @@ import sk.openhouse.automation.pipelineservice.util.XmlUtil;
 public class VersionsResource {
 
     private final VersionService versionService;
-    private final XmlUtil xmlUtil;
 
-    public VersionsResource(VersionService versionService, XmlUtil xmlUtil) {
+    public VersionsResource(VersionService versionService) {
         this.versionService = versionService;
-        this.xmlUtil = xmlUtil;
     }
 
     @GET
     @Produces(MediaType.APPLICATION_XML)
-    public String getVersions(@PathParam(ResourceUtil.PROJECT_PARAM) String projectName) throws JAXBException {
-
-        VersionsResponse versionsResponse = versionService.getVersions(projectName);
-        return xmlUtil.marshall(VersionsResponse.class, versionsResponse);
+    public VersionsResponse getVersions(@PathParam(ResourceUtil.PROJECT_PARAM) String projectName) throws JAXBException {
+        return versionService.getVersions(projectName);
     }
 }

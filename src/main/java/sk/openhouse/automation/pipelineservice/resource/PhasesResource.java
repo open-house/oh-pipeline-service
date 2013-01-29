@@ -11,7 +11,6 @@ import org.springframework.stereotype.Component;
 
 import sk.openhouse.automation.pipelinedomain.domain.response.PhasesResponse;
 import sk.openhouse.automation.pipelineservice.service.PhaseService;
-import sk.openhouse.automation.pipelineservice.util.XmlUtil;
 
 /**
  * 
@@ -22,19 +21,16 @@ import sk.openhouse.automation.pipelineservice.util.XmlUtil;
 public class PhasesResource {
 
     private final PhaseService phaseService;
-    private final XmlUtil xmlUtil;
 
-    public PhasesResource(PhaseService phaseService, XmlUtil xmlUtil) {
+    public PhasesResource(PhaseService phaseService) {
         this.phaseService = phaseService;
-        this.xmlUtil = xmlUtil;
     }
 
     @GET
     @Produces(MediaType.APPLICATION_XML)
-    public String getVersions(@PathParam(ResourceUtil.PROJECT_PARAM) String projectName, 
+    public PhasesResponse getVersions(@PathParam(ResourceUtil.PROJECT_PARAM) String projectName, 
             @PathParam(ResourceUtil.VERSION_PARAM) String versionNumber) throws JAXBException {
 
-        PhasesResponse phasesResponse = phaseService.getPhases(projectName, versionNumber);
-        return xmlUtil.marshall(PhasesResponse.class, phasesResponse);
+        return phaseService.getPhases(projectName, versionNumber);
     }
 }

@@ -16,7 +16,6 @@ import org.springframework.stereotype.Component;
 import sk.openhouse.automation.pipelinedomain.domain.request.ProjectRequest;
 import sk.openhouse.automation.pipelinedomain.domain.response.ProjectResponse;
 import sk.openhouse.automation.pipelineservice.service.ProjectService;
-import sk.openhouse.automation.pipelineservice.util.XmlUtil;
 
 /**
  * 
@@ -27,19 +26,16 @@ import sk.openhouse.automation.pipelineservice.util.XmlUtil;
 public class ProjectResource {
 
     private final ProjectService projectService;
-    private final XmlUtil xmlUtil;
 
-    public ProjectResource(ProjectService projectService, XmlUtil xmlUtil) {
+    public ProjectResource(ProjectService projectService) {
         this.projectService = projectService;
-        this.xmlUtil = xmlUtil;
     }
 
     @GET
     @Produces(MediaType.APPLICATION_XML)
-    public String getProject(@PathParam(ResourceUtil.PROJECT_PARAM) String projectName) throws JAXBException {
+    public ProjectResponse getProject(@PathParam(ResourceUtil.PROJECT_PARAM) String projectName) throws JAXBException {
 
-        ProjectResponse projectResponse = projectService.getProject(projectName);
-        return xmlUtil.marshall(ProjectResponse.class, projectResponse);
+        return projectService.getProject(projectName);
     }
 
     @PUT

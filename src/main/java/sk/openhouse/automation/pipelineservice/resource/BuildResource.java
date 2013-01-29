@@ -15,7 +15,6 @@ import org.springframework.stereotype.Component;
 import sk.openhouse.automation.pipelinedomain.domain.request.BuildRequest;
 import sk.openhouse.automation.pipelinedomain.domain.response.BuildResponse;
 import sk.openhouse.automation.pipelineservice.service.BuildService;
-import sk.openhouse.automation.pipelineservice.util.XmlUtil;
 
 /**
  * 
@@ -26,21 +25,18 @@ import sk.openhouse.automation.pipelineservice.util.XmlUtil;
 public class BuildResource {
 
     private final BuildService buildService;
-    private final XmlUtil xmlUtil;
 
-    public BuildResource(BuildService buildService, XmlUtil xmlUtil) {
+    public BuildResource(BuildService buildService) {
         this.buildService = buildService;
-        this.xmlUtil = xmlUtil;
     }
 
     @GET
     @Produces(MediaType.APPLICATION_XML)
-    public String getBuild(@PathParam(ResourceUtil.PROJECT_PARAM) String projectName, 
+    public BuildResponse getBuild(@PathParam(ResourceUtil.PROJECT_PARAM) String projectName, 
             @PathParam(ResourceUtil.VERSION_PARAM) String versionNumber,
             @PathParam(ResourceUtil.BUILD_PARAM) int buildNumber) throws JAXBException {
 
-        BuildResponse buildResponse = buildService.getBuild(projectName, versionNumber, buildNumber);
-        return xmlUtil.marshall(BuildResponse.class, buildResponse);
+        return buildService.getBuild(projectName, versionNumber, buildNumber);
     }
 
     @PUT

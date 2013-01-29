@@ -13,7 +13,6 @@
     <!-- resources -->
     <bean name="rootResource" class="sk.openhouse.automation.pipelineservice.resource.RootResource">
         <constructor-arg name="rootResourceService" ref="rootResourceService" />
-        <constructor-arg name="xmlUtil" ref="xmlUtil" />
     </bean>
 
     <bean name="schemaResource" class="sk.openhouse.automation.pipelineservice.resource.SchemaResource">
@@ -26,56 +25,43 @@
 
     <bean name="projectsResource" class="sk.openhouse.automation.pipelineservice.resource.ProjectsResource">
         <constructor-arg name="projectService" ref="projectService" />
-        <constructor-arg name="xmlUtil" ref="xmlUtil" />
     </bean>
 
     <bean name="projectResource" class="sk.openhouse.automation.pipelineservice.resource.ProjectResource">
         <constructor-arg name="projectService" ref="projectService" />
-        <constructor-arg name="xmlUtil" ref="xmlUtil" />
     </bean>
 
     <bean name="versionsResource" class="sk.openhouse.automation.pipelineservice.resource.VersionsResource">
         <constructor-arg name="versionService" ref="versionService" />
-        <constructor-arg name="xmlUtil" ref="xmlUtil" />
     </bean>
 
     <bean name="versionResource" class="sk.openhouse.automation.pipelineservice.resource.VersionResource">
         <constructor-arg name="versionService" ref="versionService" />
-        <constructor-arg name="xmlUtil" ref="xmlUtil" />
     </bean>
 
     <bean name="buildsResource" class="sk.openhouse.automation.pipelineservice.resource.BuildsResource">
         <constructor-arg name="buildService" ref="buildService" />
-        <constructor-arg name="xmlUtil" ref="xmlUtil" />
     </bean>
 
     <bean name="buildResource" class="sk.openhouse.automation.pipelineservice.resource.BuildResource">
         <constructor-arg name="buildService" ref="buildService" />
-        <constructor-arg name="xmlUtil" ref="xmlUtil" />
     </bean>
 
     <bean name="buildPhasesResource" class="sk.openhouse.automation.pipelineservice.resource.BuildPhasesResource">
         <constructor-arg name="buildPhaseService" ref="buildPhaseService" />
-        <constructor-arg name="xmlUtil" ref="xmlUtil" />
     </bean>
 
     <bean name="buildPhaseResource" class="sk.openhouse.automation.pipelineservice.resource.BuildPhaseResource">
         <constructor-arg name="buildPhaseService" ref="buildPhaseService" />
-        <constructor-arg name="xmlUtil" ref="xmlUtil" />
     </bean>
 
     <bean name="phasesResource" class="sk.openhouse.automation.pipelineservice.resource.PhasesResource">
         <constructor-arg name="phaseService" ref="phaseService" />
-        <constructor-arg name="xmlUtil" ref="xmlUtil" />
     </bean>
 
     <bean name="phaseResource" class="sk.openhouse.automation.pipelineservice.resource.PhaseResource">
         <constructor-arg name="phaseService" ref="phaseService" />
-        <constructor-arg name="xmlUtil" ref="xmlUtil" />
     </bean>
-
-    <!-- utils -->
-    <bean name="xmlUtil" class="sk.openhouse.automation.pipelineservice.util.impl.XmlUtilImpl" />
 
     <bean name="linkService" class="sk.openhouse.automation.pipelineservice.service.impl.LinkServiceImpl">
         <constructor-arg name="rootUri" value="${httpUtil.rootUri}" />

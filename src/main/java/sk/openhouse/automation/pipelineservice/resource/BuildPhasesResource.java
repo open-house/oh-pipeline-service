@@ -11,7 +11,6 @@ import org.springframework.stereotype.Component;
 
 import sk.openhouse.automation.pipelinedomain.domain.response.BuildPhasesResponse;
 import sk.openhouse.automation.pipelineservice.service.BuildPhaseService;
-import sk.openhouse.automation.pipelineservice.util.XmlUtil;
 
 /**
  * 
@@ -22,21 +21,17 @@ import sk.openhouse.automation.pipelineservice.util.XmlUtil;
 public class BuildPhasesResource {
 
     private final BuildPhaseService buildPhaseService;
-    private final XmlUtil xmlUtil;
 
-    public BuildPhasesResource(BuildPhaseService buildPhaseService, XmlUtil xmlUtil) {
+    public BuildPhasesResource(BuildPhaseService buildPhaseService) {
         this.buildPhaseService = buildPhaseService;
-        this.xmlUtil = xmlUtil;
     }
 
     @GET
     @Produces(MediaType.APPLICATION_XML)
-    public String getBuildPhase(@PathParam(ResourceUtil.PROJECT_PARAM) String projectName, 
+    public BuildPhasesResponse getBuildPhase(@PathParam(ResourceUtil.PROJECT_PARAM) String projectName, 
             @PathParam(ResourceUtil.VERSION_PARAM) String versionNumber,
             @PathParam(ResourceUtil.BUILD_PARAM) int buildNumber) throws JAXBException {
 
-        BuildPhasesResponse buildPhasesResponse = buildPhaseService.getBuildPhases(
-                projectName, versionNumber, buildNumber);
-        return xmlUtil.marshall(BuildPhasesResponse.class, buildPhasesResponse);
+        return buildPhaseService.getBuildPhases(projectName, versionNumber, buildNumber);
     }
 }

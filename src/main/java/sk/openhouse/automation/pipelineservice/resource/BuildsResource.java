@@ -12,7 +12,6 @@ import org.springframework.stereotype.Component;
 
 import sk.openhouse.automation.pipelinedomain.domain.response.BuildsResponse;
 import sk.openhouse.automation.pipelineservice.service.BuildService;
-import sk.openhouse.automation.pipelineservice.util.XmlUtil;
 
 /**
  * 
@@ -23,25 +22,21 @@ import sk.openhouse.automation.pipelineservice.util.XmlUtil;
 public class BuildsResource {
 
     private final BuildService buildService;
-    private final XmlUtil xmlUtil;
 
-    public BuildsResource(BuildService buildService, XmlUtil xmlUtil) {
+    public BuildsResource(BuildService buildService) {
         this.buildService = buildService;
-        this.xmlUtil = xmlUtil;
     }
 
     @GET
     @Produces(MediaType.APPLICATION_XML)
-    public String getBuild(@PathParam(ResourceUtil.PROJECT_PARAM) String projectName, 
+    public BuildsResponse getBuild(@PathParam(ResourceUtil.PROJECT_PARAM) String projectName, 
             @PathParam(ResourceUtil.VERSION_PARAM) String versionNumber, 
             @QueryParam(ResourceUtil.LIMIT_QUERY_PARAM) String limit) throws JAXBException {
 
         Integer limitQuery = parseLimit(limit);
-        BuildsResponse builds = (null == limitQuery) 
+        return (null == limitQuery) 
                 ? buildService.getBuilds(projectName, versionNumber)
                 : buildService.getBuilds(projectName, versionNumber, limitQuery);
-
-        return xmlUtil.marshall(BuildsResponse.class, builds);
     }
 
     /**

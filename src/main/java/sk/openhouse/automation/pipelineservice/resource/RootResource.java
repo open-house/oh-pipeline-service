@@ -10,7 +10,6 @@ import org.springframework.stereotype.Component;
 
 import sk.openhouse.automation.pipelinedomain.domain.response.LinksResponse;
 import sk.openhouse.automation.pipelineservice.service.RootResourceService;
-import sk.openhouse.automation.pipelineservice.util.XmlUtil;
 
 /**
  *
@@ -20,17 +19,15 @@ import sk.openhouse.automation.pipelineservice.util.XmlUtil;
 @Path(ResourceUtil.ROOT_PATH)
 public class RootResource {
 
-    private final XmlUtil xmlUtil;
     private final RootResourceService rootResourceService;
 
-    public RootResource(RootResourceService rootResourceService, XmlUtil xmlUtil) {
+    public RootResource(RootResourceService rootResourceService) {
         this.rootResourceService = rootResourceService;
-        this.xmlUtil = xmlUtil;
     }
 
     @GET
     @Produces(MediaType.APPLICATION_XML)
-    public String getResources() throws JAXBException {
-        return xmlUtil.marshall(LinksResponse.class, rootResourceService.getRootLinks());
+    public LinksResponse getResources() throws JAXBException {
+        return rootResourceService.getRootLinks();
     }
 }

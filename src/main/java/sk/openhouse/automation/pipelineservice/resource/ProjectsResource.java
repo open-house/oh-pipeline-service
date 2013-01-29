@@ -10,7 +10,6 @@ import org.springframework.stereotype.Component;
 
 import sk.openhouse.automation.pipelinedomain.domain.response.ProjectsResponse;
 import sk.openhouse.automation.pipelineservice.service.ProjectService;
-import sk.openhouse.automation.pipelineservice.util.XmlUtil;
 
 /**
  * 
@@ -21,16 +20,14 @@ import sk.openhouse.automation.pipelineservice.util.XmlUtil;
 public class ProjectsResource {
 
     private final ProjectService projectService;
-    private final XmlUtil xmlUtil;
 
-    public ProjectsResource(ProjectService projectService, XmlUtil xmlUtil) {
+    public ProjectsResource(ProjectService projectService) {
         this.projectService = projectService;
-        this.xmlUtil = xmlUtil;
     }
 
     @GET
     @Produces(MediaType.APPLICATION_XML)
-    public String getProjects() throws JAXBException {
-        return xmlUtil.marshall(ProjectsResponse.class, projectService.getProjects());
+    public ProjectsResponse getProjects() throws JAXBException {
+        return projectService.getProjects();
     }
 }
