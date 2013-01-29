@@ -26,6 +26,7 @@ import sk.openhouse.automation.pipelineservice.service.exception.NotFoundExcepti
  */
 public class PhaseServiceImpl implements PhaseService {
 
+    private final String phaseSchemaLocation;
     private final LinkService linkService;
     private final PhaseReadDao phaseReadDao;
     private final PhaseWriteDao phaseWriteDao;
@@ -37,6 +38,8 @@ public class PhaseServiceImpl implements PhaseService {
         this.phaseReadDao = phaseReadDao;
         this.phaseWriteDao = phaseWriteDao;
         this.versionService = versionService;
+
+        phaseSchemaLocation = String.format("%s/%s", linkService.getSchemaRequestUriString(), ResourceUtil.PHASE_PARAM);
     }
 
     /**
@@ -85,6 +88,7 @@ public class PhaseServiceImpl implements PhaseService {
         phasesResponse.setHref(linkService.getPhaseUriTemplate(projectName, versionNumber));
         phasesResponse.setMethod("PUT");
         phasesResponse.setDescription("adds new project phase");
+        phasesResponse.setSchemaLocation(phaseSchemaLocation);
         for (PhaseResponse phase : phasesResponse.getPhases()) {
             phase.setLinks(getPhasesLinks(projectName, versionNumber, phase));
         }
@@ -155,7 +159,6 @@ public class PhaseServiceImpl implements PhaseService {
         List<LinkResponse> links = new ArrayList<LinkResponse>();
 
         /* POST - update */
-        String phaseSchemaLocation = String.format("%s/%s", linkService.getSchemaRequestUriString(), ResourceUtil.PHASE_PARAM);
         links.add(linkService.getLink(phaseUri, "updates existing phase", "POST", phaseSchemaLocation));
         /* DELETE */
         links.add(linkService.getLink(phaseUri, "deletes phase", "DELETE"));
