@@ -8,7 +8,7 @@ package sk.openhouse.automation.pipelineservice.resource;
 final public class ResourceUtil {
 
     /** regex (validation) patterns used in resource paths */
-    public static final String NAME_PATTERN = "[a-zA-Z0-9-_]+";
+    public static final String NAME_PATTERN = "[a-zA-Z0-9\\-_]+";
     public static final String VERSION_NUMBER_PATTERN = "[0-9\\.]+";
     public static final String NUMBER_PATTERN = "[0-9]+";
 
