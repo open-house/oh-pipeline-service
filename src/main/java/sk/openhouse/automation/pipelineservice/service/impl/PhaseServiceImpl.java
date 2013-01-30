@@ -21,7 +21,7 @@ import sk.openhouse.automation.pipelineservice.service.exception.ConflictExcepti
 import sk.openhouse.automation.pipelineservice.service.exception.NotFoundException;
 
 /**
- * 
+ *
  * @author pete
  */
 public class PhaseServiceImpl implements PhaseService {
@@ -125,10 +125,6 @@ public class PhaseServiceImpl implements PhaseService {
      */
     @Override
     public void updatePhase(String projectName, String versionNumber, String phaseName, PhaseRequest phaseRequest) {
-
-        if (null == phaseRequest.getName()) {
-            phaseRequest.setName(phaseName);
-        }
         phaseWriteDao.updatePhase(projectName, versionNumber, phaseName, phaseRequest);
     }
 

@@ -122,7 +122,7 @@ public class BuildPhaseReadDaoImpl implements BuildPhaseReadDao {
         logger.debug(String.format("Quering for build phases - %s args - %s", sql, args.getValues()));
         List<StateResponse> states = namedParameterJdbcTemplate.query(sql, args, new StateMapper());
         if (states.isEmpty()) {
-            logger.debug(String.format("No build phase %s for build %d project $s and version %s fond", 
+            logger.debug(String.format("No build phase %s for build %d project $s and version %s found", 
                     phaseName, buildNumber, projectName, versionNumber));
             return null;
         }
