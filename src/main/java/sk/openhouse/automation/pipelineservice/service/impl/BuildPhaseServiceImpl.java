@@ -154,6 +154,7 @@ public class BuildPhaseServiceImpl implements BuildPhaseService {
         params.putSingle("buildNumber", Integer.toString(buildNumber));
         params.putSingle("phaseName", phaseResponse.getName());
 
+        // TODO - use HTTP Basic auth if the username is set for this phase
         if (!httpUtil.sendRequest(phaseResponse.getUri(), params)) {
             buildPhaseWriteDao.addState(projectName, versionNumber, buildNumber, 
                     phaseResponse.getName(), PhaseState.FAIL);
