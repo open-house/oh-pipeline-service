@@ -72,7 +72,7 @@ Create database <code>pipeline_service</code>
 
 Create database user <code>pipeline_service</code> with the same password
 
-    CREATE USER 'pipeline_service'@'localhost' IDENTIFIED BY PASSWORD 'pipeline_service';
+    CREATE USER 'pipeline_service'@'localhost' IDENTIFIED BY 'pipeline_service';
     GRANT ALL on pipeline_service.* to pipeline_service@localhost;
 
 Run <code>mvn jetty:run</code>
