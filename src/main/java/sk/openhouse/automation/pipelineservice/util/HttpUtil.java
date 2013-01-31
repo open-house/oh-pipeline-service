@@ -29,5 +29,5 @@ public interface HttpUtil {
      * @param password used for HTTP Basic authentication
      * @return true if request was successful and returned code is less than 300
      */
-    boolean sendRequest(URI requestUri, MultivaluedMap<String, String> params, String username, String password);
+    boolean sendRequest(URI requestUri, MultivaluedMap<String, String> params, String username, byte[] password);
 }

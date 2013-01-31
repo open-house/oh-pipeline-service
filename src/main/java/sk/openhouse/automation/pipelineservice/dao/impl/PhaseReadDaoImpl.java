@@ -38,7 +38,8 @@ public class PhaseReadDaoImpl implements PhaseReadDao {
     @Override
     public PhaseResponse getFirstPhase(String projectName, String versionNumber) {
 
-        String sql = "SELECT ph.name, ph.uri FROM phases ph \n"
+        String sql = "SELECT ph.name, ph.uri, ph.username, ph.password \n"
+                + "FROM phases ph \n"
                 + "JOIN versions v ON (ph.version_id = v.id) \n"
                 + "JOIN projects p ON (v.project_id = p.id) \n"
                 + "WHERE p.name = :projectName \n"
@@ -66,10 +67,13 @@ public class PhaseReadDaoImpl implements PhaseReadDao {
     @Override
     public PhaseResponse getPhase(String projectName, String versionNumber, String phaseName) {
 
-        String sql = "SELECT ph.name, ph.uri FROM phases ph " 
-                + "JOIN versions v ON (ph.version_id = v.id) "
-                + "JOIN projects p ON (v.project_id = p.id) "
-                + "WHERE p.name = :projectName AND v.version_number = :versionNumber AND ph.name = :phaseName";
+        String sql = "SELECT ph.name, ph.uri, ph.username, ph.password \n"
+                + "FROM phases ph \n" 
+                + "JOIN versions v ON (ph.version_id = v.id) \n"
+                + "JOIN projects p ON (v.project_id = p.id) \n"
+                + "WHERE p.name = :projectName \n"
+                + "AND v.version_number = :versionNumber \n"
+                + "AND ph.name = :phaseName";
 
         MapSqlParameterSource args = new MapSqlParameterSource();
         args.addValue("projectName", projectName);
@@ -93,10 +97,12 @@ public class PhaseReadDaoImpl implements PhaseReadDao {
     @Override
     public PhasesResponse getPhases(String projectName, String versionNumber) {
 
-        String sql = "SELECT ph.name, ph.uri FROM phases ph " 
-                + "JOIN versions v ON (ph.version_id = v.id) "
-                + "JOIN projects p ON (v.project_id = p.id) "
-                + "WHERE p.name = :projectName AND v.version_number = :versionNumber";
+        String sql = "SELECT ph.name, ph.uri, ph.username, ph.password \n"
+                + "FROM phases ph \n" 
+                + "JOIN versions v ON (ph.version_id = v.id) \n"
+                + "JOIN projects p ON (v.project_id = p.id) \n"
+                + "WHERE p.name = :projectName \n"
+                + "AND v.version_number = :versionNumber";
 
         MapSqlParameterSource args = new MapSqlParameterSource();
         args.addValue("projectName", projectName);
@@ -119,6 +125,11 @@ public class PhaseReadDaoImpl implements PhaseReadDao {
 
             PhaseResponse phase = new PhaseResponse();
             phase.setName(rs.getString("name"));
+            phase.setUsername(rs.getString("username"));
+
+            String password = (null == rs.getString("password")) ? "" :rs.getString("password");
+            phase.setPassword(password.getBytes());
+
             try {
                 phase.setUri(rs.getURL("uri").toURI());
             } catch (URISyntaxException e) {

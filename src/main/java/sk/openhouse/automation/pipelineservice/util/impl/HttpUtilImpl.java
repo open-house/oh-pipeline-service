@@ -47,8 +47,9 @@ public class HttpUtilImpl implements HttpUtil {
      * {@inheritDoc}
      */
     @Override
-    public boolean sendRequest(URI requestUri, MultivaluedMap<String, String> params, String username, String password) {
+    public boolean sendRequest(URI requestUri, MultivaluedMap<String, String> params, String username, byte[] password) {
 
+        logger.debug("Sending request with HTTP Basic Auth filter.");
         WebResource webResource = getWebResource(requestUri, params);
         webResource.addFilter(new HTTPBasicAuthFilter(username, password));
         return sendRequest(webResource);

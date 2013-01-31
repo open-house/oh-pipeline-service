@@ -1,5 +1,6 @@
 package sk.openhouse.automation.pipelineservice.service.impl;
 
+import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -154,8 +155,12 @@ public class BuildPhaseServiceImpl implements BuildPhaseService {
         params.putSingle("buildNumber", Integer.toString(buildNumber));
         params.putSingle("phaseName", phaseResponse.getName());
 
-        // TODO - use HTTP Basic auth if the username is set for this phase
-        if (!httpUtil.sendRequest(phaseResponse.getUri(), params)) {
+        URI uri = phaseResponse.getUri();
+        boolean success = (null == phaseResponse.getUsername()) 
+                ? httpUtil.sendRequest(uri, params)
+                : httpUtil.sendRequest(uri, params, phaseResponse.getUsername(), phaseResponse.getPassword());
+
+        if (!success) {
             buildPhaseWriteDao.addState(projectName, versionNumber, buildNumber, 
                     phaseResponse.getName(), PhaseState.FAIL);
         }
