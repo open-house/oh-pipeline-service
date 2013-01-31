@@ -55,22 +55,3 @@ cp ./src/main/conf/${PACKAGE} $APP_CONF_DIR
 
 # create deb package
 oh-deb-build $VERSION
-
-echo "--> Create Rackspace VM"
-IP=$(oh-rack-vm-create ${PACKAGE}_${VERSION})
-[[ $? -eq 0 ]] || echo "ERROR"
-echo "--> Install MySQL server"
-oh-mysql-install $IP
-[[ $? -eq 0 ]] || echo "ERROR"
-echo "--> Create pipeline_service database and user"
-oh-mysql-sql-pipeline-service $IP
-[[ $? -eq 0 ]] || echo "ERROR"
-echo "--> Install software"
-oh-sw-install-pipeline-service $IP
-[[ $? -eq 0 ]] || echo "ERROR"
-
-# ... make your tests ...
-
-echo "--> Delete Rackspace VM"
-oh-rack-vm-delete $IP
-[[ $? -eq 0 ]] || echo "ERROR"
