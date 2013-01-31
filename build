@@ -61,3 +61,5 @@ IP=$(oh-rack-vm-create ${PACKAGE}_${VERSION})
 oh-mysql-install $IP
 oh-mysql-sql-pipeline-service $IP
 oh-sw-install-pipeline-service $IP
+
+exit 0
