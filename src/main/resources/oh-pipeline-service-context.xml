@@ -11,67 +11,83 @@
     <context:property-placeholder location="classpath:oh-pipeline-service.properties,classpath:oh-pipeline-service-jdbc.properties" />
 
     <!-- resources -->
-    <bean name="rootResource" class="sk.openhouse.automation.pipelineservice.resource.RootResource">
+    <bean id="rootResource" class="sk.openhouse.automation.pipelineservice.resource.RootResource">
         <constructor-arg name="rootResourceService" ref="rootResourceService" />
     </bean>
 
-    <bean name="schemaResource" class="sk.openhouse.automation.pipelineservice.resource.SchemaResource">
+    <bean id="schemaResource" class="sk.openhouse.automation.pipelineservice.resource.SchemaResource">
         <constructor-arg name="schemaService" ref="schemaService" />
     </bean>
 
-    <bean name="schemaRequestResource" class="sk.openhouse.automation.pipelineservice.resource.SchemaRequestResource">
+    <bean id="schemaRequestResource" class="sk.openhouse.automation.pipelineservice.resource.SchemaRequestResource">
         <constructor-arg name="schemaService" ref="schemaService" />
     </bean>
 
-    <bean name="projectsResource" class="sk.openhouse.automation.pipelineservice.resource.ProjectsResource">
+    <bean id="projectsResource" class="sk.openhouse.automation.pipelineservice.resource.ProjectsResource">
         <constructor-arg name="projectService" ref="projectService" />
     </bean>
 
-    <bean name="projectResource" class="sk.openhouse.automation.pipelineservice.resource.ProjectResource">
+    <bean id="projectResource" class="sk.openhouse.automation.pipelineservice.resource.ProjectResource">
         <constructor-arg name="projectService" ref="projectService" />
     </bean>
 
-    <bean name="versionsResource" class="sk.openhouse.automation.pipelineservice.resource.VersionsResource">
+    <bean id="versionsResource" class="sk.openhouse.automation.pipelineservice.resource.VersionsResource">
         <constructor-arg name="versionService" ref="versionService" />
     </bean>
 
-    <bean name="versionResource" class="sk.openhouse.automation.pipelineservice.resource.VersionResource">
+    <bean id="versionResource" class="sk.openhouse.automation.pipelineservice.resource.VersionResource">
         <constructor-arg name="versionService" ref="versionService" />
     </bean>
 
-    <bean name="buildsResource" class="sk.openhouse.automation.pipelineservice.resource.BuildsResource">
+    <bean id="buildsResource" class="sk.openhouse.automation.pipelineservice.resource.BuildsResource">
         <constructor-arg name="buildService" ref="buildService" />
     </bean>
 
-    <bean name="buildResource" class="sk.openhouse.automation.pipelineservice.resource.BuildResource">
+    <bean id="buildResource" class="sk.openhouse.automation.pipelineservice.resource.BuildResource">
         <constructor-arg name="buildService" ref="buildService" />
     </bean>
 
-    <bean name="buildPhasesResource" class="sk.openhouse.automation.pipelineservice.resource.BuildPhasesResource">
+    <bean id="buildPhasesResource" class="sk.openhouse.automation.pipelineservice.resource.BuildPhasesResource">
         <constructor-arg name="buildPhaseService" ref="buildPhaseService" />
     </bean>
 
-    <bean name="buildPhaseResource" class="sk.openhouse.automation.pipelineservice.resource.BuildPhaseResource">
+    <bean id="buildPhaseResource" class="sk.openhouse.automation.pipelineservice.resource.BuildPhaseResource">
         <constructor-arg name="buildPhaseService" ref="buildPhaseService" />
     </bean>
 
-    <bean name="phasesResource" class="sk.openhouse.automation.pipelineservice.resource.PhasesResource">
+    <bean id="phasesResource" class="sk.openhouse.automation.pipelineservice.resource.PhasesResource">
         <constructor-arg name="phaseService" ref="phaseService" />
     </bean>
 
-    <bean name="phaseResource" class="sk.openhouse.automation.pipelineservice.resource.PhaseResource">
+    <bean id="phaseResource" class="sk.openhouse.automation.pipelineservice.resource.PhaseResource">
         <constructor-arg name="phaseService" ref="phaseService" />
     </bean>
 
-    <bean name="linkService" class="sk.openhouse.automation.pipelineservice.service.impl.LinkServiceImpl">
+    <bean id="linkService" class="sk.openhouse.automation.pipelineservice.service.impl.LinkServiceImpl">
         <constructor-arg name="rootUri" value="${httpUtil.rootUri}" />
     </bean>
 
-    <bean name="httpUtil" class="sk.openhouse.automation.pipelineservice.util.impl.HttpUtilImpl">
+    <bean id="httpUtil" class="sk.openhouse.automation.pipelineservice.http.impl.HttpUtilImpl">
         <constructor-arg name="client" ref="client" />
     </bean>
 
-    <bean id="client" class="com.sun.jersey.api.client.Client" factory-method="create" />
+    <bean id="client" class="com.sun.jersey.api.client.Client" factory-method="create">
+        <constructor-arg name="cc" ref="clientConfig" />
+    </bean>
+
+    <bean id="clientConfig" class="sk.openhouse.automation.pipelineservice.http.impl.ClientConfigHttps">
+        <constructor-arg name="sslContextFactory" ref="sslContextFactory" />
+        <constructor-arg name="hostnameVerifier" ref="hostnameVerifier" />
+    </bean>
+
+    <bean id="sslContextFactory" class="sk.openhouse.automation.pipelineservice.http.impl.SSLContextFactoryImpl">
+        <constructor-arg name="protocol" value="SSL" />
+        <constructor-arg name="x509TrustManager" ref="x509TrustManager" />
+    </bean>
+
+    <bean id="x509TrustManager" class="sk.openhouse.automation.pipelineservice.http.impl.X509TrustManagerAllCerts" />
+
+    <bean id="hostnameVerifier" class="sk.openhouse.automation.pipelineservice.http.impl.HostnameVerifierAllTrue" />
 
     <!-- imports -->
     <import resource="oh-pipeline-service-datasource.xml" />

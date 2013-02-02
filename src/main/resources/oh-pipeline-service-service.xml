@@ -11,28 +11,28 @@
         http://www.springframework.org/schema/context/spring-context-3.0.xsd">
 
     <!-- services -->
-    <bean name="schemaService" class="sk.openhouse.automation.pipelineservice.service.impl.SchemaServiceImpl">
+    <bean id="schemaService" class="sk.openhouse.automation.pipelineservice.service.impl.SchemaServiceImpl">
         <constructor-arg name="linkService" ref="linkService" />
     </bean>
 
-    <bean name="rootResourceService" class="sk.openhouse.automation.pipelineservice.service.impl.RootResourceServiceImpl">
+    <bean id="rootResourceService" class="sk.openhouse.automation.pipelineservice.service.impl.RootResourceServiceImpl">
         <constructor-arg name="linkService" ref="linkService" />
     </bean>
 
-    <bean name="projectService" class="sk.openhouse.automation.pipelineservice.service.impl.ProjectServiceImpl">
+    <bean id="projectService" class="sk.openhouse.automation.pipelineservice.service.impl.ProjectServiceImpl">
         <constructor-arg name="linkService" ref="linkService" />
         <constructor-arg name="projectReadDao" ref="projectReadDao" />
         <constructor-arg name="projectWriteDao" ref="projectWriteDao" />
     </bean>
 
-    <bean name="versionService" class="sk.openhouse.automation.pipelineservice.service.impl.VersionServiceImpl">
+    <bean id="versionService" class="sk.openhouse.automation.pipelineservice.service.impl.VersionServiceImpl">
         <constructor-arg name="linkService" ref="linkService" />
         <constructor-arg name="versionReadDao" ref="versionReadDao" />
         <constructor-arg name="versionWriteDao" ref="versionWriteDao" />
         <constructor-arg name="projectService" ref="projectService" />
     </bean>
 
-    <bean name="buildService" class="sk.openhouse.automation.pipelineservice.service.impl.BuildServiceImpl">
+    <bean id="buildService" class="sk.openhouse.automation.pipelineservice.service.impl.BuildServiceImpl">
         <constructor-arg name="linkService" ref="linkService" />
         <constructor-arg name="buildReadDao" ref="buildReadDao" />
         <constructor-arg name="buildWriteDao" ref="buildWriteDao" />
@@ -41,7 +41,7 @@
         <constructor-arg name="buildPhaseService" ref="buildPhaseService" />
     </bean>
 
-    <bean name="buildPhaseService" class="sk.openhouse.automation.pipelineservice.service.impl.BuildPhaseServiceImpl">
+    <bean id="buildPhaseService" class="sk.openhouse.automation.pipelineservice.service.impl.BuildPhaseServiceImpl">
         <constructor-arg name="linkService" ref="linkService" />
         <constructor-arg name="buildPhaseReadDao" ref="buildPhaseReadDao" />
         <constructor-arg name="buildPhaseWriteDao" ref="buildPhaseWriteDao" />
@@ -50,7 +50,7 @@
         <constructor-arg name="httpUtil" ref="httpUtil" />
     </bean>
 
-    <bean name="phaseService" class="sk.openhouse.automation.pipelineservice.service.impl.PhaseServiceImpl">
+    <bean id="phaseService" class="sk.openhouse.automation.pipelineservice.service.impl.PhaseServiceImpl">
         <constructor-arg name="linkService" ref="linkService" />
         <constructor-arg name="phaseReadDao" ref="phaseReadDao" />
         <constructor-arg name="phaseWriteDao" ref="phaseWriteDao" />

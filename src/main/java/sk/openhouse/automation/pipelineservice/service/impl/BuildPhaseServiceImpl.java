@@ -25,7 +25,7 @@ import sk.openhouse.automation.pipelineservice.service.LinkService;
 import sk.openhouse.automation.pipelineservice.service.PhaseService;
 import sk.openhouse.automation.pipelineservice.service.exception.ConflictException;
 import sk.openhouse.automation.pipelineservice.service.exception.NotFoundException;
-import sk.openhouse.automation.pipelineservice.util.HttpUtil;
+import sk.openhouse.automation.pipelineservice.http.HttpUtil;
 
 /**
  * 

@@ -1,4 +1,4 @@
-package sk.openhouse.automation.pipelineservice.util;
+package sk.openhouse.automation.pipelineservice.http;
 
 import java.net.URI;
 

@@ -8,7 +8,7 @@ import org.apache.log4j.Logger;
 import sk.openhouse.automation.pipelinedomain.domain.response.LinkResponse;
 import sk.openhouse.automation.pipelineservice.resource.ResourceUtil;
 import sk.openhouse.automation.pipelineservice.service.LinkService;
-import sk.openhouse.automation.pipelineservice.util.impl.HttpUtilImpl;
+import sk.openhouse.automation.pipelineservice.http.impl.HttpUtilImpl;
 
 /**
  * 

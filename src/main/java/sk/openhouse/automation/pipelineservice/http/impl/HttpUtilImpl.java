@@ -1,4 +1,4 @@
-package sk.openhouse.automation.pipelineservice.util.impl;
+package sk.openhouse.automation.pipelineservice.http.impl;
 
 import java.net.URI;
 
@@ -12,7 +12,7 @@ import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.WebResource;
 import com.sun.jersey.api.client.filter.HTTPBasicAuthFilter;
 
-import sk.openhouse.automation.pipelineservice.util.HttpUtil;
+import sk.openhouse.automation.pipelineservice.http.HttpUtil;
 
 /**
  * 
@@ -30,8 +30,6 @@ public class HttpUtilImpl implements HttpUtil {
     public HttpUtilImpl(Client client) {
         this.client = client;
     }
-
-    // TODO - add no SSL check so request can be sent to self signed certs
 
     /**
      * {@inheritDoc}
