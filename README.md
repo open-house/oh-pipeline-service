@@ -90,7 +90,7 @@ and is started (db has to be setup) by
 <code>/etc/init.d/oh-pipeline-service start</code>. Started app. runs on 
 the port 8000
 
-application configuration
+Application configuration
 -------------------------
 
 After package is installed, configuration is located in
