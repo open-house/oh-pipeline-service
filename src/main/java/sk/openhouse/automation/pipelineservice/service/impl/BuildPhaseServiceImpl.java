@@ -169,7 +169,7 @@ public class BuildPhaseServiceImpl implements BuildPhaseService {
     /**
      * Moves next phase (the one after the supplied one) to IN_PROGRESS, and calls its URI.
      * 
-     * @param phaseName
+     * @param phaseName current phase name
      */
     private void runNextPhase(String projectName, String versionNumber, int buildNumber, String phaseName) {
 

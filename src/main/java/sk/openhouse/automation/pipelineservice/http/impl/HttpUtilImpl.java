@@ -77,7 +77,7 @@ public class HttpUtilImpl implements HttpUtil {
         }
 
         if (clientResponse.getStatus() >= 300) {
-            logger.error(String.format("Request was not successful. Returne response code is %d",
+            logger.error(String.format("Request was not successful. Returned response code is %d",
                     clientResponse.getStatus()));
             return false;
         }
