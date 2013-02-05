@@ -5,6 +5,8 @@ import java.util.List;
 
 import org.springframework.dao.DuplicateKeyException;
 
+import sk.openhouse.automation.pipelinedomain.domain.PhaseState;
+import sk.openhouse.automation.pipelinedomain.domain.request.StateRequest;
 import sk.openhouse.automation.pipelineservice.dao.BuildReadDao;
 import sk.openhouse.automation.pipelineservice.dao.BuildWriteDao;
 import sk.openhouse.automation.pipelinedomain.domain.request.BuildRequest;
@@ -102,11 +104,17 @@ public class BuildServiceImpl implements BuildService {
         try {
             phaseResponse = phaseService.getFirstPhase(projectName, versionNumber);
         } catch(NotFoundException e) {
-            /* no phases found */
             return;
         }
 
-        buildPhaseService.runPhase(projectName, versionNumber, buildRequest.getNumber(), phaseResponse);
+        int buildNumber = buildRequest.getNumber();
+        String phaseName = phaseResponse.getName();
+        StateRequest stateRequest = new StateRequest();
+        stateRequest.setName(PhaseState.IN_PROGRESS);
+
+        if (phaseResponse.isAuto()) {
+            buildPhaseService.addState(projectName, versionNumber, buildNumber, phaseName, stateRequest);
+        }
     }
 
     /**

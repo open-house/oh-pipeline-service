@@ -58,10 +58,19 @@ public class BuildPhaseServiceImpl implements BuildPhaseService {
     @Override
     public void addState(String projectName, String versionNumber, int buildNumber, String phaseName, StateRequest stateRequest) {
 
+        PhaseState state = stateRequest.getName();
+        PhaseResponse phaseResponse = phaseService.getPhase(projectName, versionNumber, phaseName);
         PhaseState lastPhaseState = buildPhaseReadDao.getLastState(projectName, versionNumber, buildNumber, phaseName);
+
+        /* new build phase - the first state can only be IN_PROGRESS */
         if (null == lastPhaseState) {
-            throw new NotFoundException(String.format("No state found for project %s version %s build %d and phase %s",
-                    projectName, versionNumber, buildNumber, phaseName));
+            if (state.equals(PhaseState.IN_PROGRESS)) {
+                runNewPhase(projectName, versionNumber, buildNumber, phaseResponse);
+                return;
+            }
+            throw new ConflictException(String.format(
+                    "No state found for project %s version %s build %d and phase %s. The first phase state can only be %s.",
+                    projectName, versionNumber, buildNumber, phaseName, PhaseState.IN_PROGRESS));
         }
 
         /* build phase has already been successfully completed */
@@ -70,21 +79,14 @@ public class BuildPhaseServiceImpl implements BuildPhaseService {
         }
 
         /* already updated */
-        PhaseState state = stateRequest.getName();
         if (state.equals(lastPhaseState)) {
             throw new ConflictException(String.format("Build phase is already in %s state.", state));
         }
 
-        /* failed state updated to in progress - rerun the phase */
+        buildPhaseWriteDao.addState(projectName, versionNumber, buildNumber, phaseName, state);
         if (state.equals(PhaseState.IN_PROGRESS)) {
-            PhaseResponse phaseResponse = phaseService.getPhase(projectName, versionNumber, phaseName);
-            runPhase(projectName, versionNumber, buildNumber, phaseResponse);
-            return;
-        }
-
-        /* success - move to the next phase */
-        if (state.equals(PhaseState.SUCCESS)) {
-            buildPhaseWriteDao.addState(projectName, versionNumber, buildNumber, phaseName, state);
+            sendPhaseRequest(projectName, versionNumber, buildNumber, phaseResponse);
+        } else if (state.equals(PhaseState.SUCCESS)) {
             runNextPhase(projectName, versionNumber, buildNumber, phaseName);
         }
     }
@@ -124,19 +126,6 @@ public class BuildPhaseServiceImpl implements BuildPhaseService {
 
         buildPhaseResponse.setLinks(getBuildPhaseLinks(projectName, versionNumber, buildNumber, phaseName));
         return buildPhaseResponse;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void runPhase(String projectName, String versionNumber, int buildNumber, PhaseResponse phaseResponse) {
-
-        /* set to IN_PROGRESS */
-        buildPhaseWriteDao.addState(projectName, versionNumber, buildNumber, 
-                phaseResponse.getName(), PhaseState.IN_PROGRESS);
-
-        sendPhaseRequest(projectName, versionNumber, buildNumber, phaseResponse);
     }
 
     /**
@@ -188,10 +177,19 @@ public class BuildPhaseServiceImpl implements BuildPhaseService {
         }
 
         PhaseResponse nextPhase = phaseResponses.get(index);
-        buildPhaseWriteDao.addPhase(projectName, versionNumber, buildNumber, nextPhase.getName());
+        if (nextPhase.isAuto()) {
+            runNewPhase(projectName, versionNumber, buildNumber, nextPhase);
+        }
+    }
 
+    /**
+     * Runs specified phase. Phase has to be new, meaning that it does not have any states.
+     */
+    private void runNewPhase(String projectName, String versionNumber, int buildNumber, PhaseResponse phaseResponse) {
+
+        buildPhaseWriteDao.addPhase(projectName, versionNumber, buildNumber, phaseResponse.getName());
         /* state already set to IN_PROGRESS, no need to run 'runPhase' */
-        sendPhaseRequest(projectName, versionNumber, buildNumber, nextPhase);
+        sendPhaseRequest(projectName, versionNumber, buildNumber, phaseResponse);
     }
 
     private LinksResponse getBuildPhasesLinks(String projectName, String versionNumber, int buildNumber, String phaseName) {

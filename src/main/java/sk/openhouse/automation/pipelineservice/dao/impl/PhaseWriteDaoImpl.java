@@ -23,14 +23,16 @@ public class PhaseWriteDaoImpl implements PhaseWriteDao {
         this.namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(dataSource);
     }
 
+    // TODO - add (and update) phase auto column, need to change from boolean to Boolean, when updating
+    // it doesn't have to be set, this way it defaults always to true
     /**
      * {@inheritDoc}
      */
     @Override
     public void addPhase(String projectName, String versionNumber, PhaseRequest phaseRequest) {
 
-        String sql = "INSERT INTO phases (name, uri, username, password, version_id) " 
-                + "VALUES(:phaseName, :phaseUri, :username, :password, " 
+        String sql = "INSERT INTO phases (name, uri, username, password, version_id) "
+                + "VALUES(:phaseName, :phaseUri, :username, :password, "
                 + "(SELECT v.id FROM versions v JOIN projects p "
                 + "ON (v.project_id = p.id) " 
                 + "WHERE v.version_number = :versionNumber AND p.name = :projectName))";
