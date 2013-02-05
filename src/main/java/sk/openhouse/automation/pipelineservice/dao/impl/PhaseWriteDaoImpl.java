@@ -23,16 +23,14 @@ public class PhaseWriteDaoImpl implements PhaseWriteDao {
         this.namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(dataSource);
     }
 
-    // TODO - add (and update) phase auto column, need to change from boolean to Boolean, when updating
-    // it doesn't have to be set, this way it defaults always to true
     /**
      * {@inheritDoc}
      */
     @Override
     public void addPhase(String projectName, String versionNumber, PhaseRequest phaseRequest) {
 
-        String sql = "INSERT INTO phases (name, uri, username, password, version_id) "
-                + "VALUES(:phaseName, :phaseUri, :username, :password, "
+        String sql = "INSERT INTO phases (name, auto, uri, username, password, version_id) "
+                + "VALUES(:phaseName, :auto, :phaseUri, :username, :password, "
                 + "(SELECT v.id FROM versions v JOIN projects p "
                 + "ON (v.project_id = p.id) " 
                 + "WHERE v.version_number = :versionNumber AND p.name = :projectName))";
@@ -41,6 +39,9 @@ public class PhaseWriteDaoImpl implements PhaseWriteDao {
         args.addValue("projectName", projectName);
         args.addValue("versionNumber", versionNumber);
         args.addValue("phaseName", phaseRequest.getName());
+        /* default is auto */
+        boolean auto = (null == phaseRequest.isAuto()) ? true : phaseRequest.isAuto();
+        args.addValue("auto", auto);
         args.addValue("phaseUri", phaseRequest.getUri().toString());
         args.addValue("username", phaseRequest.getUsername());
         args.addValue("password", phaseRequest.getPassword());
@@ -70,6 +71,11 @@ public class PhaseWriteDaoImpl implements PhaseWriteDao {
         if (null != phaseRequest.getName()) {
             sb.append(", name = :newPhaseName");
             args.addValue("newPhaseName", phaseRequest.getName());
+        }
+
+        if (null != phaseRequest.isAuto()) {
+            sb.append(", auto = :auto");
+            args.addValue("auto", phaseRequest.isAuto());
         }
 
         if (null != phaseRequest.getUri()) {
@@ -120,5 +126,19 @@ public class PhaseWriteDaoImpl implements PhaseWriteDao {
 
         logger.debug(String.format("Deleting phase - %s args - %s", sql, args.getValues()));
         namedParameterJdbcTemplate.update(sql, args);
+    }
+
+    // TODO - implement
+    /**
+     * Helper method to costruct sql update query. If the supplied object (value) is empty, nothing is appended
+     * to the supplied sqlPart. Otherwise, sqlPart argument is updated as well as args.
+     */
+    private void addSqlArg(MapSqlParameterSource args, StringBuilder sqlPart,
+                           String columnName, String paramName, Object value) {
+
+        if (null != value) {
+            sqlPart.append(String.format(", %s = :%s", columnName, paramName));
+            args.addValue(paramName, value);
+        }
     }
 }
