@@ -9,6 +9,7 @@ import javax.sql.DataSource;
 
 import org.apache.log4j.Logger;
 import org.springframework.dao.DataAccessException;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.ResultSetExtractor;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
@@ -63,6 +64,9 @@ public class BuildPhaseReadDaoImpl implements BuildPhaseReadDao {
         try {
             String state = namedParameterJdbcTemplate.queryForObject(sql, args, String.class);
             return PhaseState.valueOf(state);
+        } catch (EmptyResultDataAccessException e) {
+            logger.debug(String.format("No build state found for project %s version %s build %d and phase %s.",
+                    projectName, versionNumber, buildNumber, phaseName), e);
         } catch (DataAccessException e) {
             logger.debug(String.format("No build state found for project %s version %s build %d and phase %s.", 
                     projectName, versionNumber, buildNumber, phaseName), e);

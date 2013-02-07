@@ -37,7 +37,12 @@ public class BuildPhaseWriteDaoImpl implements BuildPhaseWriteDao {
                         + "WHERE b.number = :buildNumber \n"
                         + "AND v.version_number = :versionNumber \n"
                         + "AND p.name = :projectName), \n"
-                    + "(SELECT ph.id FROM phases ph WHERE ph.name = :phaseName), \n"
+                    + "(SELECT ph.id FROM phases ph \n"
+                        + "JOIN versions v ON (ph.version_id = v.id) \n"
+                        + "JOIN projects p ON (v.project_id = p.id) \n"
+                        + "WHERE ph.name = :phaseName \n"
+                        + "AND v.version_number = :versionNumber \n"
+                        + "AND p.name = :projectName), \n"
                     + ":phaseState)";
 
         MapSqlParameterSource args = new MapSqlParameterSource();
@@ -65,7 +70,12 @@ public class BuildPhaseWriteDaoImpl implements BuildPhaseWriteDao {
                         + "WHERE b.number = :buildNumber \n"
                         + "AND v.version_number = :versionNumber \n"
                         + "AND p.name = :projectName), \n"
-                    + "(SELECT ph.id FROM phases ph WHERE ph.name = :phaseName), \n"
+                    + "(SELECT ph.id FROM phases ph \n"
+                        + "JOIN versions v ON (ph.version_id = v.id) \n"
+                        + "JOIN projects p ON (v.project_id = p.id) \n"
+                        + "WHERE ph.name = :phaseName \n"
+                        + "AND v.version_number = :versionNumber \n"
+                        + "AND p.name = :projectName), \n"
                     + ":phaseState)";
 
         MapSqlParameterSource args = new MapSqlParameterSource();

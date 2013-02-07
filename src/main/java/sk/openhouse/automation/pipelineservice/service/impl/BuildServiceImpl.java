@@ -3,6 +3,7 @@ package sk.openhouse.automation.pipelineservice.service.impl;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.log4j.Logger;
 import org.springframework.dao.DuplicateKeyException;
 
 import sk.openhouse.automation.pipelinedomain.domain.PhaseState;
@@ -29,6 +30,8 @@ import sk.openhouse.automation.pipelineservice.service.exception.NotFoundExcepti
  * @author pete
  */
 public class BuildServiceImpl implements BuildService {
+
+    private static final Logger logger = Logger.getLogger(BuildServiceImpl.class);
 
     private final LinkService linkService;
     private final BuildReadDao buildReadDao;
@@ -104,6 +107,8 @@ public class BuildServiceImpl implements BuildService {
         try {
             phaseResponse = phaseService.getFirstPhase(projectName, versionNumber);
         } catch(NotFoundException e) {
+            logger.debug(String.format("Cannot find any phase for project %s and version %s",
+                    projectName, versionNumber));
             return;
         }
 
