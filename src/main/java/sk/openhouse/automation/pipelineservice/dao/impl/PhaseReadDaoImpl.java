@@ -55,7 +55,7 @@ public class PhaseReadDaoImpl implements PhaseReadDao {
             return namedParameterJdbcTemplate.queryForObject(sql, args, new PhaseMapper());
         } catch (EmptyResultDataAccessException e) {
             logger.debug(String.format("No phase found for project %s version %s.", 
-                    projectName, versionNumber), e);
+                    projectName, versionNumber));
         }
 
         return null;
@@ -84,8 +84,8 @@ public class PhaseReadDaoImpl implements PhaseReadDao {
         try {
             return namedParameterJdbcTemplate.queryForObject(sql, args, new PhaseMapper());
         } catch (EmptyResultDataAccessException e) {
-            logger.debug(String.format("No phase %s found for project %s version %s.", 
-                    phaseName, projectName, versionNumber), e);
+            logger.debug(String.format("No phase %s found for project %s version %s.",
+                    phaseName, projectName, versionNumber));
         }
 
         return null;

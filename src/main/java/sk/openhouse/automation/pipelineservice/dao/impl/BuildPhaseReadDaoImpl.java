@@ -66,9 +66,9 @@ public class BuildPhaseReadDaoImpl implements BuildPhaseReadDao {
             return PhaseState.valueOf(state);
         } catch (EmptyResultDataAccessException e) {
             logger.debug(String.format("No build state found for project %s version %s build %d and phase %s.",
-                    projectName, versionNumber, buildNumber, phaseName), e);
+                    projectName, versionNumber, buildNumber, phaseName));
         } catch (DataAccessException e) {
-            logger.debug(String.format("No build state found for project %s version %s build %d and phase %s.", 
+            logger.debug(String.format("No build state found for project %s version %s build %d and phase %s.",
                     projectName, versionNumber, buildNumber, phaseName), e);
         }
 
