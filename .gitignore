@@ -7,4 +7,4 @@ test-output
 *.swp
 /*.deb
 .idea
-oh-pipeline-service.iml
+*.iml
