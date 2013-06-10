@@ -10,6 +10,31 @@
     <context:component-scan base-package="sk.openhouse.automation.pipelineservice.resource" />
     <context:property-placeholder location="classpath:oh-pipeline-service.properties,classpath:oh-pipeline-service-jdbc.properties" />
 
+
+    <!--
+    <bean id="shiroFilter" class="org.apache.shiro.spring.web.ShiroFilterFactoryBean">
+        <property name="securityManager" ref="securityManager"/>
+        <property name="filterChainDefinitions">
+            <value>
+                /** = authcBasic
+            </value>
+        </property>
+    </bean>
+
+    <bean id="securityManager" class="org.apache.shiro.web.mgt.DefaultWebSecurityManager">
+        <property name="realm" ref="ldapRealm"/>
+    </bean>
+
+    <bean id="ldapRealm" class="org.apache.shiro.realm.ldap.JndiLdapRealm">
+        <property name="userDnTemplate" value="TODO" />
+        <property name="contextFactory" ref="ldapContextFactory"/>
+    </bean>
+
+    <bean id="ldapContextFactory" class="org.apache.shiro.realm.ldap.JndiLdapContextFactory">
+        <property name="url" value="TODO"/>
+    </bean>
+    -->
+
     <!-- resources -->
     <bean id="rootResource" class="sk.openhouse.automation.pipelineservice.resource.RootResource">
         <constructor-arg name="rootResourceService" ref="rootResourceService" />
