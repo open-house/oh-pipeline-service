@@ -85,7 +85,7 @@ creating debian package
 run <code>./build &lt;build_number&gt;</code> this will generate debian
 package that can be installed.
 
-Application is installed to <code>/opt/oh-pipeline-service</code>
+Application is installed to <code>/var/lib/oh-pipeline-service</code>
 and is started (db has to be setup) by 
 <code>/etc/init.d/oh-pipeline-service start</code>. Started app. runs on 
 the port 8000
