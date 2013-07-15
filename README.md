@@ -112,3 +112,4 @@ To enable monitoring, add this line to the file above:
 <code>CATALINA_OPTS="-Dcom.sun.management.jmxremote -Dcom.sun.management.jmxremote.port=8999 -Dcom.sun.management.jmxremote.ssl=false -Dcom.sun.management.jmxremote.authenticate=false -Djava.rmi.server.hostname=&lt;your_host&gt;"</code>
 
 And you can use jConsole or VisualVM to monitor application.
+
